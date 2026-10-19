@@ -41,6 +41,8 @@ export const links = {
   linkedinLabel: '/in/boscochanam',
   x: 'https://x.com/boscochanam',
   xHandle: '@boscochanam', // also used for twitter:creator
+  youtube: 'https://www.youtube.com/@boscochanam',
+  youtubeLabel: '@boscochanam',
   cv: '#', // TODO: CV PDF URL
 };
 

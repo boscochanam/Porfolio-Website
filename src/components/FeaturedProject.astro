@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { rich } from '../lib/rich';
+import ArchDiagram from './ArchDiagram.astro';
+interface Props { project: CollectionEntry<'projects'> }
+const p = Astro.props.project.data;
+---
+<article class="feat" aria-labelledby="feat-h">
+  <figure class="feat-vis">
+    <div class="ink">
+      <figcaption>How it runs on the floor</figcaption>
+      <ArchDiagram />
+    </div>
+    <svg class="cut" viewBox="0 0 58 100" preserveAspectRatio="none" aria-hidden="true"><line x1="57" y1="0" x2="1" y2="100" stroke="#d01b0b" stroke-width="3" vector-effect="non-scaling-stroke"/></svg>
+  </figure>
+  <div class="feat-txt">
+    <p class="label">{p.kind}</p>
+    <h3 id="feat-h">{p.title}</h3>
+    <dl>
+      {p.problem && <div><dt>Problem</dt><dd set:html={rich(p.problem)} /></div>}
+      {p.owned && <div><dt>What I owned</dt><dd set:html={rich(p.owned)} /></div>}
+      <div><dt>Outcome</dt><dd set:html={rich(p.outcome)} /></div>
+    </dl>
+    {p.note && <div class="feat-foot"><span>{p.note}</span></div>}
+  </div>
+</article>

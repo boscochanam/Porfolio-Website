@@ -1,0 +1,17 @@
+---
+// Email as visible text + a Copy button (shown only when the Clipboard API exists).
+import { links } from '../data/site';
+---
+<span class="mail"><a href={`mailto:${links.email}`}>{links.email}</a><button class="copy" type="button" data-copy={links.email} hidden>Copy</button></span>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.copy').forEach((c) => {
+    if (!navigator.clipboard) return;
+    c.hidden = false;
+    c.onclick = () =>
+      navigator.clipboard.writeText(c.dataset.copy!).then(() => {
+        c.textContent = 'Copied';
+        setTimeout(() => (c.textContent = 'Copy'), 1600);
+      });
+  });
+</script>

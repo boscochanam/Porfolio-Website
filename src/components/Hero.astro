@@ -1,0 +1,33 @@
+---
+import { site, links } from '../data/site';
+import { rich } from '../lib/rich';
+import MailCopy from './MailCopy.astro';
+---
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <img class="photo" src={site.headshot} alt={site.name} width="132" height="132" loading="eager" decoding="async">
+    <div class="hero-text">
+      <p class="label id">{site.role} · {site.location}</p>
+      <h1>{site.name}</h1>
+      <p class="lede">{site.lede}</p>
+      <ul class="proof" aria-label="Proof">
+        {site.proof.map((p) => <li set:html={rich(p)} />)}
+      </ul>
+      <div class="reach">
+        <MailCopy />
+        <span class="lk">
+          <a href={links.github}>GitHub</a>
+          <a href={links.linkedin}>LinkedIn</a>
+          <a href={links.x}>X</a>
+          <a href={links.cv}>CV (PDF)</a>
+        </span>
+      </div>
+    </div>
+    <aside class="now" aria-label="Now">
+      <p class="label">{site.now.label}</p>
+      <ul>
+        {site.now.items.map((n) => <li>{n}</li>)}
+      </ul>
+    </aside>
+  </div>
+</section>

@@ -1,0 +1,19 @@
+---
+// Left-gutter ruler (≥1440px). Render <Ruler /> once at the top of <main> (ruler + slider thumb)
+// and <Ruler variant="footer" /> inside the footer (its dark copy). Styles: src/styles/ruler.css.
+interface Props { variant?: 'main' | 'footer' }
+const { variant = 'main' } = Astro.props;
+---
+{variant === 'footer' ? (
+  <div class="rl dk" aria-hidden="true"></div>
+) : (
+  <>
+    <div class="rl" aria-hidden="true"></div>
+    <div class="rh" aria-hidden="true"><i class="th"></i></div>
+  </>
+)}
+
+<script>
+  import '../scripts/ruler';
+  import '../scripts/slider';
+</script>

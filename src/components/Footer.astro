@@ -1,0 +1,26 @@
+---
+import { about, links } from '../data/site';
+import MailCopy from './MailCopy.astro';
+import Ruler from './Ruler.astro';
+---
+<footer class="foot-block">
+  <Ruler variant="footer" />
+  <div class="wrap foot-grid">
+    <section id="about" aria-labelledby="about-h">
+      <h2 id="about-h">About</h2>
+      {about.paragraphs.map((p) => <p>{p}</p>)}
+    </section>
+    <section id="contact" aria-labelledby="contact-h">
+      <h2 id="contact-h">Contact</h2>
+      <p class="open">{about.open}</p>
+      <MailCopy />
+      <ul class="clist">
+        <li><span>X</span><a href={links.x}>{links.xHandle}</a></li>
+        <li><span>LinkedIn</span><a href={links.linkedin}>{links.linkedinLabel}</a></li>
+        <li><span>GitHub</span><a href={links.github}>GitHub profile</a></li>
+        <li><span>CV</span><a href={links.cv}>Download PDF</a></li>
+      </ul>
+      <p class="copyr">{about.copyright}</p>
+    </section>
+  </div>
+</footer>

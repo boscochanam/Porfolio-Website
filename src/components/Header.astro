@@ -1,0 +1,21 @@
+---
+import { site } from '../data/site';
+const nav = [
+  ['#projects', 'Projects'],
+  ['#background', 'Background'],
+  ['#about', 'About'],
+  ['#contact', 'Contact'],
+];
+---
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="#top">{site.name}</a>
+    <nav class="tabs" aria-label="Sections">
+      {nav.map(([href, label]) => <a href={href}>{label}</a>)}
+    </nav>
+  </div>
+</header>
+
+<script>
+  import '../scripts/nav';
+</script>

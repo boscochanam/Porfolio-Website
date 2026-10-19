@@ -1,0 +1,37 @@
+/* ── gutter ruler: background decoration printed on the page, scrolls 1:1 with it (≥1440) ──
+   Spine sits mid-gutter (never closer than 64px to content). The footer carries a dark copy so
+   the seam falls on the footer's diagonal. Positions come from src/scripts/ruler.ts. */
+main{position:relative}
+.foot-block{position:relative;z-index:1}
+.foot-block>.wrap{position:relative;z-index:1}
+.rl{display:none;position:absolute;top:0;pointer-events:none}
+@media (min-width:1440px){.rl{display:block}}
+.rl{bottom:0;left:0;width:0;--tk:var(--line);--num:#c4beb2;--lab:#a39e93}
+.rl.dk{--tk:#2e2d2a;--num:#56534d;--lab:#6e6a62}
+.rl i{position:absolute;display:block;font-style:normal}
+.rl .ln{top:0;bottom:0;left:0;width:1px;background:var(--tk)}
+.rl .tk{top:0;bottom:0;right:0;width:8px;background-repeat:no-repeat;
+  background-image:repeating-linear-gradient(var(--tk) 0 1px,transparent 1px 100px),repeating-linear-gradient(var(--tk) 0 1px,transparent 1px 20px);
+  background-size:8px calc(100% + var(--o,0px)),4px calc(100% + var(--o,0px));
+  background-position:100% calc(-1 * var(--o,0px)),100% calc(-1 * var(--o,0px))}
+.rl .n{left:-14px;transform:translate(-100%,-50%);font:400 10px/1 ui-monospace,"SF Mono",Menlo,Consolas,"DejaVu Sans Mono","Liberation Mono",monospace;color:var(--num);font-variant-numeric:tabular-nums}
+.rl .lb{font:600 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--lab);white-space:nowrap}
+.rl .lb.v{writing-mode:vertical-rl}
+.rl .lb{transition:color .2s}
+.rl .lb.act{color:var(--ink);font-weight:800}
+.rl.dk .lb.act{color:var(--pearl)}
+
+/* slider: a black thumb riding the in-flow ruler. Its screen height tracks scroll progress
+   (just under the header at the top, at the footer's bottom at the end); it eases toward its
+   target, can be dragged to scroll, and turns pearl over the black footer. */
+.rh{display:none;position:fixed;top:0;left:0;width:0;height:0;pointer-events:none;z-index:3;will-change:transform}
+@media (min-width:1440px){.rh{display:block}}
+.rh .th{position:absolute;left:-6px;top:-20px;width:13px;height:40px;background:var(--ink);border-radius:2px;
+  pointer-events:auto;cursor:grab;touch-action:none;transition:background-color .2s,transform .15s}
+.rh .th::before{content:"";position:absolute;left:4px;right:4px;top:50%;height:1px;margin-top:-4px;background:var(--pearl);
+  box-shadow:0 4px 0 var(--pearl),0 8px 0 var(--pearl);opacity:.75;transition:background-color .2s,box-shadow .2s}
+.rh .th:hover{transform:scaleX(1.15)}
+.rh.drag .th{cursor:grabbing;transform:scaleX(1.15)}
+.rh.dk .th{background:var(--pearl)}
+.rh.dk .th::before{background:var(--ink);box-shadow:0 4px 0 var(--ink),0 8px 0 var(--ink)}
+@media (prefers-reduced-motion:reduce){.rh .th,.rh .th::before,.rl .lb{transition:none}}

@@ -1,0 +1,30 @@
+---
+import { background as bg, links } from '../data/site';
+---
+<section class="sec" id="background">
+  <div class="wrap">
+    <header class="sec-head"><h2>Background</h2><p>The short version. The rest is in the CV.</p></header>
+    <div class="bg">
+      <div>
+        <p class="label">Work &amp; education</p>
+        <p class="role">{bg.work.role}</p>
+        <p class="org">{bg.work.org}</p>
+        <p class="scope">{bg.work.scope}</p>
+        <p class="edu"><span class="role">{bg.education.degree}</span><span class="org">{bg.education.school}</span></p>
+        <a class="cvlink" href={links.cv}>Full CV (PDF)</a>
+      </div>
+      <div>
+        <p class="label">Papers</p>
+        <ul>
+          {bg.papers.map((p) => <li><span class="cite">{p.title}</span><span class="cite-m"><b>{p.role}</b> · {p.meta}</span></li>)}
+        </ul>
+      </div>
+      <div>
+        <p class="label">Recognition</p>
+        <ul>
+          {bg.recognition.map((r) => <li>{r}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

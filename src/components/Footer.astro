@@ -2,6 +2,7 @@
 import { about, links } from '../data/site';
 import MailCopy from './MailCopy.astro';
 import Ruler from './Ruler.astro';
+import Icon from './Icon.astro';
 ---
 <footer class="foot-block">
   <Ruler variant="footer" />
@@ -15,11 +16,11 @@ import Ruler from './Ruler.astro';
       <p class="open">{about.open}</p>
       <MailCopy />
       <ul class="clist">
-        <li><span>X</span><a href={links.x}>{links.xHandle}</a></li>
-        <li><span>YouTube</span><a href={links.youtube}>{links.youtubeLabel}</a></li>
-        <li><span>LinkedIn</span><a href={links.linkedin}>{links.linkedinLabel}</a></li>
-        <li><span>GitHub</span><a href={links.github}>GitHub profile</a></li>
-        <li><span>CV</span><a href={links.cv}>Download PDF</a></li>
+        <li><span><Icon name="x" />X</span><a class="ik" href={links.x}><span>{links.xHandle}</span><Icon name="arrow" class="ext" /></a></li>
+        <li><span><Icon name="youtube" />YouTube</span><a class="ik" href={links.youtube}><span>{links.youtubeLabel}</span><Icon name="arrow" class="ext" /></a></li>
+        <li><span><Icon name="linkedin" />LinkedIn</span><a class="ik" href={links.linkedin}><span>{links.linkedinLabel}</span><Icon name="arrow" class="ext" /></a></li>
+        <li><span><Icon name="github" />GitHub</span><a class="ik" href={links.github}><span>GitHub profile</span><Icon name="arrow" class="ext" /></a></li>
+        <li><span><Icon name="file" />CV</span><a href={links.cv}>Download PDF</a></li>
       </ul>
       <p class="copyr">{about.copyright}</p>
     </section>

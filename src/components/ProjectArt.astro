@@ -1,0 +1,91 @@
+---
+// Line drawings shown in a project card until it has a demo clip.
+// Same language as ArchDiagram: 1.5px ink strokes, muted secondary marks, small mono labels,
+// at most one ink-filled element. viewBox is 16:9; labels hide when the card is narrow.
+interface Props { art: 'spice' | 'hermes' | 'karaoke' | 'dashboard'; label: string }
+const { art, label } = Astro.props;
+
+// karaoke: a deterministic waveform (no randomness, so builds are stable)
+const bars = Array.from({ length: 46 }, (_, i) => {
+  const h = 10 + Math.round(Math.abs(Math.sin(i * 0.9) * 22 + Math.sin(i * 0.37) * 14));
+  return { x: 22 + i * 6, h };
+});
+---
+<svg class={`art art-${art}`} viewBox="0 0 320 180" role="img" aria-label={label}>
+  {art === 'spice' && (
+    <>
+      <g class="ln">
+        <!-- hand-drawn RC loop -->
+        <path d="M30 62Q44 57 55 61l5-9 6 17 7-17 6 17 7-16 5 8Q104 63 122 59Q125 74 121 86" />
+        <path d="M108 87.5L134 85M109 95.5L135 93.5" />
+        <path d="M122 95Q119 110 123 124Q78 128 31 123Q26 94 30 62" />
+        <!-- clean schematic -->
+        <path d="M198 60H220l4-8 8 16 8-16 8 16 8-16 4 8H292V84M280 84H304M280 92H304M292 92V124H198V60" />
+      </g>
+      <path class="ln" d="M146 92H176M170 86l6 6-6 6" />
+      <g class="fill">
+        <circle cx="198" cy="60" r="3.2" /><circle cx="292" cy="60" r="3.2" /><circle cx="198" cy="124" r="3.2" />
+      </g>
+      <g class="tx">
+        <text x="76" y="156" text-anchor="middle">sketch</text>
+        <text x="245" y="156" text-anchor="middle">netlist</text>
+        <text x="161" y="78" text-anchor="middle">detect</text>
+      </g>
+    </>
+  )}
+  {art === 'hermes' && (
+    <>
+      <g class="ln">
+        <!-- mic -->
+        <rect x="36" y="56" width="22" height="38" rx="11" />
+        <path d="M28 82a19 19 0 0 0 38 0M47 101V116M37 116H57" />
+        <!-- voice to agent -->
+        <path class="mut" d="M78 84V96M84 79V101M90 74V106M96 81V99M102 86V94" />
+        <!-- agent to devices -->
+        <path d="M178 90Q204 90 212 52H222M178 90H222M178 90Q204 90 212 128H222" />
+        <rect x="222" y="40" width="80" height="24" />
+        <rect x="222" y="78" width="80" height="24" />
+        <rect x="222" y="116" width="80" height="24" />
+      </g>
+      <circle class="fill" cx="150" cy="90" r="28" />
+      <g class="tx">
+        <text class="inv" x="150" y="94" text-anchor="middle">agent</text>
+        <text x="262" y="56" text-anchor="middle">lights</text>
+        <text x="262" y="94" text-anchor="middle">ac</text>
+        <text x="262" y="132" text-anchor="middle">calendar</text>
+        <text x="47" y="148" text-anchor="middle">wake word</text>
+      </g>
+    </>
+  )}
+  {art === 'karaoke' && (
+    <>
+      <path class="ln mut faint" d={bars.map((b) => `M${b.x} ${90 - b.h / 2}V${90 + b.h / 2}`).join('')} />
+      <!-- the original singer's melody (stepped) and the voice being pulled onto it -->
+      <path class="ln ink2" d="M20 112H78V96H136V70H190V84H248V62H300" />
+      <path class="ln dash" d="M20 120Q50 110 78 104T112 97Q130 96 136 82T176 72Q186 72 190 80T230 85Q244 84 248 72T300 63" />
+      <circle class="fill" cx="248" cy="62" r="3.4" />
+      <path class="ln ink2 lg" d="M20 148H36" />
+      <path class="ln dash lg" d="M110 148H126" />
+      <g class="tx">
+        <text x="42" y="152">melody</text>
+        <text x="132" y="152">you</text>
+        <text x="300" y="152" text-anchor="end">&lt;10 ms</text>
+      </g>
+    </>
+  )}
+  {art === 'dashboard' && (
+    <>
+      <g class="ln">
+        <rect x="24" y="24" width="168" height="84" />
+        <rect x="204" y="24" width="92" height="38" />
+        <rect x="204" y="70" width="92" height="38" />
+        <rect x="24" y="120" width="80" height="38" />
+        <rect x="116" y="120" width="180" height="38" />
+        <path d="M36 92L62 78 86 84 112 60 138 68 164 44 180 50" />
+      </g>
+      <path class="ln mut" d="M36 98H180M216 38H262M216 48H246M216 84H272M216 94H240M128 134H284M128 144H232M36 136H72M36 146H90" />
+      <rect class="fill" x="276" y="80" width="10" height="10" />
+      <g class="tx"><text x="36" y="40">today</text></g>
+    </>
+  )}
+</svg>

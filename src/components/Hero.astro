@@ -2,6 +2,7 @@
 import { site, links } from '../data/site';
 import { rich } from '../lib/rich';
 import MailCopy from './MailCopy.astro';
+import Icon from './Icon.astro';
 ---
 <section class="hero" id="top">
   <div class="wrap hero-grid">
@@ -16,11 +17,11 @@ import MailCopy from './MailCopy.astro';
       <div class="reach">
         <MailCopy />
         <span class="lk">
-          <a href={links.github}>GitHub</a>
-          <a href={links.linkedin}>LinkedIn</a>
-          <a href={links.x}>X</a>
-          <a href={links.youtube}>YouTube</a>
-          <a href={links.cv}>CV (PDF)</a>
+          <a class="ik" href={links.github}><Icon name="github" /><span>GitHub</span><Icon name="arrow" class="ext" /></a>
+          <a class="ik" href={links.linkedin}><Icon name="linkedin" /><span>LinkedIn</span><Icon name="arrow" class="ext" /></a>
+          <a class="ik" href={links.x}><Icon name="x" /><span>X</span><Icon name="arrow" class="ext" /></a>
+          <a class="ik" href={links.youtube}><Icon name="youtube" /><span>YouTube</span><Icon name="arrow" class="ext" /></a>
+          <a class="ik" href={links.cv}><Icon name="file" /><span>CV (PDF)</span></a>
         </span>
       </div>
     </div>

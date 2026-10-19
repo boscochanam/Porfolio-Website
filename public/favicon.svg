@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- "BC" monogram: ink tile with its corner cut on a thin red diagonal -->
+  <path d="M0 0H32V24.5L24.5 32H0Z" fill="#111110"/>
+  <path d="M24.9 32.6L32.6 24.9" stroke="#d01b0b" stroke-width="1.6"/>
+  <g fill="none" stroke="#f3f1ec" stroke-width="2.4" stroke-linejoin="miter" stroke-linecap="butt">
+    <path d="M6.6 15.5H11.6A3.75 3.75 0 0 1 11.6 23H6.6V9H11.1A3.25 3.25 0 0 1 11.1 15.5H6.6"/>
+    <path d="M28.3 11.6A6.2 6.2 0 1 0 28.3 20.4"/>
+  </g>
+</svg>

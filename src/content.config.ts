@@ -18,6 +18,8 @@ const projects = defineCollection({
     demoUrl: z.string().optional(), // TODO per project
     demoVideo: z.string().optional(), // short muted MP4 under /public, e.g. /media/hermes.mp4
     demoPoster: z.string().optional(),
+    // Line drawing shown on the card until a demo clip exists
+    art: z.enum(['spice', 'hermes', 'karaoke', 'dashboard']).optional(),
     // Featured card only
     problem: z.string().optional(),
     owned: z.string().optional(),

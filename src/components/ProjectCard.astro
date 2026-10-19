@@ -1,12 +1,16 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { rich } from '../lib/rich';
+import ProjectArt from './ProjectArt.astro';
+import Icon from './Icon.astro';
 interface Props { project: CollectionEntry<'projects'> }
 const p = Astro.props.project.data;
 ---
 <article class="card">
   {p.demoVideo ? (
     <video class="media" data-autoplay src={p.demoVideo} poster={p.demoPoster} muted loop playsinline preload="none" aria-label={`${p.title} demo`}></video>
+  ) : p.art ? (
+    <div class="media media-art"><ProjectArt art={p.art} label={`Illustration: ${p.title}`} /></div>
   ) : (
     <div class="media"><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="21" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M18 14l12 8-12 8z" fill="currentColor"/></svg>Demo clip</div>
   )}
@@ -16,7 +20,10 @@ const p = Astro.props.project.data;
     <p class="does">{p.summary}</p>
     <p class="out" set:html={rich(p.outcome)} />
     <p class="stack">{p.stack.join(' · ')}</p>
-    <div class="card-foot"><a href={p.codeUrl ?? '#'}>Code</a><a href={p.demoUrl ?? '#'}>Demo</a></div>
+    <div class="card-foot">
+      <a class="ik" href={p.codeUrl ?? '#'}><span>Code</span>{p.codeUrl && <Icon name="arrow" class="ext" />}</a>
+      <a class="ik" href={p.demoUrl ?? '#'}><span>Demo</span>{p.demoUrl && <Icon name="arrow" class="ext" />}</a>
+    </div>
   </div>
 </article>
 

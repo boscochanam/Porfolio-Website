@@ -1,0 +1,10 @@
+// Cloudflare deploy config: this is a fully static Astro site, so Workers serves the
+// built files from dist/ directly. Having this file also stops Cloudflare's automatic
+// framework setup from trying to install the @astrojs/cloudflare SSR adapter.
+{
+  "name": "porfolio-website",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}

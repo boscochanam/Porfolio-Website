@@ -37,6 +37,8 @@ Strings in `site.ts` and project frontmatter may use `**bold**`.
 Static output — any static host works.
 
 - **Vercel:** import the repo, framework preset *Astro*, build command `npm run build`, output dir `dist`.
-- **Cloudflare Pages:** build command `npm run build`, build output directory `dist`, set `NODE_VERSION` to 22 or newer.
+- **Cloudflare (Workers, Git-connected):** build command `npm run build`, deploy command `npx wrangler deploy`. `wrangler.jsonc` serves `dist/` as static assets, so no adapter is needed. Without that file, Cloudflare's auto-setup runs `astro add cloudflare`, which fails because the latest `@astrojs/cloudflare` needs `astro ^7.4`.
+- **Cloudflare Pages (classic):** build command `npm run build`, build output directory `dist`. Pages ignores `wrangler.jsonc` (it has no `pages_build_output_dir`).
+- Node 22.12+ is required (Astro 7). `.node-version` pins it for Cloudflare's build image.
 
 After the first deploy, set `site` in `astro.config.mjs` to the real URL and redeploy so the share card resolves.

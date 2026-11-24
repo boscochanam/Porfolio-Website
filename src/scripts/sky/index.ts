@@ -10,8 +10,9 @@ import { createKit, type Scene } from './kit';
 import { saturn } from './scenes/saturn';
 import { sun } from './scenes/sun';
 import { earth } from './scenes/earth';
+import { deathstar } from './scenes/deathstar';
 
-const SCENES: Record<string, Scene> = { saturn, sun, earth };
+const SCENES: Record<string, Scene> = { saturn, sun, earth, deathstar };
 const FRAME_MS = 40; // 25 fps
 
 export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, firstPalette?: string) {

@@ -6,6 +6,7 @@ export type Stops = [number, string][];
 export type PalDef = Record<string, Stops | string>;
 const MOON_S: Stops = [[0, '#1a1a18'], [0.2, '#33322e'], [0.4, '#55524b'], [0.6, '#8f8a80'], [0.8, '#cfcac0'], [1, '#f3f1ec']];
 const MARS_S: Stops = [[0, '#2a0a05'], [0.25, '#5a1208'], [0.5, '#9a170b'], [0.75, '#d01b0b'], [1, '#ef5a3c']];
+const ENDOR_S: Stops = [[0, '#070d0a'], [0.3, '#12261a'], [0.55, '#244a2c'], [0.8, '#3e6a3c'], [1, '#7a9c68']];
 export const PALETTES: Record<string, Record<string, PalDef>> = {
   saturn: {
     Gold: {
@@ -110,6 +111,20 @@ export const PALETTES: Record<string, Record<string, PalDef>> = {
       green: [[0, '#141310'], [0.4, '#4a463c'], [0.7, '#8f8a80'], [1, '#cfcac0']], desert: [[0, '#17140e'], [0.5, '#6e604a'], [1, '#d8c8a4']],
       tundra: [[0, '#191814'], [0.5, '#5e594c'], [1, '#a8a290']], ice: [[0, '#24231f'], [0.5, '#b8b2a6'], [1, '#f3f1ec']], cloud: [[0, '#1f1e1b'], [0.45, '#8f8a80'], [0.8, '#cfcac0'], [1, '#f3f1ec']], dusk: [[0, '#0e1018'], [0.5, '#4a4e66'], [1, '#9ea2b8']],
       atmo: [[0, '#161616'], [0.6, '#6e6a62'], [1, '#e8e4da']], moon: MOON_S, city: '#d8c890', halo: '200,195,185', rim1: '#e8e4da', rim2: '#6e6a62', bg: 'rgba(80,75,70,.10)',
+    },
+  },
+  deathstar: {
+    'Imperial grey': {
+      hull: [[0, '#0a0b0d'], [0.3, '#24262a'], [0.55, '#4a4c50'], [0.75, '#76777a'], [0.9, '#a3a3a2'], [1, '#d4d2cc']],
+      frame: [[0, '#0c0d0f'], [0.5, '#3c3e42'], [1, '#8a8a88']], inner: [[0, '#08090b'], [1, '#16181c']],
+      window: [[0, '#2a2418'], [0.6, '#8a7444'], [1, '#d8c890']], laser: [[0, '#2a0a05'], [0.5, '#9a170b'], [1, '#ff7a63']],
+      endor: ENDOR_S, halo: '120,125,135', bg: 'rgba(40,45,55,.14)',
+    },
+    'Endor night': {
+      hull: [[0, '#070a10'], [0.3, '#1a2230'], [0.55, '#36445a'], [0.75, '#5a6a80'], [0.9, '#8494a8'], [1, '#bcc6d2']],
+      frame: [[0, '#080b10'], [0.5, '#2c3848'], [1, '#6e7e92']], inner: [[0, '#05070b'], [1, '#101620']],
+      window: [[0, '#1a2418'], [0.6, '#5a7a4a'], [1, '#b8d49a']], laser: [[0, '#08200a'], [0.5, '#2a8a34'], [1, '#9cf08a']],
+      endor: ENDOR_S, halo: '70,90,120', bg: 'rgba(20,32,50,.18)',
     },
   },
 };

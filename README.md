@@ -28,7 +28,7 @@ npm run preview   # serve dist/
 | Glyph field behind the featured diagram | `src/scripts/field.ts` |
 | Night-sky scene and look used by the site | `src/data/site.ts` (`sky`) |
 | Sky looks (colour ramps per scene) | `src/scripts/sky/palettes.ts` |
-| Sky scenes (Earth, ringed planet, Sun) | `src/scripts/sky/scenes/*.ts` |
+| Sky scenes (Earth, ringed planet, Sun, Death Star II) | `src/scripts/sky/scenes/*.ts` |
 | Sky engine, drawing kit, text calm zones | `src/scripts/sky/index.ts`, `src/scripts/sky/kit.ts`, `src/components/Sky.astro` |
 | 404 page | `src/pages/404.astro` |
 | Styles | `src/styles/global.css` (night theme tokens, page, projects grid, sky picker, 404), `src/styles/ruler.css` (gutter ruler + slider), `src/styles/cubing.css` (project pages) |
@@ -50,7 +50,7 @@ The `/projects/` page shows every selected-work project plus every project page 
 
 Every page sits on a fixed canvas (`Sky.astro`) that draws one scene in lit tiles and glyphs. The scene and its look come from `sky` in `src/data/site.ts`.
 
-- **Preview looks:** open any page with `?scenes` to get a picker of the current scene's looks. The choice is kept for the browser session. `?scene=earth|saturn|sun` and `?palette=<look>` override the config for one page load.
+- **Preview looks:** open any page with `?scenes` to get a picker of the current scene's looks. The choice is kept for the browser session. `?scene=earth|saturn|sun|deathstar` and `?palette=<look>` override the config for one page load.
 - **Add a look:** add an entry under the scene in `palettes.ts`. Each key is a colour ramp (stops from shadow to highlight) or a single colour. The first entry is the scene's default.
 - **Add a scene:** write a `Scene` in `src/scripts/sky/scenes/` using the drawing kit (`kit.ts`), register it in `SCENES` in `src/scripts/sky/index.ts`, and give it palettes.
 - **Legibility:** on the home page the sky plays at full strength over the hero, then lifts and dims as you scroll. Text that sits straight on the sky dims it locally; the selectors are in `CALM` in `Sky.astro`.

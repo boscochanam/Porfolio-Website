@@ -34,8 +34,8 @@ export const site = {
   },
 };
 
-// Night-sky scene behind every page (src/scripts/sky.ts): 'saturn' | 'sun' | 'earth'.
-// palette: a look from PALETTES[scene] in sky.ts; empty means that scene's first look.
+// Night-sky scene behind every page (src/scripts/sky/): 'saturn' | 'sun' | 'earth'.
+// palette: a look from PALETTES[scene] in src/scripts/sky/palettes.ts; empty means that scene's first look.
 export const sky = {
   scene: 'earth',
   palette: '',

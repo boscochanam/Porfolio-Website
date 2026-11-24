@@ -25,7 +25,13 @@ npm run preview   # serve dist/
 | Cubing page styles | `src/styles/cubing.css` |
 | Demo clip for a card | put an MP4 in `public/media/`, set `demoVideo: /media/x.mp4` (+ optional `demoPoster`) in the project's frontmatter |
 | Featured architecture diagram | `src/components/ArchDiagram.astro` |
-| Styles | `src/styles/global.css` (page + projects grid), `src/styles/ruler.css` (gutter ruler + slider), `src/styles/cubing.css` (project pages) |
+| Glyph field behind the featured diagram | `src/scripts/field.ts` |
+| Night-sky scene and look used by the site | `src/data/site.ts` (`sky`) |
+| Sky looks (colour ramps per scene) | `src/scripts/sky/palettes.ts` |
+| Sky scenes (Earth, ringed planet, Sun) | `src/scripts/sky/scenes/*.ts` |
+| Sky engine, drawing kit, text calm zones | `src/scripts/sky/index.ts`, `src/scripts/sky/kit.ts`, `src/components/Sky.astro` |
+| 404 page | `src/pages/404.astro` |
+| Styles | `src/styles/global.css` (night theme tokens, page, projects grid, sky picker, 404), `src/styles/ruler.css` (gutter ruler + slider), `src/styles/cubing.css` (project pages) |
 | Gutter ruler / slider / nav behaviour | `src/scripts/ruler.ts`, `slider.ts`, `nav.ts` |
 | Cubing copy, checklist and contents rail | `src/scripts/cubing.ts` |
 | Share card | `design/og-card.html` → render to `public/og.png` (1200×630) |
@@ -39,6 +45,17 @@ Strings in `site.ts` and project frontmatter may use `**bold**`.
 3. If it needs a new plate visual, extend the `art` union and add a plate component (see `src/components/CubingPlate.astro`).
 
 The `/projects/` page shows every selected-work project plus every project page at once. Entries with a `codeUrl` or `demoUrl` are listed first; entries without a public link stay at the end. Add a project-page object and it appears automatically. The home page keeps only a slim link to the grid.
+
+### Night sky
+
+Every page sits on a fixed canvas (`Sky.astro`) that draws one scene in lit tiles and glyphs. The scene and its look come from `sky` in `src/data/site.ts`.
+
+- **Preview looks:** open any page with `?scenes` to get a picker of the current scene's looks. The choice is kept for the browser session. `?scene=earth|saturn|sun` and `?palette=<look>` override the config for one page load.
+- **Add a look:** add an entry under the scene in `palettes.ts`. Each key is a colour ramp (stops from shadow to highlight) or a single colour. The first entry is the scene's default.
+- **Add a scene:** write a `Scene` in `src/scripts/sky/scenes/` using the drawing kit (`kit.ts`), register it in `SCENES` in `src/scripts/sky/index.ts`, and give it palettes.
+- **Legibility:** on the home page the sky plays at full strength over the hero, then lifts and dims as you scroll. Text that sits straight on the sky dims it locally; the selectors are in `CALM` in `Sky.astro`.
+- **Motion:** 25 fps, and a still frame with `prefers-reduced-motion`.
+- **Earth map:** `land.ts` is a 256×128 land bitmap rasterised from Natural Earth 110m land (public domain).
 
 ### Ruler labels
 

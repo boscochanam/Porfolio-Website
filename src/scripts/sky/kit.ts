@@ -1,6 +1,6 @@
 // Drawing kit shared by the scenes: frame state (size, time, palette, scroll lift) and the cell-level
 // primitives (glyphs, lit tiles, spheres, orbits) plus the shared backdrop (stars, graticule, constellations, comet).
-// Coordinates are CSS pixels in scene space; the engine shifts scene space up by `oy` as the page scrolls.
+// Coordinates are CSS pixels in scene space; `oy` can shift scene space vertically (the engine keeps it at 0).
 import { MONO, RAMP, hash } from '../ascii';
 import { at, SKY, STAR, WARM, COOL, LINE, GRAT, GRAT_LAB, ON_LIGHT, ON_DARK } from './color';
 import { TAU, slope } from './math';

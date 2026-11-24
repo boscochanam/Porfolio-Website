@@ -34,34 +34,28 @@ export const earth: Scene = {
   label: 'Earth and Moon',
   layout(k) {
     const { W, H, phone } = k;
-    // Desktop: over the hero the whole globe sits in its open right side, between the bar and the first section
-    // rule. Past the hero (and on inner pages) it settles into the bottom-right corner, rising from the edge.
-    k.L.e0 = phone ? { x: W * 0.7, y: H * 0.8, r: W * 0.34 } : { x: W * 0.83, y: Math.min(H * 0.42, 390), r: Math.min(H * 0.25, W * 0.135, 225) };
-    k.L.e1 = phone ? k.L.e0 : { x: W * 0.9, y: H * 1.02, r: Math.min(H * 0.38, W * 0.24) };
+    // One fixed spot on every page: low in the bottom-right corner, cropped by the edges, behind the content.
+    k.L.e = phone ? { x: W * 0.7, y: H * 0.8, r: W * 0.34 } : { x: W * 0.88, y: H * 0.86, r: Math.min(H * 0.36, W * 0.22) };
     k.pivot = phone ? { x: W * 0.2, y: -H * 0.4 } : { x: W * 0.42, y: -H * 0.9 };
     k.gap = 0.35; // near-seamless mosaic
     // no room for the Sun beside phone-width text
     // centred in the photo column (wrap 1240px, gutter 32px, column 132px), below the headshot
     k.L.sun = phone ? null : { x: Math.max(0, (W - 1240) / 2) + 32 + 66, y: H * 0.5, r: 18 };
     k.L.sunStyle = new URLSearchParams(location.search).get('sun') || 'point'; // ?sun= previews a style (suns.ts)
-    if (!k.L.sun) aim(DEFAULT_LIGHT);
+    if (!k.L.sun) return aim(DEFAULT_LIGHT);
+    const ux = k.L.sun.x - k.L.e.x, uy = k.L.sun.y - k.L.e.y, d = Math.hypot(ux, uy);
+    aim(norm([(ux / d) * 0.81, (uy / d) * 0.81, 0.58]));
   },
   draw(k: Kit) {
     const { ctx, P, L, T, W, phone, tile, sphere, orbiter, calmAt } = k;
-    const q = smooth(0, 1, k.p), mix = (a: number, b: number) => a + (b - a) * q;
-    const cx = mix(L.e0.x, L.e1.x), cy = mix(L.e0.y, L.e1.y), R = mix(L.e0.r, L.e1.r), ct = Math.cos(AXIS), st = Math.sin(AXIS), fine = phone ? 5 : 6;
+    const { x: cx, y: cy, r: R } = L.e, ct = Math.cos(AXIS), st = Math.sin(AXIS), fine = phone ? 5 : 6;
     k.backdrop([P.bg]);
     k.drawStars((x, y) => clamp((Math.hypot(x - cx, y - cy) / R - 1) / 0.5));
     ctx.globalAlpha = 1;
     const g = ctx.createRadialGradient(cx, cy, R * 0.98, cx, cy, R * 1.3);
     g.addColorStop(0, `rgba(${P.halo},.15)`); g.addColorStop(1, `rgba(${P.halo},0)`);
     ctx.fillStyle = g; ctx.fillRect(0, cy - R * 1.4, W, R * 2.8);
-    if (L.sun) {
-      // light comes from the Sun wherever Earth is; the Sun itself fades as content takes over the left side
-      const ux = L.sun.x - cx, uy = L.sun.y - cy, d = Math.hypot(ux, uy);
-      aim(norm([(ux / d) * 0.81, (uy / d) * 0.81, 0.58]));
-      drawSun(k, L.sun, L.sunStyle, 1 - smooth(0, 0.5, k.p));
-    }
+    if (L.sun) drawSun(k, L.sun, L.sunStyle, 1 - smooth(0, 0.5, k.p)); // gives way as content takes over the left side
     const occl = (x: number, y: number) => (x - cx) ** 2 + (y - cy) ** 2 < R * R;
     const near = (lon: number, lat: number, e: number) => isLand(lon + e, lat) || isLand(lon - e, lat) || isLand(lon, lat + e) || isLand(lon, lat - e);
     orbiter(cx, cy, 1.45 * R, 0.09, -0.2, 0.28, R * 0.18, P.moon, LIGHT, true, occl, moonShade, fine);

@@ -1,7 +1,6 @@
 // Full-page night sky drawn as glyphs and lit tiles on a fixed canvas behind the page (Sky.astro).
-// One composed scene at a time (scenes/), coloured by a named look (palettes.ts). On the home page the scene
-// plays at full strength over the hero, then lifts and dims as content arrives; text boxes matched by
-// `calmSel` dim the sky behind them. Cells snap to a grid, so motion steps like a terminal.
+// One composed scene at a time (scenes/), coloured by a named look (palettes.ts). The scene holds still at one
+// strength on every page; text boxes matched by `calmSel` dim the sky behind them. Cells snap to a grid, so motion steps like a terminal.
 import { REDUCE } from '../ascii';
 import { lut, SKY } from './color';
 import { clamp } from './math';
@@ -39,13 +38,10 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
     k.makeStars();
   }
 
-  // Home: full strength over the hero, then the scene dims (and barely lifts, so it stays in view) as content arrives.
-  // Inner pages start receded, since their content begins at the top.
+  // The scene holds still at one strength on every page; only `p` (how far past the hero) is tracked, so a scene
+  // can let small details give way to content. Inner pages count as past the hero.
   function recede() {
-    const p = home ? clamp(scrollY / (k.H * 0.9)) : 1;
-    k.p = p;
-    k.oy = -p * k.H * 0.06;
-    cv.style.opacity = String(1 - 0.45 * p);
+    k.p = home ? clamp(scrollY / (k.H * 0.9)) : 1;
   }
 
   function frame() {

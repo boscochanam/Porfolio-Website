@@ -1,9 +1,9 @@
 ---
-// Fixed night-sky canvas behind every page. The scene comes from site.ts; `?scene=<name>` overrides it,
-// and `?scenes` shows a picker (kept for the browser session) to compare scenes across pages.
+// Fixed night-sky canvas behind every page. Scene and palette come from site.ts; `?scene=` and `?palette=`
+// override them, and `?scenes` shows a picker (kept for the browser session) to compare them across pages.
 import { sky } from '../data/site';
 ---
-<canvas class="sky" id="sky" aria-hidden="true" data-scene={sky.scene}></canvas>
+<canvas class="sky" id="sky" aria-hidden="true" data-scene={sky.scene} data-palette={sky.palette}></canvas>
 
 <script>
   import { startSky, SCENES } from '../scripts/sky';
@@ -16,23 +16,32 @@ import { sky } from '../data/site';
   const store = (k: string, v?: string) => { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch { /* storage blocked */ } return null; };
   if (q.has('scenes')) store('sky-pick', '1');
   const scene = q.get('scene') || store('sky-scene') || cv.dataset.scene || 'saturn';
-  const sky = startSky(cv, scene, CALM);
+  const palette = q.get('palette') || store(`sky-pal-${scene}`) || cv.dataset.palette || undefined;
+  const sky = startSky(cv, scene, CALM, palette);
 
   if (store('sky-pick')) {
     const box = document.createElement('div');
     box.className = 'sky-pick';
     box.setAttribute('role', 'group');
-    box.setAttribute('aria-label', 'Sky scene');
-    box.innerHTML = '<span>Sky scene · preview</span>' + Object.entries(SCENES).map(([k, v]) => `<button type="button" data-k="${k}">${v}</button>`).join('');
-    const mark = () => box.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.k === sky.scene)));
+    box.setAttribute('aria-label', 'Sky scene and palette');
+    const render = () => {
+      const btn = (kind: string, k: string, label: string, on: boolean) => `<button type="button" data-${kind}="${k}" aria-pressed="${on}">${label}</button>`;
+      box.innerHTML = '<span>Scene</span>' + Object.entries(SCENES).map(([k, v]) => btn('scene', k, v, k === sky.scene)).join('')
+        + '<span>Palette</span>' + sky.palettes.map((k) => btn('pal', k, k, k === sky.palette)).join('');
+    };
     box.addEventListener('click', (e) => {
       const b = (e.target as HTMLElement).closest('button');
-      if (!b?.dataset.k) return;
-      sky.set(b.dataset.k);
-      store('sky-scene', b.dataset.k);
-      mark();
+      if (!b) return;
+      if (b.dataset.scene) {
+        sky.set(b.dataset.scene, store(`sky-pal-${b.dataset.scene}`) || undefined);
+        store('sky-scene', b.dataset.scene);
+      } else if (b.dataset.pal) {
+        sky.setPalette(b.dataset.pal);
+        store(`sky-pal-${sky.scene}`, b.dataset.pal);
+      }
+      render();
     });
     document.body.append(box);
-    mark();
+    render();
   }
 </script>

@@ -35,8 +35,10 @@ export const site = {
 };
 
 // Night-sky scene behind every page (src/scripts/sky.ts): 'saturn' | 'sun' | 'earth'.
+// palette: a name from PALETTES[scene] in sky.ts; empty means that scene's first palette.
 export const sky = {
   scene: 'saturn',
+  palette: '',
 };
 
 export const links = {

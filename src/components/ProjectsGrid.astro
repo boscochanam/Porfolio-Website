@@ -57,9 +57,7 @@ const showMore = entries.length % 2 === 1;
         <p class="label">{entry.data.category}</p>
         <h2><a href={entry.data.href}>{entry.data.title}</a></h2>
         <p class="prj-summary">{entry.data.summary}</p>
-        <ul class="prj-meta">
-          {entry.data.meta.map(([label, value]) => <li><span>{label}</span><b>{value}</b></li>)}
-        </ul>
+        <p class="prj-spec">{entry.data.meta.map(([, value]) => value).join(' · ')}</p>
         <a class="prj-open" href={entry.data.href}>{entry.data.cta} <Icon name="arrow-right" class="ic" /></a>
       </div>
     </article>

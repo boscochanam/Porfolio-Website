@@ -40,6 +40,46 @@ type Stops = [number, string][];
 type PalDef = Record<string, Stops | string>;
 const MOON_S: Stops = [[0, '#1a1a18'], [0.2, '#33322e'], [0.4, '#55524b'], [0.6, '#8f8a80'], [0.8, '#cfcac0'], [1, '#f3f1ec']];
 const MARS_S: Stops = [[0, '#2a0a05'], [0.25, '#5a1208'], [0.5, '#9a170b'], [0.75, '#d01b0b'], [1, '#ef5a3c']];
+/** Film looks: a colour grade applied on top of any palette. Values are 0..1 offsets and multipliers. */
+type Grade = { contrast?: number; sat?: number; fade?: number; gain?: number[]; shadow?: number[]; high?: number[] };
+export const FILMS: Record<string, Grade> = {
+  None: {},
+  'Kodak 2383': { contrast: 1.12, sat: 0.95, fade: 0.02, shadow: [0, 0.05, 0.08], high: [0.08, 0.03, -0.04] },
+  'Teal & orange': { contrast: 1.08, sat: 1.1, shadow: [-0.04, 0.06, 0.1], high: [0.12, 0.04, -0.08] },
+  'Bleach bypass': { contrast: 1.35, sat: 0.45 },
+  'Fuji Eterna': { contrast: 0.9, sat: 0.8, fade: 0.04, shadow: [0, 0.04, 0.03], high: [0, 0.03, 0] },
+  'Cinestill 800T': { contrast: 1.05, sat: 1.05, gain: [1, 0.97, 1.08], shadow: [-0.02, 0.02, 0.12], high: [0.1, 0, -0.02] },
+  Portra: { contrast: 0.95, sat: 0.9, fade: 0.03, shadow: [0.02, 0, -0.01], high: [0.06, 0.03, 0] },
+  Ektachrome: { contrast: 1.12, sat: 1.25, shadow: [0, 0, 0.05], high: [0, 0.02, 0.04] },
+  Noir: { contrast: 1.25, sat: 0.05 },
+  Moonlight: { contrast: 1.05, sat: 0.6, gain: [0.85, 0.95, 1.12], shadow: [0, 0.02, 0.1] },
+  'Golden hour': { sat: 1.05, gain: [1.12, 1, 0.82], high: [0.1, 0.05, -0.04] },
+  'Day for night': { contrast: 1.15, sat: 0.55, gain: [0.55, 0.68, 0.95] },
+  Expired: { contrast: 0.9, sat: 0.75, fade: 0.08, shadow: [0.06, 0, 0.06], high: [0.04, 0.06, -0.04] },
+  Technicolor: { contrast: 1.15, sat: 1.35 },
+  'Cross-process': { contrast: 1.2, sat: 1.2, shadow: [0, 0.06, 0.12], high: [0.08, 0.1, -0.1] },
+  Polaroid: { contrast: 0.85, sat: 0.8, fade: 0.1, shadow: [0, 0.04, 0.05], high: [0.05, 0.06, -0.02] },
+};
+function gradeRGB(c: RGB, g: Grade): RGB {
+  let [r, gg, b] = c.map((v) => v / 255);
+  const k = g.contrast ?? 1, sat = g.sat ?? 1, fade = g.fade ?? 0, gain = g.gain ?? [1, 1, 1], sh = g.shadow ?? [0, 0, 0], hi = g.high ?? [0, 0, 0];
+  [r, gg, b] = [r, gg, b].map((v) => (v - 0.5) * k + 0.5);
+  const l = 0.2126 * r + 0.7152 * gg + 0.0722 * b;
+  return [r, gg, b].map((v, i) => {
+    v = l + (v - l) * sat;
+    v += sh[i] * (1 - l) + hi[i] * l;
+    v = fade + v * (1 - fade);
+    return Math.round(clamp(v * gain[i]) * 255);
+  }) as RGB;
+}
+const toHex = (c: RGB) => '#' + c.map((v) => v.toString(16).padStart(2, '0')).join('');
+/** Grade a palette value: colour stops, a #hex colour, or an "r,g,b" string. */
+function gradeValue(v: Stops | string, g: Grade): Stops | string {
+  if (Array.isArray(v)) return v.map(([p, h]) => [p, toHex(gradeRGB(rgb(h), g))] as [number, string]);
+  if (v.startsWith('#')) return toHex(gradeRGB(rgb(v), g));
+  return gradeRGB(v.split(',').map(Number) as RGB, g).join(',');
+}
+
 export const PALETTES: Record<string, Record<string, PalDef>> = {
   saturn: {
     Gold: {
@@ -62,6 +102,16 @@ export const PALETTES: Record<string, Record<string, PalDef>> = {
       pole: [[0, '#101010'], [0.5, '#4a4a4a'], [1, '#9a9a9a']], ring: [[0, '#121212'], [0.5, '#707070'], [1, '#e8e8e8']],
       storm: MARS_S, redmoon: MARS_S, moon: MOON_S, haze: '#e0e0e0',
     },
+    Sepia: {
+      zone: [[0, '#1c160e'], [0.4, '#6a5638'], [0.7, '#b49a70'], [1, '#eadcbc']], belt: [[0, '#16110a'], [0.4, '#4e3e28'], [0.7, '#8a7250'], [1, '#c4ac84']],
+      pole: [[0, '#16140f'], [0.5, '#4e483c'], [1, '#948a78']], ring: [[0, '#16130f'], [0.45, '#6a604e'], [0.8, '#b8aa8c'], [1, '#eae0c8']],
+      storm: MARS_S, redmoon: MARS_S, moon: MOON_S, haze: '#d8c49a',
+    },
+    Jupiter: {
+      zone: [[0, '#241c14'], [0.4, '#8a7660'], [0.7, '#dccab0'], [1, '#fbf2e2']], belt: [[0, '#1e120a'], [0.4, '#6a3e22'], [0.7, '#a8663a'], [1, '#d89a68']],
+      pole: [[0, '#1a1a1e'], [0.5, '#5a5a66'], [1, '#a8a8b4']], ring: [[0, '#14120f'], [0.45, '#4e4840'], [0.8, '#8a8274'], [1, '#c4bcac']],
+      storm: [[0, '#2a0c06'], [0.5, '#b8401e'], [1, '#f0906a']], redmoon: [[0, '#2a2008'], [0.5, '#c8a030'], [1, '#f6e080']], moon: MOON_S, haze: '#f0e0c8',
+    },
     'Ice giant': {
       zone: [[0, '#06142a'], [0.4, '#1a4a8a'], [0.7, '#3c84d0'], [1, '#a8d8ff']], belt: [[0, '#040e20'], [0.4, '#123a72'], [0.7, '#2a6ab0'], [1, '#80b8f0']],
       pole: [[0, '#0a1830'], [0.5, '#3a6aa0'], [1, '#b0d0f0']], ring: [[0, '#141820'], [0.45, '#5a6878'], [0.8, '#a8b8c8'], [1, '#e8f0f8']],
@@ -73,22 +123,45 @@ export const PALETTES: Record<string, Record<string, PalDef>> = {
     Ember: { sun: [[0, '#2a0402'], [0.3, '#6a0c04'], [0.55, '#b01c08'], [0.8, '#e8501a'], [1, '#ffb070']], prom: [[0, '#3a0804'], [0.5, RED], [1, '#ff8a50']], corona: '#e8603a', glow: '220,60,30' },
     White: { sun: [[0, '#6a5a40'], [0.3, '#c8b088'], [0.6, '#f0e2c0'], [0.85, '#fff8e8'], [1, '#ffffff']], prom: [[0, '#5a1208'], [0.5, RED], [1, '#ffb080']], corona: '#f3f1ec', glow: '255,240,210' },
     'H-alpha': { sun: [[0, '#1a0202'], [0.25, '#5a0806'], [0.5, '#a01410'], [0.75, '#e04020'], [0.92, '#ff8a40'], [1, '#ffd090']], prom: [[0, '#6a0a06'], [0.5, '#ff3a1a'], [1, '#ffc080']], corona: '#ff6a3a', glow: '255,60,20' },
+    Rose: { sun: [[0, '#3a0a14'], [0.3, '#8a2038'], [0.55, '#d0506a'], [0.8, '#f29aa0'], [1, '#fff0ea']], prom: [[0, '#5a1208'], [0.5, RED], [1, '#ffb0a0']], corona: '#f2a0b0', glow: '240,120,150' },
+    Amber: { sun: [[0, '#2a1404'], [0.3, '#7a3a08'], [0.55, '#c06a10'], [0.8, '#f0a030'], [1, '#ffe0a0']], prom: [[0, '#4a1a04'], [0.5, '#e06010'], [1, '#ffc070']], corona: '#f0a040', glow: '240,150,40' },
     Gold: { sun: [[0, '#3a2408'], [0.3, '#8a5a18'], [0.6, '#d09a3a'], [0.85, '#f6d68a'], [1, '#fff4d0']], prom: [[0, '#5a3a10'], [0.5, '#d09a3a'], [1, '#fff0b0']], corona: '#e6bf73', glow: '230,191,115' },
   },
   earth: {
-    'Blue Marble': {
-      ocean: [[0, '#03122e'], [0.3, '#0a3170'], [0.55, '#1252a8'], [0.75, '#1f74cf'], [0.9, '#3d9be6'], [1, '#8fd0ff']], shallow: [[0, '#062a3a'], [0.5, '#0f6f8c'], [0.8, '#21a7b8'], [1, '#7fe0e0']],
-      green: [[0, '#0c1a08'], [0.35, '#1f4a17'], [0.6, '#3c7a25'], [0.8, '#6a9f3a'], [1, '#a8c46a']], desert: [[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']],
-      tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
-      cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
-      atmo: [[0, '#123a6e'], [0.6, '#4aa6e8'], [1, '#bfe8ff']], moon: MOON_S, city: '#e6bf73', halo: '90,170,255', rim1: '#9fdcff', rim2: '#3d8fe0',
-    },
     'Deep ocean': {
       ocean: [[0, '#020a1c'], [0.3, '#06204e'], [0.55, '#0b3a80'], [0.75, '#1556a8'], [0.9, '#2a78c8'], [1, '#6ab0f0']], shallow: [[0, '#04202e'], [0.5, '#0a566e'], [0.8, '#178a9a'], [1, '#5cc8cc']],
       green: [[0, '#08140a'], [0.35, '#163a18'], [0.6, '#2a5e26'], [0.8, '#4a8034'], [1, '#86a85a']], desert: [[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']],
       tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
       cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
       atmo: [[0, '#0e2c5a'], [0.6, '#3a8ad0'], [1, '#a8d8ff']], moon: MOON_S, city: '#e6bf73', halo: '70,140,230', rim1: '#8ccaff', rim2: '#2f74c8',
+    },
+    'Midnight': {
+      ocean: [[0, '#01050f'], [0.3, '#041430'], [0.55, '#082658'], [0.75, '#0e3a80'], [0.9, '#1c56a8'], [1, '#4a86d0']], shallow: [[0, '#021420'], [0.5, '#063e52'], [0.8, '#0e6a7a'], [1, '#3aa0a8']],
+      green: [[0, '#050e06'], [0.35, '#0e2810'], [0.6, '#1c4418'], [0.8, '#325e24'], [1, '#5e8040']], desert: [[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']],
+      tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
+      cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
+      atmo: [[0, '#081e44'], [0.6, '#2a68b0'], [1, '#88bff0']], moon: MOON_S, city: '#e6bf73', halo: '50,110,210', rim1: '#6eaef0', rim2: '#1f5aa8',
+    },
+    'Storm': {
+      ocean: [[0, '#06090e'], [0.3, '#121c28'], [0.55, '#20324a'], [0.75, '#344c68'], [0.9, '#56708c'], [1, '#90a8bc']], shallow: [[0, '#0a1418'], [0.5, '#24424a'], [0.8, '#40686e'], [1, '#88a8a8']],
+      green: [[0, '#0a0e08'], [0.35, '#1e2816'], [0.6, '#334226'], [0.8, '#4e5e3a'], [1, '#7e8a64']], desert: [[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']],
+      tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
+      cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
+      atmo: [[0, '#14202e'], [0.6, '#4a6680'], [1, '#b0c4d4']], moon: MOON_S, city: '#e6bf73', halo: '110,140,170', rim1: '#a8bccc', rim2: '#4a6680',
+    },
+    'Kelp': {
+      ocean: [[0, '#020f10'], [0.3, '#062a2c'], [0.55, '#0c4848'], [0.75, '#156666'], [0.9, '#2a8a84'], [1, '#6cc0b4']], shallow: [[0, '#04201a'], [0.5, '#0c5a48'], [0.8, '#1e8a6a'], [1, '#6cd0a8']],
+      green: [[0, '#060f06'], [0.35, '#123216'], [0.6, '#225224'], [0.8, '#3a7036'], [1, '#6e9a5c']], desert: [[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']],
+      tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
+      cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
+      atmo: [[0, '#082a2a'], [0.6, '#2a9090'], [1, '#a8e8dc']], moon: MOON_S, city: '#e6bf73', halo: '60,170,160', rim1: '#9ce8dc', rim2: '#1f8a80',
+    },
+    'Blue Marble': {
+      ocean: [[0, '#03122e'], [0.3, '#0a3170'], [0.55, '#1252a8'], [0.75, '#1f74cf'], [0.9, '#3d9be6'], [1, '#8fd0ff']], shallow: [[0, '#062a3a'], [0.5, '#0f6f8c'], [0.8, '#21a7b8'], [1, '#7fe0e0']],
+      green: [[0, '#0c1a08'], [0.35, '#1f4a17'], [0.6, '#3c7a25'], [0.8, '#6a9f3a'], [1, '#a8c46a']], desert: [[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']],
+      tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
+      cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
+      atmo: [[0, '#123a6e'], [0.6, '#4aa6e8'], [1, '#bfe8ff']], moon: MOON_S, city: '#e6bf73', halo: '90,170,255', rim1: '#9fdcff', rim2: '#3d8fe0',
     },
     'Cerulean': {
       ocean: [[0, '#05183a'], [0.3, '#0d3f86'], [0.55, '#1866c4'], [0.75, '#2a8ae0'], [0.9, '#58b0f2'], [1, '#a8dcff']], shallow: [[0, '#08303e'], [0.5, '#12869e'], [0.8, '#2cc0cc'], [1, '#98f0ec']],
@@ -147,14 +220,14 @@ const slope = (dx: number, dy: number) => Math.abs(dx) > 2 * Math.abs(dy) ? '-' 
 
 type ShadeFn = (dx: number, dy: number, nz: number, v: number) => { v: number; ramp?: string[] };
 
-export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, firstPalette?: string) {
-  let P: Record<string, any> = {}, palName = '';
-  /** Activate a palette by name (falls back to the scene's first); ramps become lookup tables. */
+export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, firstPalette?: string, firstFilm?: string) {
+  let P: Record<string, any> = {}, palName = '', filmName = firstFilm && FILMS[firstFilm] ? firstFilm : 'None';
+  /** Activate a palette by name (falls back to the scene's first) under the current film grade. */
   const usePalette = (scene: string, name?: string) => {
-    const set = PALETTES[scene];
+    const set = PALETTES[scene], g = FILMS[filmName];
     palName = name && set[name] ? name : Object.keys(set)[0];
     P = {};
-    for (const [k, v] of Object.entries(set[palName])) P[k] = typeof v === 'string' ? v : lut(v);
+    for (const [k, v] of Object.entries(set[palName])) { const gv = gradeValue(v, g); P[k] = typeof gv === 'string' ? gv : lut(gv); }
   };
   const ctx = cv.getContext('2d')!;
   let W = 0, H = 0, C = 12, phone = false, mouse: [number, number] | null = null, oy = 0;
@@ -534,6 +607,9 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
   return {
     set(name: string, palette?: string) { if (!scenes[name]) return; cur = name; usePalette(cur, palette); layout(); frame(); },
     setPalette(name: string) { usePalette(cur, name); frame(); },
+    setFilm(name: string) { if (FILMS[name]) { filmName = name; usePalette(cur, palName); frame(); } },
+    get film() { return filmName; },
+    get films() { return Object.keys(FILMS); },
     get scene() { return cur; },
     get palette() { return palName; },
     get palettes() { return Object.keys(PALETTES[cur]); },

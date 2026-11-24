@@ -341,10 +341,13 @@ a.ik:hover .ext{opacity:1;transform:translate(1.5px,-1.5px)}
 
 /* ── night sky: fixed canvas behind every page (Sky.astro, src/scripts/sky.ts) ── */
 .sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none}
-.sky-pick{position:fixed;right:16px;bottom:16px;z-index:20;display:flex;flex-wrap:wrap;gap:6px;max-width:min(460px,calc(100vw - 32px));padding:10px;background:rgba(13,14,18,.9);border:1px solid var(--line);font:600 12.5px/1 var(--sans)}
+.sky-pick{position:fixed;right:16px;bottom:16px;z-index:20;display:flex;flex-wrap:wrap;gap:6px;max-width:min(620px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;padding:10px;background:rgba(13,14,18,.9);border:1px solid var(--line);font:600 12.5px/1 var(--sans)}
 .sky-pick span{flex-basis:100%;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:0 0 2px}
 .sky-pick span+button{margin-top:0}
 .sky-pick button+span{margin-top:6px}
+.sky-pick .sky-pick-min{margin-left:auto;margin-top:6px;color:var(--muted)}
+.sky-pick.min>:not(.sky-pick-min){display:none}
+.sky-pick.min .sky-pick-min{margin:0}
 .sky-pick button{border:1px solid var(--line);background:transparent;color:var(--ink);padding:7px 9px;cursor:pointer;font:inherit}
 .sky-pick button[aria-pressed="true"]{background:var(--ink);color:var(--night);border-color:var(--ink);box-shadow:inset 0 -3px 0 var(--red)}
 @media print{.sky,.sky-pick{display:none}}

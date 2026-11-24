@@ -33,16 +33,17 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
     const dpr = Math.min(devicePixelRatio || 1, 2);
     k.W = innerWidth; k.H = innerHeight; k.phone = k.W < 760; k.C = k.phone ? 10 : 12;
     cv.width = Math.round(k.W * dpr); cv.height = Math.round(k.H * dpr);
+    k.gap = 1;
     SCENES[cur].layout(k);
     k.makeStars();
   }
 
-  // Home: full strength over the hero, then the scene lifts and dims as content arrives.
+  // Home: full strength over the hero, then the scene dims (and barely lifts, so it stays in view) as content arrives.
   // Inner pages start receded, since their content begins at the top.
   function recede() {
     const p = home ? clamp(scrollY / (k.H * 0.9)) : 1;
-    k.oy = -p * k.H * 0.22;
-    cv.style.opacity = String(1 - 0.58 * p);
+    k.oy = -p * k.H * 0.06;
+    cv.style.opacity = String(1 - 0.45 * p);
   }
 
   function frame() {

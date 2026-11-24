@@ -2,7 +2,7 @@
    --ink is now the text colour, --plate the dark panel colour, --night dark text on light fills. */
 :root{
   color-scheme:dark;
-  --paper:#0d0e12; --card:rgba(22,22,25,.9); --ink:#f3f1ec; --muted:#aaa49a; --line:#34332f;
+  --paper:#0d0e12; --card:rgba(22,22,25,.96); --ink:#f3f1ec; --muted:#aaa49a; --line:#34332f;
   --red:#d01b0b;          /* marks: underlines, active bars, one hairline */
   --red-text:#ff7a63;
   --pearl:#f3f1ec; --pearl-dim:#cfcac0; --ink-line:#3a3936;
@@ -41,7 +41,7 @@ h1,h2,h3{font-family:var(--sans);margin:0;letter-spacing:-.015em}
 
 /* ── hero: compact, person + proof ────── */
 .hero{padding:44px 0 0}
-.hero-grid{display:grid;grid-template-columns:132px minmax(0,1fr) 262px;gap:36px;align-items:start}
+.hero-grid{display:grid;grid-template-columns:132px minmax(0,660px);gap:36px;align-items:start} /* right side stays open for the sky */
 .photo{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;background:#e3dfd6;border:1px solid var(--ink);padding:3px}
 .id{margin:0 0 6px}
 .hero h1{font-size:clamp(40px,4.6vw,60px);line-height:1;font-weight:800;letter-spacing:-.03em;margin:0 0 14px}
@@ -56,11 +56,10 @@ h1,h2,h3{font-family:var(--sans);margin:0;letter-spacing:-.015em}
 .mail a{display:block;min-width:0;padding:11px 14px;font-weight:600;text-decoration:none;overflow-wrap:anywhere}
 .copy{font:600 14px/1 var(--sans);border:0;border-left:1.5px solid var(--ink);background:var(--ink);color:var(--paper);padding:0 14px;cursor:pointer;min-width:72px}
 .copy:hover{box-shadow:inset 0 -3px 0 var(--red)}
-.now{border-left:3px solid var(--ink);padding:14px 16px 14px 20px;margin-top:6px;background:rgba(13,14,18,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.now{grid-column:2;border-left:3px solid var(--ink);padding:14px 16px 14px 20px;background:rgba(13,14,18,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .now .label{margin:0 0 8px}
-.now ul{list-style:none;margin:0;padding:0}
-.now li{font-size:17px;line-height:1.45;padding:7px 0;border-top:1px solid var(--line)}
-.now li:first-child{border-top:0;padding-top:0}
+.now ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.now li{font-size:16px;line-height:1.4}
 
 /* ── section header: thick rule + plain heading ── */
 .sec{padding:48px 0 0}
@@ -267,6 +266,7 @@ video.prj-media{object-fit:cover}
   .mail{width:100%}
   .mail a{flex:1;font-size:16px}
   .now{margin-top:6px}
+  .now ul{grid-template-columns:1fr;gap:8px}
   .sec{padding-top:44px}
   .sec-head{margin-bottom:18px;padding-top:14px}
   .sec-head h2{font-size:27px}

@@ -32,6 +32,8 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     W: 0, H: 0,
     /** Grid cell size in px. */
     C: 12,
+    /** Gap between small tiles in px; scenes may narrow it in layout(). */
+    gap: 1,
     phone: false,
     /** Seconds since start (offset so the first frame is mid-motion). */
     T: 0,
@@ -71,7 +73,7 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     if (X < -s || Y + k.oy < -s || X > k.W || Y + k.oy > k.H) return;
     ctx.globalAlpha = a;
     ctx.fillStyle = col;
-    if (s < 10) { ctx.fillRect(X + 0.5, Y + 0.5, s - 1, s - 1); return; } // too small for a glyph
+    if (s < 10) { ctx.fillRect(X + k.gap / 2, Y + k.gap / 2, s - k.gap, s - k.gap); return; } // too small for a glyph
     ctx.beginPath(); ctx.roundRect(X + 0.75, Y + 0.75, s - 1.5, s - 1.5, 2); ctx.fill();
     ctx.fillStyle = v > 0.55 ? ON_LIGHT : ON_DARK;
     ctx.fillText(RAMP[Math.max(1, Math.min(9, Math.round(v * 9)))], X + s / 2, Y + s / 2 + 1);

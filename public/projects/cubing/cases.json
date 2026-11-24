@@ -1,0 +1,1154 @@
+{
+ "title": "Two-look OLL and two-look PLL: verified algorithm sheet",
+ "generated": "2026-11-24",
+ "hold": "green front, yellow up",
+ "colours": {
+  "U": "yellow",
+  "D": "white",
+  "F": "green",
+  "B": "blue",
+  "R": "red",
+  "L": "orange"
+ },
+ "notation": "R U F L B D are face turns. r and f are wide turns of two layers. M is the slice between L and R, turned the same way as L. An apostrophe means counter-clockwise, 2 means a half turn.",
+ "verification": "Every algorithm was run on a 54-facelet model of the cube. Three tests: the algorithm returns the solved cube when applied to its own case, its case leaves the first two layers intact, and the case pattern matches the case named for it.",
+ "diagram_legend": "Each tile is the top face seen from above, ringed by the top row of Back, Right, Front and Left. Yellow means a yellow sticker; grey means any other colour.",
+ "cases": [
+  {
+   "phase": 1,
+   "id": "OLL 45",
+   "name": "Line / Bar",
+   "alg": "F R U R' U' F'",
+   "setup": "F U R U' R' F'",
+   "family": "Bar",
+   "family_cases": 15,
+   "bursts": [
+    "F",
+    "R U R' U'",
+    "F'"
+   ],
+   "recog": "Horizontal bar across the yellow centre.",
+   "hold": "",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "left",
+    "right"
+   ],
+   "oriented_corners": [
+    "back-right",
+    "front-right"
+   ],
+   "corner_cycles": [
+    [
+     "BLU",
+     "BRU"
+    ],
+    [
+     "FLU",
+     "FRU"
+    ]
+   ],
+   "edge_cycles": [
+    [
+     "BU",
+     "FU",
+     "RU"
+    ]
+   ],
+   "diagram": {
+    "top": [
+     "RFU",
+     "UUU",
+     "RRU"
+    ],
+    "f": [
+     "F",
+     "U",
+     "L"
+    ],
+    "r": [
+     "F",
+     "B",
+     "B"
+    ],
+    "b": [
+     "L",
+     "U",
+     "B"
+    ],
+    "l": [
+     "U",
+     "L",
+     "U"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 1,
+   "id": "OLL 44",
+   "name": "Angle / small L",
+   "alg": "f R U R' U' f'",
+   "setup": "f U R U' R' f'",
+   "family": "L shape",
+   "family_cases": 27,
+   "bursts": [
+    "f",
+    "R U R' U'",
+    "f'"
+   ],
+   "recog": "Yellow edges at 9 o\u2019clock and 12 o\u2019clock. f turns the front two layers.",
+   "hold": "The two yellow edges sit at 3 and 6 o\u2019clock here, a half turn from the note above.",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "right",
+    "front"
+   ],
+   "oriented_corners": [
+    "back-right",
+    "front-right"
+   ],
+   "corner_cycles": [
+    [
+     "BLU",
+     "BRU"
+    ],
+    [
+     "FLU",
+     "FRU"
+    ]
+   ],
+   "edge_cycles": [
+    [
+     "LU",
+     "BU",
+     "FU"
+    ]
+   ],
+   "diagram": {
+    "top": [
+     "RFU",
+     "BUU",
+     "RUU"
+    ],
+    "f": [
+     "F",
+     "L",
+     "L"
+    ],
+    "r": [
+     "F",
+     "R",
+     "B"
+    ],
+    "b": [
+     "L",
+     "U",
+     "B"
+    ],
+    "l": [
+     "U",
+     "U",
+     "U"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 1,
+   "id": "OLL 1 / 2",
+   "name": "Dot",
+   "alg": "F R U R' U' F' f R U R' U' f'",
+   "setup": "f U R U' R' f' F U R U' R' F'",
+   "family": "Dot",
+   "family_cases": 8,
+   "bursts": [
+    "F",
+    "R U R' U'",
+    "F' f",
+    "R U R' U'",
+    "f'"
+   ],
+   "recog": "No edges oriented, only the yellow centre.",
+   "hold": "",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [],
+   "oriented_corners": [],
+   "corner_cycles": [],
+   "edge_cycles": [
+    [
+     "LU",
+     "BU"
+    ],
+    [
+     "FU",
+     "RU"
+    ]
+   ],
+   "diagram": {
+    "top": [
+     "BLR",
+     "BUF",
+     "FRR"
+    ],
+    "f": [
+     "L",
+     "U",
+     "U"
+    ],
+    "r": [
+     "F",
+     "U",
+     "B"
+    ],
+    "b": [
+     "U",
+     "U",
+     "L"
+    ],
+    "l": [
+     "U",
+     "U",
+     "U"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 2,
+   "id": "OLL 27",
+   "name": "Sune",
+   "alg": "R U R' U R U2 R'",
+   "setup": "R U2 R' U' R U' R'",
+   "family": null,
+   "family_cases": null,
+   "bursts": [
+    "R U R' U",
+    "R U2 R'"
+   ],
+   "recog": "One corner up. The front-left corner carries yellow on the Front face.",
+   "hold": "The corner already up is the front-left one. The yellow on the Front face belongs to the front-right corner.",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "back",
+    "left",
+    "right",
+    "front"
+   ],
+   "oriented_corners": [
+    "front-left"
+   ],
+   "corner_cycles": [
+    [
+     "BLU",
+     "FRU"
+    ],
+    [
+     "FLU",
+     "BRU"
+    ]
+   ],
+   "edge_cycles": [
+    [
+     "LU",
+     "RU",
+     "BU"
+    ]
+   ],
+   "diagram": {
+    "top": [
+     "RUF",
+     "UUU",
+     "UUL"
+    ],
+    "f": [
+     "B",
+     "F",
+     "U"
+    ],
+    "r": [
+     "B",
+     "B",
+     "U"
+    ],
+    "b": [
+     "L",
+     "L",
+     "U"
+    ],
+    "l": [
+     "F",
+     "R",
+     "R"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 2,
+   "id": "OLL 26",
+   "name": "Anti-Sune",
+   "alg": "R U2 R' U' R U' R'",
+   "setup": "R U R' U R U2 R'",
+   "family": null,
+   "family_cases": null,
+   "bursts": [
+    "R U2 R'",
+    "U' R U' R'"
+   ],
+   "recog": "One corner up. The front-right corner carries yellow on the Right face.",
+   "hold": "",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "back",
+    "left",
+    "right",
+    "front"
+   ],
+   "oriented_corners": [
+    "back-right"
+   ],
+   "corner_cycles": [
+    [
+     "BLU",
+     "FRU"
+    ],
+    [
+     "FLU",
+     "BRU"
+    ]
+   ],
+   "edge_cycles": [
+    [
+     "LU",
+     "BU",
+     "RU"
+    ]
+   ],
+   "diagram": {
+    "top": [
+     "FUU",
+     "UUU",
+     "RUB"
+    ],
+    "f": [
+     "U",
+     "F",
+     "L"
+    ],
+    "r": [
+     "U",
+     "L",
+     "L"
+    ],
+    "b": [
+     "F",
+     "R",
+     "R"
+    ],
+    "l": [
+     "U",
+     "B",
+     "B"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 2,
+   "id": "OLL 23",
+   "name": "Headlights / U",
+   "alg": "R2 D R' U2 R D' R' U2 R'",
+   "setup": "R U2 R D R' U2 R D' R2",
+   "family": null,
+   "family_cases": null,
+   "bursts": [
+    "R2 D",
+    "R' U2 R",
+    "D'",
+    "R' U2 R'"
+   ],
+   "recog": "Two adjacent corners up. Both unsolved corners face Front as headlights.",
+   "hold": "",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "back",
+    "left",
+    "right",
+    "front"
+   ],
+   "oriented_corners": [
+    "back-left",
+    "back-right"
+   ],
+   "corner_cycles": [
+    [
+     "FLU",
+     "BRU",
+     "FRU"
+    ]
+   ],
+   "edge_cycles": [],
+   "diagram": {
+    "top": [
+     "UUU",
+     "UUU",
+     "RUF"
+    ],
+    "f": [
+     "U",
+     "F",
+     "U"
+    ],
+    "r": [
+     "L",
+     "R",
+     "F"
+    ],
+    "b": [
+     "R",
+     "B",
+     "B"
+    ],
+    "l": [
+     "L",
+     "L",
+     "B"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 2,
+   "id": "OLL 24",
+   "name": "Chameleon / T",
+   "alg": "r U R' U' r' F R F'",
+   "setup": "F R' F' r U R U' r'",
+   "family": null,
+   "family_cases": null,
+   "bursts": [
+    "r U R' U'",
+    "r' F R F'"
+   ],
+   "recog": "Two adjacent corners up. The unsolved corners face outward, in opposite directions.",
+   "hold": "",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "back",
+    "left",
+    "right",
+    "front"
+   ],
+   "oriented_corners": [
+    "back-right",
+    "front-right"
+   ],
+   "corner_cycles": [
+    [
+     "BLU",
+     "FLU",
+     "BRU"
+    ]
+   ],
+   "edge_cycles": [],
+   "diagram": {
+    "top": [
+     "FUU",
+     "UUU",
+     "RUU"
+    ],
+    "f": [
+     "U",
+     "F",
+     "F"
+    ],
+    "r": [
+     "R",
+     "R",
+     "B"
+    ],
+    "b": [
+     "L",
+     "B",
+     "U"
+    ],
+    "l": [
+     "L",
+     "L",
+     "B"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 2,
+   "id": "OLL 25",
+   "name": "Bowtie / L",
+   "alg": "F' r U R' U' r' F R",
+   "setup": "R' F' r U R U' r' F",
+   "family": null,
+   "family_cases": null,
+   "bursts": [
+    "F'",
+    "r U R' U'",
+    "r' F R"
+   ],
+   "recog": "Two diagonal corners up. One unsolved corner faces Front, one faces Right.",
+   "hold": "The second unsolved corner faces Left here, not Right.",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "back",
+    "left",
+    "right",
+    "front"
+   ],
+   "oriented_corners": [
+    "back-right",
+    "front-left"
+   ],
+   "corner_cycles": [
+    [
+     "BLU",
+     "FRU",
+     "BRU"
+    ]
+   ],
+   "edge_cycles": [],
+   "diagram": {
+    "top": [
+     "FUU",
+     "UUU",
+     "UUB"
+    ],
+    "f": [
+     "F",
+     "F",
+     "U"
+    ],
+    "r": [
+     "R",
+     "R",
+     "B"
+    ],
+    "b": [
+     "L",
+     "B",
+     "R"
+    ],
+    "l": [
+     "U",
+     "L",
+     "L"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 2,
+   "id": "OLL 22",
+   "name": "Pi",
+   "alg": "R U2 R2 U' R2 U' R2 U2 R",
+   "setup": "R' U2 R2 U R2 U R2 U2 R'",
+   "family": null,
+   "family_cases": null,
+   "bursts": [
+    "R U2",
+    "R2 U' R2 U' R2",
+    "U2 R"
+   ],
+   "recog": "No corners up. Headlights on Left, the other two corners face Right and Back.",
+   "hold": "The other two yellows face Front and Back here, not Right and Back.",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "back",
+    "left",
+    "right",
+    "front"
+   ],
+   "oriented_corners": [],
+   "corner_cycles": [
+    [
+     "BLU",
+     "FRU"
+    ],
+    [
+     "FLU",
+     "BRU"
+    ]
+   ],
+   "edge_cycles": [
+    [
+     "LU",
+     "FU",
+     "BU"
+    ]
+   ],
+   "diagram": {
+    "top": [
+     "FUL",
+     "UUU",
+     "BUL"
+    ],
+    "f": [
+     "R",
+     "B",
+     "U"
+    ],
+    "r": [
+     "B",
+     "R",
+     "F"
+    ],
+    "b": [
+     "U",
+     "L",
+     "R"
+    ],
+    "l": [
+     "U",
+     "F",
+     "U"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 2,
+   "id": "OLL 21",
+   "name": "H / double headlights",
+   "alg": "F R U R' U' R U R' U' R U R' U' F'",
+   "setup": "F U R U' R' U R U' R' U R U' R' F'",
+   "family": null,
+   "family_cases": null,
+   "bursts": [
+    "F",
+    "R U R' U'",
+    "R U R' U'",
+    "R U R' U'",
+    "F'"
+   ],
+   "recog": "No corners up. Headlights on Front and headlights on Back.",
+   "hold": "",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "back",
+    "left",
+    "right",
+    "front"
+   ],
+   "oriented_corners": [],
+   "corner_cycles": [
+    [
+     "BLU",
+     "BRU"
+    ],
+    [
+     "FLU",
+     "FRU"
+    ]
+   ],
+   "edge_cycles": [],
+   "diagram": {
+    "top": [
+     "BUB",
+     "UUU",
+     "FUF"
+    ],
+    "f": [
+     "U",
+     "F",
+     "U"
+    ],
+    "r": [
+     "L",
+     "R",
+     "L"
+    ],
+    "b": [
+     "U",
+     "B",
+     "U"
+    ],
+    "l": [
+     "R",
+     "L",
+     "R"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#e6e2d8\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 3,
+   "id": "PLL T",
+   "name": "T-Perm",
+   "alg": "R U R' U' R' F R2 U' R' U' R U R' F'",
+   "setup": "F R U' R' U R U R2 F' R U R U' R'",
+   "family": null,
+   "family_cases": null,
+   "bursts": [
+    "R U R' U'",
+    "R' F R2",
+    "U' R' U'",
+    "R U R' F'"
+   ],
+   "recog": "Adjacent corner swap. Two matching headlights on one side: place them on Left.",
+   "hold": "",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "back",
+    "left",
+    "right",
+    "front"
+   ],
+   "oriented_corners": [
+    "back-left",
+    "back-right",
+    "front-left",
+    "front-right"
+   ],
+   "corner_cycles": [
+    [
+     "BRU",
+     "FRU"
+    ]
+   ],
+   "edge_cycles": [
+    [
+     "LU",
+     "RU"
+    ]
+   ],
+   "diagram": {
+    "top": [
+     "UUU",
+     "UUU",
+     "UUU"
+    ],
+    "f": [
+     "F",
+     "F",
+     "R"
+    ],
+    "r": [
+     "B",
+     "L",
+     "F"
+    ],
+    "b": [
+     "R",
+     "B",
+     "B"
+    ],
+    "l": [
+     "L",
+     "R",
+     "L"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 3,
+   "id": "PLL Y",
+   "name": "Y-Perm",
+   "alg": "F R U' R' U' R U R' F' R U R' U' R' F R F'",
+   "setup": "F R' F' R U R U' R' F R U' R' U R U R' F'",
+   "family": null,
+   "family_cases": null,
+   "bursts": [
+    "F R U' R' U'",
+    "R U R' F'",
+    "R U R' U'",
+    "R' F R F'"
+   ],
+   "recog": "Diagonal corner swap. No matching headlights on any side.",
+   "hold": "",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "back",
+    "left",
+    "right",
+    "front"
+   ],
+   "oriented_corners": [
+    "back-left",
+    "back-right",
+    "front-left",
+    "front-right"
+   ],
+   "corner_cycles": [
+    [
+     "BLU",
+     "FRU"
+    ]
+   ],
+   "edge_cycles": [
+    [
+     "LU",
+     "BU"
+    ]
+   ],
+   "diagram": {
+    "top": [
+     "UUU",
+     "UUU",
+     "UUU"
+    ],
+    "f": [
+     "F",
+     "F",
+     "B"
+    ],
+    "r": [
+     "L",
+     "R",
+     "R"
+    ],
+    "b": [
+     "B",
+     "L",
+     "F"
+    ],
+    "l": [
+     "R",
+     "B",
+     "L"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 4,
+   "id": "PLL Ua",
+   "name": "Ua-Perm",
+   "alg": "R U' R U R U R U' R' U' R2",
+   "setup": "R2 U R U R' U' R' U' R' U R'",
+   "family": null,
+   "family_cases": null,
+   "bursts": [
+    "R U' R U",
+    "R U",
+    "R U' R' U'",
+    "R2"
+   ],
+   "recog": "One solved bar in Back. The piece in the Front slot must go Right. Counter-clockwise 3-edge cycle.",
+   "hold": "",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "back",
+    "left",
+    "right",
+    "front"
+   ],
+   "oriented_corners": [
+    "back-left",
+    "back-right",
+    "front-left",
+    "front-right"
+   ],
+   "corner_cycles": [],
+   "edge_cycles": [
+    [
+     "LU",
+     "FU",
+     "RU"
+    ]
+   ],
+   "diagram": {
+    "top": [
+     "UUU",
+     "UUU",
+     "UUU"
+    ],
+    "f": [
+     "F",
+     "R",
+     "F"
+    ],
+    "r": [
+     "R",
+     "L",
+     "R"
+    ],
+    "b": [
+     "B",
+     "B",
+     "B"
+    ],
+    "l": [
+     "L",
+     "F",
+     "L"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 4,
+   "id": "PLL Ub",
+   "name": "Ub-Perm",
+   "alg": "R2 U R U R' U' R' U' R' U R'",
+   "setup": "R U' R U R U R U' R' U' R2",
+   "family": null,
+   "family_cases": null,
+   "bursts": [
+    "R2 U",
+    "R U R' U'",
+    "R' U'",
+    "R' U R'"
+   ],
+   "recog": "One solved bar in Back. The piece in the Front slot must go Left. Clockwise 3-edge cycle.",
+   "hold": "",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "back",
+    "left",
+    "right",
+    "front"
+   ],
+   "oriented_corners": [
+    "back-left",
+    "back-right",
+    "front-left",
+    "front-right"
+   ],
+   "corner_cycles": [],
+   "edge_cycles": [
+    [
+     "LU",
+     "RU",
+     "FU"
+    ]
+   ],
+   "diagram": {
+    "top": [
+     "UUU",
+     "UUU",
+     "UUU"
+    ],
+    "f": [
+     "F",
+     "L",
+     "F"
+    ],
+    "r": [
+     "R",
+     "F",
+     "R"
+    ],
+    "b": [
+     "B",
+     "B",
+     "B"
+    ],
+    "l": [
+     "L",
+     "R",
+     "L"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 4,
+   "id": "PLL H",
+   "name": "H-Perm",
+   "alg": "M2 U M2 U2 M2 U M2",
+   "setup": "M2 U' M2 U2 M2 U' M2",
+   "family": null,
+   "family_cases": null,
+   "bursts": [
+    "M2 U",
+    "M2 U2",
+    "M2 U",
+    "M2"
+   ],
+   "recog": "All four edges swap with the opposite side: Front with Back, Left with Right.",
+   "hold": "",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "back",
+    "left",
+    "right",
+    "front"
+   ],
+   "oriented_corners": [
+    "back-left",
+    "back-right",
+    "front-left",
+    "front-right"
+   ],
+   "corner_cycles": [],
+   "edge_cycles": [
+    [
+     "LU",
+     "RU"
+    ],
+    [
+     "BU",
+     "FU"
+    ]
+   ],
+   "diagram": {
+    "top": [
+     "UUU",
+     "UUU",
+     "UUU"
+    ],
+    "f": [
+     "F",
+     "B",
+     "F"
+    ],
+    "r": [
+     "R",
+     "L",
+     "R"
+    ],
+    "b": [
+     "B",
+     "F",
+     "B"
+    ],
+    "l": [
+     "L",
+     "R",
+     "L"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  },
+  {
+   "phase": 4,
+   "id": "PLL Z",
+   "name": "Z-Perm",
+   "alg": "M2 U M2 U' M2",
+   "setup": "M2 U M2 U' M2",
+   "family": null,
+   "family_cases": null,
+   "bursts": [
+    "M2 U",
+    "M2 U'",
+    "M2"
+   ],
+   "recog": "Front swaps with Right, Back swaps with Left.",
+   "hold": "",
+   "verified": true,
+   "why": "",
+   "oriented_edges": [
+    "back",
+    "left",
+    "right",
+    "front"
+   ],
+   "oriented_corners": [
+    "back-left",
+    "back-right",
+    "front-left",
+    "front-right"
+   ],
+   "corner_cycles": [],
+   "edge_cycles": [
+    [
+     "LU",
+     "BU"
+    ],
+    [
+     "FU",
+     "RU"
+    ]
+   ],
+   "diagram": {
+    "top": [
+     "UUU",
+     "UUU",
+     "UUU"
+    ],
+    "f": [
+     "F",
+     "R",
+     "F"
+    ],
+    "r": [
+     "R",
+     "F",
+     "R"
+    ],
+    "b": [
+     "B",
+     "L",
+     "B"
+    ],
+    "l": [
+     "L",
+     "B",
+     "L"
+    ]
+   },
+   "svg": "<svg viewBox=\"0 0 126 126\" role=\"img\"><rect x=\"30.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"4.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"100.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#c41e3a\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"100.0\" width=\"22\" height=\"22\" fill=\"#009e60\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#0051ba\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"4.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ff5800\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"30.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"52.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"30.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"52.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/><rect x=\"74.0\" y=\"74.0\" width=\"22\" height=\"22\" fill=\"#ffd500\" stroke=\"#2b2b2b\" stroke-width=\"0.8\"/></svg>"
+  }
+ ],
+ "next_step": {
+  "title": "Full PLL: the remaining 15 cases",
+  "groups": [
+   {
+    "label": "Corner only",
+    "cases": [
+     "Aa-Perm",
+     "Ab-Perm",
+     "E-Perm"
+    ]
+   },
+   {
+    "label": "Adjacent edge and corner swap",
+    "cases": [
+     "Ja-Perm",
+     "Jb-Perm",
+     "Ra-Perm",
+     "Rb-Perm",
+     "F-Perm",
+     "V-Perm"
+    ]
+   },
+   {
+    "label": "Diagonal edge and corner swap",
+    "cases": [
+     "Na-Perm",
+     "Nb-Perm"
+    ]
+   },
+   {
+    "label": "Double cycles",
+    "cases": [
+     "Ga-Perm",
+     "Gb-Perm",
+     "Gc-Perm",
+     "Gd-Perm"
+    ]
+   }
+  ]
+ },
+ "corrections": [
+  {
+   "id": "PLL Z",
+   "given": "M' U M2 U M2 U M' U2 M2",
+   "used": "M2 U M2 U' M2",
+   "why": "The given sequence contains five quarter turns of the U layer, so it cannot leave the corners solved. It does not solve a Z-Perm. The replacement was found by search over U and M moves, then verified."
+  }
+ ]
+}

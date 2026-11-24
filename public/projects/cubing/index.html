@@ -1,0 +1,410 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2-Look OLL and PLL: verified sheet</title>
+<style>
+:root{--paper:#faf8f3;--ink:#1a1a1a;--mut:#6b6560;--line:#ddd6c8;--ok:#1f7a3f;--bad:#b3261e;--warn:#8a5b00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:1060px;margin:0 auto;padding:26px 18px 60px}
+h1{font-size:26px;margin:0 0 6px;letter-spacing:-.4px}
+.sub{color:var(--mut);margin:0 0 16px;max-width:75ch}
+.strip{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.pill{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 11px;font-size:12.5px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:0 0 26px;font-size:12.5px;color:var(--mut)}
+.legend i{display:inline-block;width:12px;height:12px;border:1px solid #2b2b2b;margin-right:5px;vertical-align:-1px}
+section{margin:0 0 30px}
+h2{font-size:17px;margin:0 0 4px;padding-bottom:6px;border-bottom:2px solid var(--ink);letter-spacing:-.2px}
+.goal{color:var(--mut);margin:8px 0 2px;max-width:72ch}
+.count{color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.7px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 12px;break-inside:avoid}
+.card header{display:flex;align-items:baseline;gap:7px;margin-bottom:9px;flex-wrap:wrap}
+.code{font:600 11.5px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--mut);border:1px solid var(--line);border-radius:4px;padding:3px 5px}
+h3{font-size:14.5px;margin:0;font-weight:650}
+.ok{margin-left:auto;font-size:10.5px;color:var(--ok);border:1px solid #bfe0c9;background:#eef8f1;border-radius:4px;padding:2px 6px}
+.bad{margin-left:auto;font-size:10.5px;color:var(--bad);border:1px solid #f0c4c0;background:#fdeeed;border-radius:4px;padding:2px 6px}
+.body{display:flex;gap:13px;align-items:flex-start}
+.dm{flex:0 0 auto}
+.dm svg{display:block;width:100px;height:100px}
+.txt{flex:1 1 auto;min-width:0}
+.alg{display:block;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;background:#f6f3ec;border:1px solid var(--line);border-radius:6px;padding:6px 8px;word-spacing:1.5px}
+.burstwrap{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.burst{font:12.5px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;background:#efeade;border:1px solid #d8d1c0;border-radius:6px;padding:5px 7px}
+.beats{font-size:10.5px;color:var(--mut);margin-left:4px;text-transform:uppercase;letter-spacing:.4px}
+.flat{margin:5px 0 0;font:11.5px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:#8d857a}
+.fam{margin:8px 0 0;font-size:12.5px;color:#3f3a34;background:#f2efe6;border-radius:5px;padding:5px 8px}
+.fam b{font-weight:650}
+.setl{margin:9px 0 3px;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+.setup{background:#fff;border-style:dashed;color:#4a4640}
+.rec{margin:8px 0 0;font-size:13px;color:#2f2c28}
+.hold{margin:7px 0 0;font-size:12px;color:var(--warn);background:#fdf7e6;border-left:2px solid #e0b84a;padding:5px 8px;border-radius:0 4px 4px 0}
+.corr{margin:7px 0 0;font-size:12px;color:#8a2a22;background:#fdeeed;border-left:2px solid #d98b84;padding:5px 8px;border-radius:0 4px 4px 0}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.94em}
+.expand{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.egrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:14px;margin-top:8px}
+.egrp h4{margin:0 0 5px;font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut)}
+.egrp ul{list-style:none;margin:0;padding:0}
+.egrp li{font-size:13.5px;padding:2px 0}
+.egrp label{cursor:pointer}
+.note2{color:var(--mut);font-size:12.5px;margin:11px 0 0}
+ul.plain{margin:8px 0 0;padding-left:20px}
+ul.plain li{margin:0 0 8px;font-size:13.5px}
+footer{margin-top:30px;border-top:1px solid var(--line);padding-top:13px;color:var(--mut);font-size:12.5px}
+.back a{color:#2f2c28;text-decoration:none;font-weight:600}
+.back a:hover{text-decoration:underline}
+details{margin-top:20px}summary{cursor:pointer;font-weight:600;font-size:14px}
+pre{background:#f6f3ec;border:1px solid var(--line);border-radius:8px;padding:11px;overflow:auto;font-size:11.5px;max-height:400px}
+@media print{body{background:#fff}.card{border-color:#bbb}.strip,.legend{display:none}}
+</style></head><body><div class="wrap">
+<h1>2-Look OLL and 2-Look PLL</h1>
+<p class="sub">Sixteen algorithms in four steps. Every sequence here was executed on a cube model before it was written down. Each card also gives the setup: the same algorithm in reverse, which puts a solved cube into that case with the first two layers complete. Every sequence is cut into bursts, the chunks you actually say in your head, so it has a rhythm instead of one flat string.</p>
+<div class="strip">
+<span class="pill"><b>16</b> algorithms</span>
+<span class="pill"><b>16</b> passed the checks</span>
+<span class="pill"><b>1</b> replaced (Z-Perm)</span>
+<span class="pill"><b>4</b> hold notes to check</span>
+</div>
+<div class="legend">
+<span><i style="background:#ffd500"></i>yellow sticker</span>
+<span><i style="background:#e6e2d8"></i>not yellow</span>
+<span>Hold the cube with green at the front and yellow on top.</span>
+<span>A burst is one chunk you can say without stopping.</span>
+</div>
+<section><h2>2-look OLL, step 1: edges</h2>
+<p class="goal">Orient the four yellow edges and build the yellow cross from any starting state.</p><p class="fam">Edge orientation has only three shapes: bar, L and dot. The full OLL list splits the same three shapes into 15, 27 and 8 cases, because the corners differ. One algorithm per shape fixes the edges in every one of them. Measured on all 216 last-layer orientation states: 54 of 54 bars, 108 of 108 Ls, 27 of 27 dots. You only add a U turn to line the shape up.</p>
+<p class="count">3 cards</p>
+<div class="grid"><article class="card">
+<header><span class="code">OLL 45</span><h3>Line / Bar</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">F</code><code class="burst">R U R&#x27; U&#x27;</code><code class="burst">F&#x27;</code><span class="beats">3 bursts</span></div>
+<p class="flat">F R U R&#x27; U&#x27; F&#x27;</p>
+<p class="fam"><b>15 of the 57 OLL cases</b> share this edge pattern.</p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">F U R U&#x27; R&#x27; F&#x27;</code>
+<p class="rec">Horizontal bar across the yellow centre.</p></div>
+</div></article><article class="card">
+<header><span class="code">OLL 44</span><h3>Angle / small L</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">f</code><code class="burst">R U R&#x27; U&#x27;</code><code class="burst">f&#x27;</code><span class="beats">3 bursts</span></div>
+<p class="flat">f R U R&#x27; U&#x27; f&#x27;</p>
+<p class="fam"><b>27 of the 57 OLL cases</b> share this edge pattern.</p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">f U R U&#x27; R&#x27; f&#x27;</code>
+<p class="rec">Yellow edges at 9 o’clock and 12 o’clock. f turns the front two layers.</p><p class="hold"><b>Hold check:</b> The two yellow edges sit at 3 and 6 o’clock here, a half turn from the note above.</p></div>
+</div></article><article class="card">
+<header><span class="code">OLL 1 / 2</span><h3>Dot</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">F</code><code class="burst">R U R&#x27; U&#x27;</code><code class="burst">F&#x27; f</code><code class="burst">R U R&#x27; U&#x27;</code><code class="burst">f&#x27;</code><span class="beats">5 bursts</span></div>
+<p class="flat">F R U R&#x27; U&#x27; F&#x27; f R U R&#x27; U&#x27; f&#x27;</p>
+<p class="fam"><b>8 of the 57 OLL cases</b> share this edge pattern.</p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">f U R U&#x27; R&#x27; f&#x27; F U R U&#x27; R&#x27; F&#x27;</code>
+<p class="rec">No edges oriented, only the yellow centre.</p></div>
+</div></article></div></section><section><h2>2-look OLL, step 2: corners</h2>
+<p class="goal">Orient the four yellow corners and finish the full yellow top face.</p><p class="fam">With the cross done there are exactly 7 corner patterns, so these 7 algorithms are the complete set. Nothing else can come up at this step.</p>
+<p class="count">7 cards</p>
+<div class="grid"><article class="card">
+<header><span class="code">OLL 27</span><h3>Sune</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">R U R&#x27; U</code><code class="burst">R U2 R&#x27;</code><span class="beats">2 bursts</span></div>
+<p class="flat">R U R&#x27; U R U2 R&#x27;</p>
+<p class="fam"></p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">R U2 R&#x27; U&#x27; R U&#x27; R&#x27;</code>
+<p class="rec">One corner up. The front-left corner carries yellow on the Front face.</p><p class="hold"><b>Hold check:</b> The corner already up is the front-left one. The yellow on the Front face belongs to the front-right corner.</p></div>
+</div></article><article class="card">
+<header><span class="code">OLL 26</span><h3>Anti-Sune</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">R U2 R&#x27;</code><code class="burst">U&#x27; R U&#x27; R&#x27;</code><span class="beats">2 bursts</span></div>
+<p class="flat">R U2 R&#x27; U&#x27; R U&#x27; R&#x27;</p>
+<p class="fam"></p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">R U R&#x27; U R U2 R&#x27;</code>
+<p class="rec">One corner up. The front-right corner carries yellow on the Right face.</p></div>
+</div></article><article class="card">
+<header><span class="code">OLL 23</span><h3>Headlights / U</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">R2 D</code><code class="burst">R&#x27; U2 R</code><code class="burst">D&#x27;</code><code class="burst">R&#x27; U2 R&#x27;</code><span class="beats">4 bursts</span></div>
+<p class="flat">R2 D R&#x27; U2 R D&#x27; R&#x27; U2 R&#x27;</p>
+<p class="fam"></p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">R U2 R D R&#x27; U2 R D&#x27; R2</code>
+<p class="rec">Two adjacent corners up. Both unsolved corners face Front as headlights.</p></div>
+</div></article><article class="card">
+<header><span class="code">OLL 24</span><h3>Chameleon / T</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">r U R&#x27; U&#x27;</code><code class="burst">r&#x27; F R F&#x27;</code><span class="beats">2 bursts</span></div>
+<p class="flat">r U R&#x27; U&#x27; r&#x27; F R F&#x27;</p>
+<p class="fam"></p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">F R&#x27; F&#x27; r U R U&#x27; r&#x27;</code>
+<p class="rec">Two adjacent corners up. The unsolved corners face outward, in opposite directions.</p></div>
+</div></article><article class="card">
+<header><span class="code">OLL 25</span><h3>Bowtie / L</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">F&#x27;</code><code class="burst">r U R&#x27; U&#x27;</code><code class="burst">r&#x27; F R</code><span class="beats">3 bursts</span></div>
+<p class="flat">F&#x27; r U R&#x27; U&#x27; r&#x27; F R</p>
+<p class="fam"></p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">R&#x27; F&#x27; r U R U&#x27; r&#x27; F</code>
+<p class="rec">Two diagonal corners up. One unsolved corner faces Front, one faces Right.</p><p class="hold"><b>Hold check:</b> The second unsolved corner faces Left here, not Right.</p></div>
+</div></article><article class="card">
+<header><span class="code">OLL 22</span><h3>Pi</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">R U2</code><code class="burst">R2 U&#x27; R2 U&#x27; R2</code><code class="burst">U2 R</code><span class="beats">3 bursts</span></div>
+<p class="flat">R U2 R2 U&#x27; R2 U&#x27; R2 U2 R</p>
+<p class="fam"></p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">R&#x27; U2 R2 U R2 U R2 U2 R&#x27;</code>
+<p class="rec">No corners up. Headlights on Left, the other two corners face Right and Back.</p><p class="hold"><b>Hold check:</b> The other two yellows face Front and Back here, not Right and Back.</p></div>
+</div></article><article class="card">
+<header><span class="code">OLL 21</span><h3>H / double headlights</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#e6e2d8" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">F</code><code class="burst">R U R&#x27; U&#x27;</code><code class="burst">R U R&#x27; U&#x27;</code><code class="burst">R U R&#x27; U&#x27;</code><code class="burst">F&#x27;</code><span class="beats">5 bursts</span></div>
+<p class="flat">F R U R&#x27; U&#x27; R U R&#x27; U&#x27; R U R&#x27; U&#x27; F&#x27;</p>
+<p class="fam"></p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">F U R U&#x27; R&#x27; U R U&#x27; R&#x27; U R U&#x27; R&#x27; F&#x27;</code>
+<p class="rec">No corners up. Headlights on Front and headlights on Back.</p></div>
+</div></article></div></section><section><h2>2-look PLL, step 1: corners</h2>
+<p class="goal">Permute the corners: put all four corners in their own slots.</p>
+<p class="count">2 cards</p>
+<div class="grid"><article class="card">
+<header><span class="code">PLL T</span><h3>T-Perm</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">R U R&#x27; U&#x27;</code><code class="burst">R&#x27; F R2</code><code class="burst">U&#x27; R&#x27; U&#x27;</code><code class="burst">R U R&#x27; F&#x27;</code><span class="beats">4 bursts</span></div>
+<p class="flat">R U R&#x27; U&#x27; R&#x27; F R2 U&#x27; R&#x27; U&#x27; R U R&#x27; F&#x27;</p>
+<p class="fam"></p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">F R U&#x27; R&#x27; U R U R2 F&#x27; R U R U&#x27; R&#x27;</code>
+<p class="rec">Adjacent corner swap. Two matching headlights on one side: place them on Left.</p></div>
+</div></article><article class="card">
+<header><span class="code">PLL Y</span><h3>Y-Perm</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">F R U&#x27; R&#x27; U&#x27;</code><code class="burst">R U R&#x27; F&#x27;</code><code class="burst">R U R&#x27; U&#x27;</code><code class="burst">R&#x27; F R F&#x27;</code><span class="beats">4 bursts</span></div>
+<p class="flat">F R U&#x27; R&#x27; U&#x27; R U R&#x27; F&#x27; R U R&#x27; U&#x27; R&#x27; F R F&#x27;</p>
+<p class="fam"></p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">F R&#x27; F&#x27; R U R U&#x27; R&#x27; F R U&#x27; R&#x27; U R U R&#x27; F&#x27;</code>
+<p class="rec">Diagonal corner swap. No matching headlights on any side.</p></div>
+</div></article></div></section><section><h2>2-look PLL, step 2: edges</h2>
+<p class="goal">Permute the edges and finish the cube.</p>
+<p class="count">4 cards</p>
+<div class="grid"><article class="card">
+<header><span class="code">PLL Ua</span><h3>Ua-Perm</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">R U&#x27; R U</code><code class="burst">R U</code><code class="burst">R U&#x27; R&#x27; U&#x27;</code><code class="burst">R2</code><span class="beats">4 bursts</span></div>
+<p class="flat">R U&#x27; R U R U R U&#x27; R&#x27; U&#x27; R2</p>
+<p class="fam"></p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">R2 U R U R&#x27; U&#x27; R&#x27; U&#x27; R&#x27; U R&#x27;</code>
+<p class="rec">One solved bar in Back. The piece in the Front slot must go Right. Counter-clockwise 3-edge cycle.</p></div>
+</div></article><article class="card">
+<header><span class="code">PLL Ub</span><h3>Ub-Perm</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">R2 U</code><code class="burst">R U R&#x27; U&#x27;</code><code class="burst">R&#x27; U&#x27;</code><code class="burst">R&#x27; U R&#x27;</code><span class="beats">4 bursts</span></div>
+<p class="flat">R2 U R U R&#x27; U&#x27; R&#x27; U&#x27; R&#x27; U R&#x27;</p>
+<p class="fam"></p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">R U&#x27; R U R U R U&#x27; R&#x27; U&#x27; R2</code>
+<p class="rec">One solved bar in Back. The piece in the Front slot must go Left. Clockwise 3-edge cycle.</p></div>
+</div></article><article class="card">
+<header><span class="code">PLL H</span><h3>H-Perm</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">M2 U</code><code class="burst">M2 U2</code><code class="burst">M2 U</code><code class="burst">M2</code><span class="beats">4 bursts</span></div>
+<p class="flat">M2 U M2 U2 M2 U M2</p>
+<p class="fam"></p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">M2 U&#x27; M2 U2 M2 U&#x27; M2</code>
+<p class="rec">All four edges swap with the opposite side: Front with Back, Left with Right.</p></div>
+</div></article><article class="card">
+<header><span class="code">PLL Z</span><h3>Z-Perm</h3><span class="ok">checked</span></header>
+<div class="body">
+<div class="dm"><svg viewBox="0 0 126 126" role="img"><rect x="30.0" y="4.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="4.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="4.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="30.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="52.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="100.0" y="74.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="100.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="100.0" width="22" height="22" fill="#c41e3a" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="100.0" width="22" height="22" fill="#009e60" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="30.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="52.0" width="22" height="22" fill="#0051ba" stroke="#2b2b2b" stroke-width="0.8"/><rect x="4.0" y="74.0" width="22" height="22" fill="#ff5800" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="30.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="52.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="30.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="52.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/><rect x="74.0" y="74.0" width="22" height="22" fill="#ffd500" stroke="#2b2b2b" stroke-width="0.8"/></svg></div>
+<div class="txt"><div class="burstwrap"><code class="burst">M2 U</code><code class="burst">M2 U&#x27;</code><code class="burst">M2</code><span class="beats">3 bursts</span></div>
+<p class="flat">M2 U M2 U&#x27; M2</p>
+<p class="fam"></p>
+<p class="setl">To reach it, run it backwards:</p>
+<code class="alg setup">M2 U M2 U&#x27; M2</code>
+<p class="rec">Front swaps with Right, Back swaps with Left.</p><p class="corr"><b>Changed.</b> Your list gave <code>M&#x27; U M2 U M2 U M&#x27; U2 M2</code>. Checked, it leaves the four corners turned, so it is not a Z-Perm. The sequence above is the replacement.</p></div>
+</div></article></div></section>
+<section><h2>Next step: full PLL</h2>
+<p class="goal">The 15 cases that are left after 2-look PLL. Tick each one as you learn it.</p>
+<div class="expand"><div class="egrp"><h4>Corner only</h4><ul><li><label><input type="checkbox"> Aa-Perm</label></li><li><label><input type="checkbox"> Ab-Perm</label></li><li><label><input type="checkbox"> E-Perm</label></li></ul></div><div class="egrp"><h4>Adjacent edge and corner swap</h4><ul><li><label><input type="checkbox"> Ja-Perm</label></li><li><label><input type="checkbox"> Jb-Perm</label></li><li><label><input type="checkbox"> Ra-Perm</label></li><li><label><input type="checkbox"> Rb-Perm</label></li><li><label><input type="checkbox"> F-Perm</label></li><li><label><input type="checkbox"> V-Perm</label></li></ul></div><div class="egrp"><h4>Diagonal edge and corner swap</h4><ul><li><label><input type="checkbox"> Na-Perm</label></li><li><label><input type="checkbox"> Nb-Perm</label></li></ul></div><div class="egrp"><h4>Double cycles</h4><ul><li><label><input type="checkbox"> Ga-Perm</label></li><li><label><input type="checkbox"> Gb-Perm</label></li><li><label><input type="checkbox"> Gc-Perm</label></li><li><label><input type="checkbox"> Gd-Perm</label></li></ul></div>
+<p class="note2">Order of work: Aa, Ab and E first, because they move corners only. The four G-Perms last, because each one turns a corner cycle and an edge cycle at the same time.</p></div></section>
+<section><h2>What the checks changed</h2>
+<ul class="plain"><li><b>PLL Z</b>. Your list gave <code>M&#x27; U M2 U M2 U M&#x27; U2 M2</code>. It turns the U layer five quarter turns, which turns the four corners, so it cannot be an edge-only permutation. The sheet uses <code>M2 U M2 U&#x27; M2</code>, found by search and then verified.</li></ul>
+<p class="note2">Four recognition notes in the source list point to a different hold than the algorithm next to them. The diagram is the hold:</p>
+<ul class="plain"><li><b>OLL 44 Angle / small L</b>: The two yellow edges sit at 3 and 6 o’clock here, a half turn from the note above.</li><li><b>OLL 27 Sune</b>: The corner already up is the front-left one. The yellow on the Front face belongs to the front-right corner.</li><li><b>OLL 25 Bowtie / L</b>: The second unsolved corner faces Left here, not Right.</li><li><b>OLL 22 Pi</b>: The other two yellows face Front and Back here, not Right and Back.</li></ul>
+</section>
+<section><h2>Method</h2>
+<details open><summary>How these were checked</summary>
+<p>Every algorithm was run on a 54-facelet model of the cube. Three tests: the algorithm returns the solved cube when applied to its own case, its case leaves the first two layers intact, and the case pattern matches the case named for it.</p>
+<p>Coverage. The 3 edge and 7 corner algorithms together reach all 62,208 last-layer states, which is every orientation (216) times every permutation (288). Nothing outside that set exists, so the 10 sequences cover all 57 OLL cases. The 2 corner and 4 edge PLL algorithms reach all 288 permutation states, and one corner pass plus one edge pass solves every one of them: 288 of 288, no failures.</p>
+<p>R U F L B D are face turns. r and f are wide turns of two layers. M is the slice between L and R, turned the same way as L. An apostrophe means counter-clockwise, 2 means a half turn.</p>
+<p>Each tile is the top face seen from above, ringed by the top row of Back, Right, Front and Left. Yellow means a yellow sticker; grey means any other colour.</p>
+</details>
+<details><summary>Machine-readable data</summary>
+<pre>[
+ {
+  &quot;phase&quot;: 1,
+  &quot;id&quot;: &quot;OLL 45&quot;,
+  &quot;name&quot;: &quot;Line / Bar&quot;,
+  &quot;alg&quot;: &quot;F R U R&#x27; U&#x27; F&#x27;&quot;,
+  &quot;setup&quot;: &quot;F U R U&#x27; R&#x27; F&#x27;&quot;,
+  &quot;family&quot;: &quot;Bar&quot;,
+  &quot;family_cases&quot;: 15,
+  &quot;bursts&quot;: [
+   &quot;F&quot;,
+   &quot;R U R&#x27; U&#x27;&quot;,
+   &quot;F&#x27;&quot;
+  ],
+  &quot;recog&quot;: &quot;Horizontal bar across the yellow centre.&quot;,
+  &quot;hold&quot;: &quot;&quot;,
+  &quot;verified&quot;: true,
+  &quot;why&quot;: &quot;&quot;,
+  &quot;oriented_edges&quot;: [
+   &quot;left&quot;,
+   &quot;right&quot;
+  ],
+  &quot;oriented_corners&quot;: [
+   &quot;back-right&quot;,
+   &quot;front-right&quot;
+  ],
+  &quot;corner_cycles&quot;: [
+   [
+    &quot;BLU&quot;,
+    &quot;BRU&quot;
+   ],
+   [
+    &quot;FLU&quot;,
+    &quot;FRU&quot;
+   ]
+  ],
+  &quot;edge_cycles&quot;: [
+   [
+    &quot;BU&quot;,
+    &quot;FU&quot;,
+    &quot;RU&quot;
+   ]
+  ],
+  &quot;diagram&quot;: {
+   &quot;top&quot;: [
+    &quot;RFU&quot;,
+    &quot;UUU&quot;,
+    &quot;RRU&quot;
+   ],
+   &quot;f&quot;: [
+    &quot;F&quot;,
+    &quot;U&quot;,
+    &quot;L&quot;
+   ],
+   &quot;r&quot;: [
+    &quot;F&quot;,
+    &quot;B&quot;,
+    &quot;B&quot;
+   ],
+   &quot;b&quot;: [
+    &quot;L&quot;,
+    &quot;U&quot;,
+    &quot;B&quot;
+   ],
+   &quot;l&quot;: [
+    &quot;U&quot;,
+    &quot;L&quot;,
+    &quot;U&quot;
+   ]
+  },
+  &quot;svg&quot;: &quot;&lt;svg viewBox=\&quot;0 0 126 126\&quot; role=\&quot;img\&quot;&gt;&lt;rect x=\&quot;30.0\&quot; y=\&quot;4.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;52.0\&quot; y=\&quot;4.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#ffd500\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;74.0\&quot; y=\&quot;4.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;100.0\&quot; y=\&quot;30.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;100.0\&quot; y=\&quot;52.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;100.0\&quot; y=\&quot;74.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;30.0\&quot; y=\&quot;100.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;52.0\&quot; y=\&quot;100.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#ffd500\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;74.0\&quot; y=\&quot;100.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;4.0\&quot; y=\&quot;30.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#ffd500\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;4.0\&quot; y=\&quot;52.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;4.0\&quot; y=\&quot;74.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#ffd500\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;30.0\&quot; y=\&quot;30.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;52.0\&quot; y=\&quot;30.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;74.0\&quot; y=\&quot;30.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#ffd500\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;30.0\&quot; y=\&quot;52.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#ffd500\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;52.0\&quot; y=\&quot;52.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#ffd500\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;74.0\&quot; y=\&quot;52.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#ffd500\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;30.0\&quot; y=\&quot;74.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;52.0\&quot; y=\&quot;74.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;74.0\&quot; y=\&quot;74.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#ffd500\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;/svg&gt;&quot;
+ },
+ {
+  &quot;phase&quot;: 1,
+  &quot;id&quot;: &quot;OLL 44&quot;,
+  &quot;name&quot;: &quot;Angle / small L&quot;,
+  &quot;alg&quot;: &quot;f R U R&#x27; U&#x27; f&#x27;&quot;,
+  &quot;setup&quot;: &quot;f U R U&#x27; R&#x27; f&#x27;&quot;,
+  &quot;family&quot;: &quot;L shape&quot;,
+  &quot;family_cases&quot;: 27,
+  &quot;bursts&quot;: [
+   &quot;f&quot;,
+   &quot;R U R&#x27; U&#x27;&quot;,
+   &quot;f&#x27;&quot;
+  ],
+  &quot;recog&quot;: &quot;Yellow edges at 9 o\u2019clock and 12 o\u2019clock. f turns the front two layers.&quot;,
+  &quot;hold&quot;: &quot;The two yellow edges sit at 3 and 6 o\u2019clock here, a half turn from the note above.&quot;,
+  &quot;verified&quot;: true,
+  &quot;why&quot;: &quot;&quot;,
+  &quot;oriented_edges&quot;: [
+   &quot;right&quot;,
+   &quot;front&quot;
+  ],
+  &quot;oriented_corners&quot;: [
+   &quot;back-right&quot;,
+   &quot;front-right&quot;
+  ],
+  &quot;corner_cycles&quot;: [
+   [
+    &quot;BLU&quot;,
+    &quot;BRU&quot;
+   ],
+   [
+    &quot;FLU&quot;,
+    &quot;FRU&quot;
+   ]
+  ],
+  &quot;edge_cycles&quot;: [
+   [
+    &quot;LU&quot;,
+    &quot;BU&quot;,
+    &quot;FU&quot;
+   ]
+  ],
+  &quot;diagram&quot;: {
+   &quot;top&quot;: [
+    &quot;RFU&quot;,
+    &quot;BUU&quot;,
+    &quot;RUU&quot;
+   ],
+   &quot;f&quot;: [
+    &quot;F&quot;,
+    &quot;L&quot;,
+    &quot;L&quot;
+   ],
+   &quot;r&quot;: [
+    &quot;F&quot;,
+    &quot;R&quot;,
+    &quot;B&quot;
+   ],
+   &quot;b&quot;: [
+    &quot;L&quot;,
+    &quot;U&quot;,
+    &quot;B&quot;
+   ],
+   &quot;l&quot;: [
+    &quot;U&quot;,
+    &quot;U&quot;,
+    &quot;U&quot;
+   ]
+  },
+  &quot;svg&quot;: &quot;&lt;svg viewBox=\&quot;0 0 126 126\&quot; role=\&quot;img\&quot;&gt;&lt;rect x=\&quot;30.0\&quot; y=\&quot;4.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;52.0\&quot; y=\&quot;4.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#ffd500\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;74.0\&quot; y=\&quot;4.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;100.0\&quot; y=\&quot;30.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;100.0\&quot; y=\&quot;52.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;100.0\&quot; y=\&quot;74.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; stroke=\&quot;#2b2b2b\&quot; stroke-width=\&quot;0.8\&quot;/&gt;&lt;rect x=\&quot;30.0\&quot; y=\&quot;100.0\&quot; width=\&quot;22\&quot; height=\&quot;22\&quot; fill=\&quot;#e6e2d8\&quot; </pre>
+<p class="note2">Full file, with diagrams as character grids: <a href="cases.json">cases.json</a>.</p>
+</details>
+</section>
+<footer><p class="back"><a href="https://boscochanam.com/">Bosco Chanam</a> / projects / cubing</p>
+24 November 2026. Facelet model with 54 stickers, moves composed as rotations, centres pinned. Diagrams are drawn from the case that each algorithm solves.</footer>
+</div></body></html>

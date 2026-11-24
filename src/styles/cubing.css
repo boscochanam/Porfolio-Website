@@ -82,7 +82,7 @@
 .case-body{display:flex;align-items:flex-start;gap:13px;padding:13px}
 .cube{flex:0 0 112px;width:112px;max-width:112px}
 .cube svg{display:block;width:100%;height:auto}
-.cube rect{stroke:var(--cube-line)}
+.cube rect{stroke:var(--cube-line);stroke-width:1.1}
 .cube rect[fill="#e6e2d8"]{fill:var(--cube-mut)}
 .cube rect[fill="#ffd500"]{fill:var(--cube-y)}
 .cube rect[fill="#0051ba"]{fill:var(--cube-b)}

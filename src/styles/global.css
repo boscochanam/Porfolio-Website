@@ -1,6 +1,6 @@
 /* Tokens, layout and components (ported verbatim from v2/index.html). */
 :root{
-  --paper:#f3f1ec; --card:#fbfaf7; --ink:#111110; --muted:#4d4a45; --line:#d8d3c9;
+  --paper:#f3f1ec; --card:#fbfaf7; --ink:#111110; --muted:#4d4a45; --line:#c7c0b3;
   --red:#d01b0b;          /* marks: underlines, active bars, one hairline */
   --red-text:#b8140a;
   --pearl:#f3f1ec; --pearl-dim:#cfcac0; --ink-line:#3a3936;
@@ -9,7 +9,7 @@
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,"DejaVu Sans Mono",monospace;
   /* Cube diagrams: printed, slightly warm versions of the standard colours. */
   --cube-y:#e9b500; --cube-b:#245a94; --cube-r:#b32b23; --cube-g:#2d7a4b; --cube-o:#c16527;
-  --cube-mut:#ddd6c8; --cube-line:#b7b0a3;
+  --cube-mut:#ddd6c8; --cube-line:#2b2a27;
   --wrap:1240px; --gut:32px; --bar:64px;
 }
 *{box-sizing:border-box}
@@ -134,7 +134,7 @@ h1,h2,h3{font-family:var(--sans);margin:0;letter-spacing:-.015em}
 .gal-fig-cap b{color:var(--pearl);font-weight:600}
 .gal-cube{line-height:0}
 .gal-cube svg{display:block;width:100%;height:auto}
-.gal-cube rect{stroke:#6b665e}
+.gal-cube rect{stroke:#1c1b18;stroke-width:1.1}
 .gal-cube rect[fill="#e6e2d8"]{fill:#302f2c}
 .gal-cube rect[fill="#ffd500"]{fill:var(--cube-y)}
 .gal-cube rect[fill="#0051ba"]{fill:var(--cube-b)}

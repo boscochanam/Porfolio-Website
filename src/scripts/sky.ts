@@ -40,46 +40,6 @@ type Stops = [number, string][];
 type PalDef = Record<string, Stops | string>;
 const MOON_S: Stops = [[0, '#1a1a18'], [0.2, '#33322e'], [0.4, '#55524b'], [0.6, '#8f8a80'], [0.8, '#cfcac0'], [1, '#f3f1ec']];
 const MARS_S: Stops = [[0, '#2a0a05'], [0.25, '#5a1208'], [0.5, '#9a170b'], [0.75, '#d01b0b'], [1, '#ef5a3c']];
-/** Film looks: a colour grade applied on top of any palette. Values are 0..1 offsets and multipliers. */
-type Grade = { contrast?: number; sat?: number; fade?: number; gain?: number[]; shadow?: number[]; high?: number[] };
-export const FILMS: Record<string, Grade> = {
-  None: {},
-  'Kodak 2383': { contrast: 1.12, sat: 0.95, fade: 0.02, shadow: [0, 0.05, 0.08], high: [0.08, 0.03, -0.04] },
-  'Teal & orange': { contrast: 1.08, sat: 1.1, shadow: [-0.04, 0.06, 0.1], high: [0.12, 0.04, -0.08] },
-  'Bleach bypass': { contrast: 1.35, sat: 0.45 },
-  'Fuji Eterna': { contrast: 0.9, sat: 0.8, fade: 0.04, shadow: [0, 0.04, 0.03], high: [0, 0.03, 0] },
-  'Cinestill 800T': { contrast: 1.05, sat: 1.05, gain: [1, 0.97, 1.08], shadow: [-0.02, 0.02, 0.12], high: [0.1, 0, -0.02] },
-  Portra: { contrast: 0.95, sat: 0.9, fade: 0.03, shadow: [0.02, 0, -0.01], high: [0.06, 0.03, 0] },
-  Ektachrome: { contrast: 1.12, sat: 1.25, shadow: [0, 0, 0.05], high: [0, 0.02, 0.04] },
-  Noir: { contrast: 1.25, sat: 0.05 },
-  Moonlight: { contrast: 1.05, sat: 0.6, gain: [0.85, 0.95, 1.12], shadow: [0, 0.02, 0.1] },
-  'Golden hour': { sat: 1.05, gain: [1.12, 1, 0.82], high: [0.1, 0.05, -0.04] },
-  'Day for night': { contrast: 1.15, sat: 0.55, gain: [0.55, 0.68, 0.95] },
-  Expired: { contrast: 0.9, sat: 0.75, fade: 0.08, shadow: [0.06, 0, 0.06], high: [0.04, 0.06, -0.04] },
-  Technicolor: { contrast: 1.15, sat: 1.35 },
-  'Cross-process': { contrast: 1.2, sat: 1.2, shadow: [0, 0.06, 0.12], high: [0.08, 0.1, -0.1] },
-  Polaroid: { contrast: 0.85, sat: 0.8, fade: 0.1, shadow: [0, 0.04, 0.05], high: [0.05, 0.06, -0.02] },
-};
-function gradeRGB(c: RGB, g: Grade): RGB {
-  let [r, gg, b] = c.map((v) => v / 255);
-  const k = g.contrast ?? 1, sat = g.sat ?? 1, fade = g.fade ?? 0, gain = g.gain ?? [1, 1, 1], sh = g.shadow ?? [0, 0, 0], hi = g.high ?? [0, 0, 0];
-  [r, gg, b] = [r, gg, b].map((v) => (v - 0.5) * k + 0.5);
-  const l = 0.2126 * r + 0.7152 * gg + 0.0722 * b;
-  return [r, gg, b].map((v, i) => {
-    v = l + (v - l) * sat;
-    v += sh[i] * (1 - l) + hi[i] * l;
-    v = fade + v * (1 - fade);
-    return Math.round(clamp(v * gain[i]) * 255);
-  }) as RGB;
-}
-const toHex = (c: RGB) => '#' + c.map((v) => v.toString(16).padStart(2, '0')).join('');
-/** Grade a palette value: colour stops, a #hex colour, or an "r,g,b" string. */
-function gradeValue(v: Stops | string, g: Grade): Stops | string {
-  if (Array.isArray(v)) return v.map(([p, h]) => [p, toHex(gradeRGB(rgb(h), g))] as [number, string]);
-  if (v.startsWith('#')) return toHex(gradeRGB(rgb(v), g));
-  return gradeRGB(v.split(',').map(Number) as RGB, g).join(',');
-}
-
 export const PALETTES: Record<string, Record<string, PalDef>> = {
   saturn: {
     Gold: {
@@ -127,62 +87,56 @@ export const PALETTES: Record<string, Record<string, PalDef>> = {
     Amber: { sun: [[0, '#2a1404'], [0.3, '#7a3a08'], [0.55, '#c06a10'], [0.8, '#f0a030'], [1, '#ffe0a0']], prom: [[0, '#4a1a04'], [0.5, '#e06010'], [1, '#ffc070']], corona: '#f0a040', glow: '240,150,40' },
     Gold: { sun: [[0, '#3a2408'], [0.3, '#8a5a18'], [0.6, '#d09a3a'], [0.85, '#f6d68a'], [1, '#fff4d0']], prom: [[0, '#5a3a10'], [0.5, '#d09a3a'], [1, '#fff0b0']], corona: '#e6bf73', glow: '230,191,115' },
   },
+  // Earth looks share the site's colours: ink shadows, pearl clouds and ice, gold sand, a red dusk line.
   earth: {
     'Deep ocean': {
-      ocean: [[0, '#020a1c'], [0.3, '#06204e'], [0.55, '#0b3a80'], [0.75, '#1556a8'], [0.9, '#2a78c8'], [1, '#6ab0f0']], shallow: [[0, '#04202e'], [0.5, '#0a566e'], [0.8, '#178a9a'], [1, '#5cc8cc']],
-      green: [[0, '#08140a'], [0.35, '#163a18'], [0.6, '#2a5e26'], [0.8, '#4a8034'], [1, '#86a85a']], desert: [[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']],
-      tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
-      cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
-      atmo: [[0, '#0e2c5a'], [0.6, '#3a8ad0'], [1, '#a8d8ff']], moon: MOON_S, city: '#e6bf73', halo: '70,140,230', rim1: '#8ccaff', rim2: '#2f74c8',
+      ocean: [[0, '#05080f'], [0.3, '#0c1a30'], [0.55, '#16305a'], [0.75, '#24477a'], [0.9, '#3c6496'], [1, '#7f9cc0']],
+      shallow: [[0, '#08161c'], [0.5, '#1c4450'], [0.8, '#33707a'], [1, '#86b4b4']],
+      green: [[0, '#0a1008'], [0.35, '#1a2e16'], [0.6, '#2e4a24'], [0.8, '#4a6436'], [1, '#869a64']], desert: [[0, '#1f160a'], [0.4, '#7a5a2a'], [0.7, '#c09a55'], [0.9, '#e6bf73'], [1, '#f3dca0']],
+      tundra: [[0, '#191814'], [0.5, '#5e594c'], [1, '#a8a290']], ice: [[0, '#24231f'], [0.5, '#b8b2a6'], [1, '#f3f1ec']], cloud: [[0, '#1f1e1b'], [0.45, '#8f8a80'], [0.8, '#cfcac0'], [1, '#f3f1ec']], dusk: [[0, '#2a0a05'], [0.5, '#9a170b'], [1, '#ef5a3c']],
+      atmo: [[0, '#0e1c30'], [0.6, '#46688e'], [1, '#c8d4de']], moon: MOON_S, city: '#e6bf73', halo: '80,110,160', rim1: '#c8d4de', rim2: '#3c6496', bg: 'rgba(40,60,100,.12)',
     },
-    'Midnight': {
-      ocean: [[0, '#01050f'], [0.3, '#041430'], [0.55, '#082658'], [0.75, '#0e3a80'], [0.9, '#1c56a8'], [1, '#4a86d0']], shallow: [[0, '#021420'], [0.5, '#063e52'], [0.8, '#0e6a7a'], [1, '#3aa0a8']],
-      green: [[0, '#050e06'], [0.35, '#0e2810'], [0.6, '#1c4418'], [0.8, '#325e24'], [1, '#5e8040']], desert: [[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']],
-      tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
-      cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
-      atmo: [[0, '#081e44'], [0.6, '#2a68b0'], [1, '#88bff0']], moon: MOON_S, city: '#e6bf73', halo: '50,110,210', rim1: '#6eaef0', rim2: '#1f5aa8',
+    'Petrol': {
+      ocean: [[0, '#071214'], [0.3, '#0e2a30'], [0.55, '#18434b'], [0.75, '#285f66'], [0.9, '#3f7f84'], [1, '#7fb0ae']],
+      shallow: [[0, '#0c1c1c'], [0.5, '#245a58'], [0.8, '#3f8580'], [1, '#90c0b4']],
+      green: [[0, '#0e120a'], [0.35, '#232e18'], [0.6, '#3c4a26'], [0.8, '#5e6a3a'], [1, '#98a070']], desert: [[0, '#1f160a'], [0.4, '#7a5a2a'], [0.7, '#c09a55'], [0.9, '#e6bf73'], [1, '#f3dca0']],
+      tundra: [[0, '#191814'], [0.5, '#5e594c'], [1, '#a8a290']], ice: [[0, '#24231f'], [0.5, '#b8b2a6'], [1, '#f3f1ec']], cloud: [[0, '#1f1e1b'], [0.45, '#8f8a80'], [0.8, '#cfcac0'], [1, '#f3f1ec']], dusk: [[0, '#2a0a05'], [0.5, '#9a170b'], [1, '#ef5a3c']],
+      atmo: [[0, '#102226'], [0.6, '#4a7c80'], [1, '#c8dcd6']], moon: MOON_S, city: RED, halo: '90,140,140', rim1: '#b8d4cc', rim2: '#3f7f84', bg: 'rgba(40,80,80,.12)',
     },
-    'Storm': {
-      ocean: [[0, '#06090e'], [0.3, '#121c28'], [0.55, '#20324a'], [0.75, '#344c68'], [0.9, '#56708c'], [1, '#90a8bc']], shallow: [[0, '#0a1418'], [0.5, '#24424a'], [0.8, '#40686e'], [1, '#88a8a8']],
-      green: [[0, '#0a0e08'], [0.35, '#1e2816'], [0.6, '#334226'], [0.8, '#4e5e3a'], [1, '#7e8a64']], desert: [[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']],
-      tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
-      cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
-      atmo: [[0, '#14202e'], [0.6, '#4a6680'], [1, '#b0c4d4']], moon: MOON_S, city: '#e6bf73', halo: '110,140,170', rim1: '#a8bccc', rim2: '#4a6680',
+    'Midnight teal': {
+      ocean: [[0, '#030708'], [0.3, '#071618'], [0.55, '#0e2a2e'], [0.75, '#183e42'], [0.9, '#285a5c'], [1, '#5a8a88']],
+      shallow: [[0, '#050c0c'], [0.5, '#163a3a'], [0.8, '#2a5c5a'], [1, '#6a9a94']],
+      green: [[0, '#080906'], [0.35, '#14170f'], [0.6, '#242a1a'], [0.8, '#3a4228'], [1, '#6a7048']], desert: [[0, '#1f160a'], [0.4, '#7a5a2a'], [0.7, '#c09a55'], [0.9, '#e6bf73'], [1, '#f3dca0']],
+      tundra: [[0, '#191814'], [0.5, '#5e594c'], [1, '#a8a290']], ice: [[0, '#24231f'], [0.5, '#b8b2a6'], [1, '#f3f1ec']], cloud: [[0, '#1f1e1b'], [0.45, '#8f8a80'], [0.8, '#cfcac0'], [1, '#f3f1ec']], dusk: [[0, '#2a0a05'], [0.5, '#9a170b'], [1, '#ef5a3c']],
+      atmo: [[0, '#081414'], [0.6, '#2e5a5a'], [1, '#b8d0cc']], moon: MOON_S, city: RED, halo: '60,110,110', rim1: '#b8d0cc', rim2: '#285a5c', bg: 'rgba(30,60,60,.12)',
     },
-    'Kelp': {
-      ocean: [[0, '#020f10'], [0.3, '#062a2c'], [0.55, '#0c4848'], [0.75, '#156666'], [0.9, '#2a8a84'], [1, '#6cc0b4']], shallow: [[0, '#04201a'], [0.5, '#0c5a48'], [0.8, '#1e8a6a'], [1, '#6cd0a8']],
-      green: [[0, '#060f06'], [0.35, '#123216'], [0.6, '#225224'], [0.8, '#3a7036'], [1, '#6e9a5c']], desert: [[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']],
-      tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
-      cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
-      atmo: [[0, '#082a2a'], [0.6, '#2a9090'], [1, '#a8e8dc']], moon: MOON_S, city: '#e6bf73', halo: '60,170,160', rim1: '#9ce8dc', rim2: '#1f8a80',
+    'Slate & moss': {
+      ocean: [[0, '#0a0d12'], [0.3, '#161e2a'], [0.55, '#243244'], [0.75, '#364a60'], [0.9, '#52687e'], [1, '#8ea0b0']],
+      shallow: [[0, '#10161a'], [0.5, '#2e4450'], [0.8, '#4a6670'], [1, '#90a8ac']],
+      green: [[0, '#0e120a'], [0.35, '#232e18'], [0.6, '#3c4a26'], [0.8, '#5e6a3a'], [1, '#98a070']], desert: [[0, '#1f160a'], [0.4, '#7a5a2a'], [0.7, '#c09a55'], [0.9, '#e6bf73'], [1, '#f3dca0']],
+      tundra: [[0, '#191814'], [0.5, '#5e594c'], [1, '#a8a290']], ice: [[0, '#24231f'], [0.5, '#b8b2a6'], [1, '#f3f1ec']], cloud: [[0, '#1f1e1b'], [0.45, '#8f8a80'], [0.8, '#cfcac0'], [1, '#f3f1ec']], dusk: [[0, '#2a0a05'], [0.5, '#9a170b'], [1, '#ef5a3c']],
+      atmo: [[0, '#161c24'], [0.6, '#5a6c80'], [1, '#cfd6dc']], moon: MOON_S, city: '#e6bf73', halo: '120,135,155', rim1: '#cfd6dc', rim2: '#52687e', bg: 'rgba(60,70,90,.12)',
     },
-    'Blue Marble': {
-      ocean: [[0, '#03122e'], [0.3, '#0a3170'], [0.55, '#1252a8'], [0.75, '#1f74cf'], [0.9, '#3d9be6'], [1, '#8fd0ff']], shallow: [[0, '#062a3a'], [0.5, '#0f6f8c'], [0.8, '#21a7b8'], [1, '#7fe0e0']],
-      green: [[0, '#0c1a08'], [0.35, '#1f4a17'], [0.6, '#3c7a25'], [0.8, '#6a9f3a'], [1, '#a8c46a']], desert: [[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']],
-      tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
-      cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
-      atmo: [[0, '#123a6e'], [0.6, '#4aa6e8'], [1, '#bfe8ff']], moon: MOON_S, city: '#e6bf73', halo: '90,170,255', rim1: '#9fdcff', rim2: '#3d8fe0',
+    'Verdigris': {
+      ocean: [[0, '#06110f'], [0.3, '#0e2a24'], [0.55, '#1a463c'], [0.75, '#2c6656'], [0.9, '#4a8a74'], [1, '#94c0a8']],
+      shallow: [[0, '#0a1a16'], [0.5, '#2a6656'], [0.8, '#4c9078'], [1, '#a8d4bc']],
+      green: [[0, '#140e06'], [0.35, '#3a2812'], [0.6, '#6a4a22'], [0.8, '#9a7038'], [1, '#d6aa64']], desert: [[0, '#1f160a'], [0.4, '#7a5a2a'], [0.7, '#c09a55'], [0.9, '#e6bf73'], [1, '#f3dca0']],
+      tundra: [[0, '#191814'], [0.5, '#5e594c'], [1, '#a8a290']], ice: [[0, '#24231f'], [0.5, '#b8b2a6'], [1, '#f3f1ec']], cloud: [[0, '#1f1e1b'], [0.45, '#8f8a80'], [0.8, '#cfcac0'], [1, '#f3f1ec']], dusk: [[0, '#2a0a05'], [0.5, '#9a170b'], [1, '#ef5a3c']],
+      atmo: [[0, '#0e2420'], [0.6, '#4a8a74'], [1, '#d4e6d8']], moon: MOON_S, city: RED, halo: '90,150,130', rim1: '#d4e6d8', rim2: '#4a8a74', bg: 'rgba(40,80,70,.12)',
     },
-    'Cerulean': {
-      ocean: [[0, '#05183a'], [0.3, '#0d3f86'], [0.55, '#1866c4'], [0.75, '#2a8ae0'], [0.9, '#58b0f2'], [1, '#a8dcff']], shallow: [[0, '#08303e'], [0.5, '#12869e'], [0.8, '#2cc0cc'], [1, '#98f0ec']],
-      green: [[0, '#0e1e08'], [0.35, '#25581a'], [0.6, '#46902a'], [0.8, '#78b840'], [1, '#b8dc78']], desert: [[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']],
-      tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
-      cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
-      atmo: [[0, '#14427a'], [0.6, '#56b4f0'], [1, '#ccf0ff']], moon: MOON_S, city: '#e6bf73', halo: '100,185,255', rim1: '#b0e6ff', rim2: '#4aa0ee',
+    'Atlas': {
+      ocean: [[0, '#0c1012'], [0.3, '#1e2a2e'], [0.55, '#34474c'], [0.75, '#4e666a'], [0.9, '#6e8a8a'], [1, '#a8c0b8']],
+      shallow: [[0, '#121816'], [0.5, '#46605a'], [0.8, '#6e8a80'], [1, '#b8ccc0']],
+      green: [[0, '#14150f'], [0.35, '#3a3e2c'], [0.6, '#62684a'], [0.8, '#8e9268'], [1, '#c8c8a0']], desert: [[0, '#1f160a'], [0.4, '#7a5a2a'], [0.7, '#c09a55'], [0.9, '#e6bf73'], [1, '#f3dca0']],
+      tundra: [[0, '#191814'], [0.5, '#5e594c'], [1, '#a8a290']], ice: [[0, '#24231f'], [0.5, '#b8b2a6'], [1, '#f3f1ec']], cloud: [[0, '#1f1e1b'], [0.45, '#8f8a80'], [0.8, '#cfcac0'], [1, '#f3f1ec']], dusk: [[0, '#2a0a05'], [0.5, '#9a170b'], [1, '#ef5a3c']],
+      atmo: [[0, '#161c1c'], [0.6, '#6e8480'], [1, '#e8e4da']], moon: MOON_S, city: RED, halo: '140,160,150', rim1: '#e8e4da', rim2: '#6e8a8a', bg: 'rgba(70,90,85,.10)',
     },
-    'Teal & emerald': {
-      ocean: [[0, '#021a22'], [0.3, '#06404e'], [0.55, '#0c6474'], [0.75, '#14889a'], [0.9, '#38aebc'], [1, '#90e0e4']], shallow: [[0, '#063028'], [0.5, '#0e7a6a'], [0.8, '#24b8a0'], [1, '#90f0d8']],
-      green: [[0, '#06180e'], [0.35, '#0f4426'], [0.6, '#1f7040'], [0.8, '#3c9858'], [1, '#86c890']], desert: [[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']],
-      tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
-      cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
-      atmo: [[0, '#0a3440'], [0.6, '#3cb0c0'], [1, '#c0f4f4']], moon: MOON_S, city: '#e6bf73', halo: '70,200,210', rim1: '#a8f0f0', rim2: '#2a9aa8',
-    },
-    'True colour': {
-      ocean: [[0, '#040c1a'], [0.3, '#0c2240'], [0.55, '#173a64'], [0.75, '#28568a'], [0.9, '#4a78aa'], [1, '#8aaed0']], shallow: [[0, '#0a1e26'], [0.5, '#1e5262'], [0.8, '#3a8090'], [1, '#88b8c0']],
-      green: [[0, '#12160a'], [0.35, '#2e3a1a'], [0.6, '#4e5a2c'], [0.8, '#727a44'], [1, '#a4a474']], desert: [[0, '#231a10'], [0.4, '#7a5e3a'], [0.7, '#b49064'], [0.9, '#d6b88c'], [1, '#ecdcbc']],
-      tundra: [[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']], ice: [[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']],
-      cloud: [[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']], dusk: [[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']],
-      atmo: [[0, '#102848'], [0.6, '#4a80b8'], [1, '#b8d4ec']], moon: MOON_S, city: '#e6bf73', halo: '110,150,210', rim1: '#a8c8ec', rim2: '#4a78b0',
+    'Ink print': {
+      ocean: [[0, '#0b0b0c'], [0.4, '#17181a'], [0.7, '#26282b'], [1, '#3e4044']],
+      shallow: [[0, '#0e0e0f'], [0.6, '#2c2d2f'], [1, '#55565a']],
+      green: [[0, '#141310'], [0.4, '#4a463c'], [0.7, '#8f8a80'], [1, '#cfcac0']], desert: [[0, '#17140e'], [0.5, '#6e604a'], [1, '#d8c8a4']],
+      tundra: [[0, '#191814'], [0.5, '#5e594c'], [1, '#a8a290']], ice: [[0, '#24231f'], [0.5, '#b8b2a6'], [1, '#f3f1ec']], cloud: [[0, '#1f1e1b'], [0.45, '#8f8a80'], [0.8, '#cfcac0'], [1, '#f3f1ec']], dusk: [[0, '#2a0a05'], [0.5, '#9a170b'], [1, '#ef5a3c']],
+      atmo: [[0, '#161616'], [0.6, '#6e6a62'], [1, '#e8e4da']], moon: MOON_S, city: RED, halo: '200,195,185', rim1: '#e8e4da', rim2: '#6e6a62', bg: 'rgba(80,75,70,.10)',
     },
   },
 };
@@ -220,14 +174,14 @@ const slope = (dx: number, dy: number) => Math.abs(dx) > 2 * Math.abs(dy) ? '-' 
 
 type ShadeFn = (dx: number, dy: number, nz: number, v: number) => { v: number; ramp?: string[] };
 
-export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, firstPalette?: string, firstFilm?: string) {
-  let P: Record<string, any> = {}, palName = '', filmName = firstFilm && FILMS[firstFilm] ? firstFilm : 'None';
-  /** Activate a palette by name (falls back to the scene's first) under the current film grade. */
+export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, firstPalette?: string) {
+  let P: Record<string, any> = {}, palName = '';
+  /** Activate a palette by name (falls back to the scene's first); ramps become lookup tables. */
   const usePalette = (scene: string, name?: string) => {
-    const set = PALETTES[scene], g = FILMS[filmName];
+    const set = PALETTES[scene];
     palName = name && set[name] ? name : Object.keys(set)[0];
     P = {};
-    for (const [k, v] of Object.entries(set[palName])) { const gv = gradeValue(v, g); P[k] = typeof gv === 'string' ? gv : lut(gv); }
+    for (const [k, v] of Object.entries(set[palName])) P[k] = typeof v === 'string' ? v : lut(v);
   };
   const ctx = cv.getContext('2d')!;
   let W = 0, H = 0, C = 12, phone = false, mouse: [number, number] | null = null, oy = 0;
@@ -505,11 +459,11 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
       draw() {
         const { x: cx, y: cy, r: R } = L.e, light = norm([-0.78, -0.22, 0.58]), half = norm([light[0], light[1], light[2] + 1]);
         const tl = 0.41, ct = Math.cos(tl), st = Math.sin(tl), fine = phone ? 5 : 6;
-        backdrop(['rgba(40,70,130,.16)', 'rgba(30,40,80,.10)']);
+        backdrop([P.bg]);
         drawStars((x, y) => clamp((Math.hypot(x - cx, y - cy) / R - 1) / 0.5));
         ctx.globalAlpha = 1;
         const g = ctx.createRadialGradient(cx, cy, R * 0.98, cx, cy, R * 1.3);
-        g.addColorStop(0, `rgba(${P.halo},.36)`); g.addColorStop(1, `rgba(${P.halo},0)`);
+        g.addColorStop(0, `rgba(${P.halo},.3)`); g.addColorStop(1, `rgba(${P.halo},0)`);
         ctx.fillStyle = g; ctx.fillRect(0, cy - R * 1.4 + oy * 0, W, R * 2.8);
         const occl = (x: number, y: number) => (x - cx) ** 2 + (y - cy) ** 2 < R * R;
         const moonFn = lunar(light);
@@ -607,9 +561,6 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
   return {
     set(name: string, palette?: string) { if (!scenes[name]) return; cur = name; usePalette(cur, palette); layout(); frame(); },
     setPalette(name: string) { usePalette(cur, name); frame(); },
-    setFilm(name: string) { if (FILMS[name]) { filmName = name; usePalette(cur, palName); frame(); } },
-    get film() { return filmName; },
-    get films() { return Object.keys(FILMS); },
     get scene() { return cur; },
     get palette() { return palName; },
     get palettes() { return Object.keys(PALETTES[cur]); },

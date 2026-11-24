@@ -1,9 +1,9 @@
 ---
-// Fixed night-sky canvas behind every page. Scene and palette come from site.ts; `?scene=` and `?palette=`
-// (and `?film=`) override them, and `?scenes` shows a picker (kept for the browser session) to compare them across pages.
+// Fixed night-sky canvas behind every page. Scene and look come from site.ts; `?scene=` and `?palette=`
+// override them, and `?scenes` shows a picker of the scene's looks (kept for the browser session).
 import { sky } from '../data/site';
 ---
-<canvas class="sky" id="sky" aria-hidden="true" data-scene={sky.scene} data-palette={sky.palette} data-film={sky.film}></canvas>
+<canvas class="sky" id="sky" aria-hidden="true" data-scene={sky.scene} data-palette={sky.palette}></canvas>
 
 <script>
   import { startSky, SCENES } from '../scripts/sky';
@@ -15,35 +15,26 @@ import { sky } from '../data/site';
   const q = new URLSearchParams(location.search);
   const store = (k: string, v?: string) => { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch { /* storage blocked */ } return null; };
   if (q.has('scenes')) store('sky-pick', '1');
-  const scene = q.get('scene') || store('sky-scene') || cv.dataset.scene || 'saturn';
+  const scene = q.get('scene') || cv.dataset.scene || 'earth';
   const palette = q.get('palette') || store(`sky-pal-${scene}`) || cv.dataset.palette || undefined;
-  const film = q.get('film') || store('sky-film') || cv.dataset.film || undefined;
-  const sky = startSky(cv, scene, CALM, palette, film);
+  const sky = startSky(cv, scene, CALM, palette);
 
   if (store('sky-pick')) {
     const box = document.createElement('div');
     box.className = 'sky-pick';
     box.setAttribute('role', 'group');
-    box.setAttribute('aria-label', 'Sky scene and palette');
+    box.setAttribute('aria-label', 'Sky look');
     const render = () => {
-      const btn = (kind: string, k: string, label: string, on: boolean) => `<button type="button" data-${kind}="${k}" aria-pressed="${on}">${label}</button>`;
-      box.innerHTML = '<span>Scene</span>' + Object.entries(SCENES).map(([k, v]) => btn('scene', k, v, k === sky.scene)).join('')
-        + '<span>Palette</span>' + sky.palettes.map((k) => btn('pal', k, k, k === sky.palette)).join('')
-        + '<span>Film</span>' + sky.films.map((k) => btn('film', k, k, k === sky.film)).join('')
-        + `<button type="button" class="sky-pick-min" data-min="1">${box.classList.contains('min') ? 'Show picker' : 'Hide'}</button>`;
+      box.innerHTML = '<span>Look</span>'
+        + sky.palettes.map((k) => `<button type="button" data-pal="${k}" aria-pressed="${k === sky.palette}">${k}</button>`).join('')
+        + `<button type="button" class="sky-pick-min" data-min="1">${box.classList.contains('min') ? 'Show looks' : 'Hide'}</button>`;
     };
     box.addEventListener('click', (e) => {
       const b = (e.target as HTMLElement).closest('button');
       if (!b) return;
-      if (b.dataset.scene) {
-        sky.set(b.dataset.scene, store(`sky-pal-${b.dataset.scene}`) || undefined);
-        store('sky-scene', b.dataset.scene);
-      } else if (b.dataset.pal) {
+      if (b.dataset.pal) {
         sky.setPalette(b.dataset.pal);
         store(`sky-pal-${sky.scene}`, b.dataset.pal);
-      } else if (b.dataset.film) {
-        sky.setFilm(b.dataset.film);
-        store('sky-film', b.dataset.film);
       } else if (b.dataset.min) {
         box.classList.toggle('min');
       }

@@ -1,7 +1,7 @@
 /* ── gutter ruler: background decoration printed on the page, scrolls 1:1 with it (≥1440) ──
    Spine sits mid-gutter (never closer than 64px to content). The footer carries a dark copy so
    the seam falls on the footer's diagonal. Positions come from src/scripts/ruler.ts. */
-main{position:relative}
+main{position:relative;z-index:1}
 .foot-block{position:relative;z-index:1}
 .foot-block>.wrap{position:relative;z-index:1}
 .rl{display:none;position:absolute;top:0;pointer-events:none}
@@ -26,12 +26,12 @@ main{position:relative}
    target, can be dragged to scroll, and turns pearl over the black footer. */
 .rh{display:none;position:fixed;top:0;left:0;width:0;height:0;pointer-events:none;z-index:3;will-change:transform}
 @media (min-width:1440px){.rh{display:block}}
-.rh .th{position:absolute;left:-6px;top:-20px;width:13px;height:40px;background:var(--ink);border-radius:2px;
+.rh .th{position:absolute;left:-6px;top:-20px;width:13px;height:40px;background:var(--pearl);border-radius:2px;
   pointer-events:auto;cursor:grab;touch-action:none;transition:background-color .2s,transform .15s}
-.rh .th::before{content:"";position:absolute;left:4px;right:4px;top:50%;height:1px;margin-top:-4px;background:var(--pearl);
-  box-shadow:0 4px 0 var(--pearl),0 8px 0 var(--pearl);opacity:.75;transition:background-color .2s,box-shadow .2s}
+.rh .th::before{content:"";position:absolute;left:4px;right:4px;top:50%;height:1px;margin-top:-4px;background:var(--night);
+  box-shadow:0 4px 0 var(--night),0 8px 0 var(--night);opacity:.75;transition:background-color .2s,box-shadow .2s}
 .rh .th:hover{transform:scaleX(1.15)}
 .rh.drag .th{cursor:grabbing;transform:scaleX(1.15)}
 .rh.dk .th{background:var(--pearl)}
-.rh.dk .th::before{background:var(--ink);box-shadow:0 4px 0 var(--ink),0 8px 0 var(--ink)}
+.rh.dk .th::before{background:var(--night);box-shadow:0 4px 0 var(--night),0 8px 0 var(--night)}
 @media (prefers-reduced-motion:reduce){.rh .th,.rh .th::before,.rl .lb{transition:none}}

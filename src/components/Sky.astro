@@ -1,0 +1,38 @@
+---
+// Fixed night-sky canvas behind every page. The scene comes from site.ts; `?scene=<name>` overrides it,
+// and `?scenes` shows a picker (kept for the browser session) to compare scenes across pages.
+import { sky } from '../data/site';
+---
+<canvas class="sky" id="sky" aria-hidden="true" data-scene={sky.scene}></canvas>
+
+<script>
+  import { startSky, SCENES } from '../scripts/sky';
+
+  // Text that sits straight on the sky; the sky dims behind each of these boxes. Keep them tight (text lines,
+  // not whole sections) so the scene stays visible around them. The Now aside is a glass panel instead.
+  const CALM = '.hero-text>*,.sec-head>*,.bg>div,.sheet-head>*,.sheet-sec-head>*,.note2,.sheet-toc,.sheet-toc-m,[data-sky-calm]';
+  const cv = document.getElementById('sky') as HTMLCanvasElement;
+  const q = new URLSearchParams(location.search);
+  const store = (k: string, v?: string) => { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch { /* storage blocked */ } return null; };
+  if (q.has('scenes')) store('sky-pick', '1');
+  const scene = q.get('scene') || store('sky-scene') || cv.dataset.scene || 'saturn';
+  const sky = startSky(cv, scene, CALM);
+
+  if (store('sky-pick')) {
+    const box = document.createElement('div');
+    box.className = 'sky-pick';
+    box.setAttribute('role', 'group');
+    box.setAttribute('aria-label', 'Sky scene');
+    box.innerHTML = '<span>Sky scene · preview</span>' + Object.entries(SCENES).map(([k, v]) => `<button type="button" data-k="${k}">${v}</button>`).join('');
+    const mark = () => box.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.k === sky.scene)));
+    box.addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest('button');
+      if (!b?.dataset.k) return;
+      sky.set(b.dataset.k);
+      store('sky-scene', b.dataset.k);
+      mark();
+    });
+    document.body.append(box);
+    mark();
+  }
+</script>

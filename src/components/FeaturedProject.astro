@@ -8,6 +8,7 @@ const p = Astro.props.project.data;
 <article class="feat" aria-labelledby="feat-h">
   <figure class="feat-vis">
     <div class="ink">
+      <canvas class="field" aria-hidden="true"></canvas>
       <figcaption>How it runs on the floor</figcaption>
       <ArchDiagram />
     </div>
@@ -24,3 +25,7 @@ const p = Astro.props.project.data;
     {p.note && <div class="feat-foot"><span>{p.note}</span></div>}
   </div>
 </article>
+
+<script>
+  import '../scripts/field';
+</script>

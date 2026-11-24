@@ -34,6 +34,11 @@ export const site = {
   },
 };
 
+// Night-sky scene behind every page (src/scripts/sky.ts): 'saturn' | 'sun' | 'earth'.
+export const sky = {
+  scene: 'saturn',
+};
+
 export const links = {
   email: 'boscochanam@gmail.com',
   github: 'https://github.com/boscochanam',

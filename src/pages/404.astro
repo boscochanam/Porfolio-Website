@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import ArticleFooter from '../components/ArticleFooter.astro';
+import { site } from '../data/site';
+---
+<Base title={`Page not found — ${site.name}`} description="This page does not exist.">
+  <Header />
+  <main>
+    <div class="wrap">
+      <section class="nf">
+        <canvas id="nf-cv" aria-hidden="true"></canvas>
+        <div class="nf-txt">
+          <p class="label">Error 404</p>
+          <h1>This page got scrambled.</h1>
+          <p>Nothing lives at this address. Try <code>R U R' U'</code> or go back.</p>
+          <a href="/">Back to home</a>
+        </div>
+      </section>
+    </div>
+  </main>
+  <ArticleFooter />
+</Base>
+
+<script>
+  // "404" and a scrambled cube drawn on a hidden canvas, redrawn as shimmering glyphs.
+  import { ascii, isoCube, glow, scene, REDUCE } from '../scripts/ascii';
+
+  const cv = document.getElementById('nf-cv') as HTMLCanvasElement;
+  const src = scene(480, 270);
+  const CUBE: Record<string, string> = { y: '#e9b500', b: '#245a94', r: '#b32b23', g: '#2d7a4b', o: '#c16527', w: '#e8e4da' };
+  const faces = ['rybwgoybr', 'gowbrywgo', 'owrybgrow'].map((f) => [...f].map((c) => CUBE[c]));
+  const draw = (t: number) => {
+    const x = src.getContext('2d')!;
+    x.fillStyle = '#000'; x.fillRect(0, 0, 480, 270);
+    glow(x, 370, 150, 150, 0.08);
+    x.fillStyle = '#fff'; x.font = '900 128px Inter,sans-serif'; x.fillText('404', 22, 170);
+    isoCube(x, 370, 150, 72, faces[0], faces[1], faces[2]);
+    ascii(cv, src, { cell: 7, shimmer: Math.floor(t * 6) });
+  };
+  document.fonts.ready.then(() => draw(0));
+  addEventListener('resize', () => draw(0));
+  if (!REDUCE) {
+    let last = 0;
+    const loop = (now: number) => { if (now - last >= 160) { last = now; draw(now / 1000); } requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+  }
+</script>

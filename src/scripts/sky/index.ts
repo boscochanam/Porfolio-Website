@@ -43,6 +43,7 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
   // Inner pages start receded, since their content begins at the top.
   function recede() {
     const p = home ? clamp(scrollY / (k.H * 0.9)) : 1;
+    k.p = p;
     k.oy = -p * k.H * 0.06;
     cv.style.opacity = String(1 - 0.45 * p);
   }

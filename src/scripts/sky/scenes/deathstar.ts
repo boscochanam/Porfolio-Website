@@ -23,7 +23,7 @@ export const deathstar: Scene = {
   layout(k) {
     const { W, H, phone } = k;
     // same open spot as Earth: the hero's right side on desktop, low right on phones
-    k.L.d = phone ? { x: W * 0.7, y: H * 0.8, r: W * 0.34 } : { x: W * 0.83, y: H * 0.42, r: Math.min(H * 0.25, W * 0.135) };
+    k.L.d = phone ? { x: W * 0.7, y: H * 0.8, r: W * 0.34 } : { x: W * 0.83, y: Math.min(H * 0.42, 390), r: Math.min(H * 0.25, W * 0.135, 225) };
     k.pivot = phone ? { x: W * 0.2, y: -H * 0.4 } : { x: W * 0.42, y: -H * 0.9 };
     k.gap = 0.35;
   },

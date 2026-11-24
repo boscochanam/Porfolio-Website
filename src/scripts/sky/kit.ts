@@ -39,6 +39,8 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     T: 0,
     /** Vertical lift of scene space, set by the engine as the page scrolls. */
     oy: 0,
+    /** How far the page has moved past the hero: 0 at the top of home, 1 further down and on inner pages. */
+    p: 0,
     mouse: null as [number, number] | null,
     /** Active look: ramps as lookup tables, single colours as strings. */
     P: {} as Record<string, any>,

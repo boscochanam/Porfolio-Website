@@ -1,14 +1,24 @@
 // Earth and Moon: real coastlines (land.ts) on a tilted, turning globe, with clouds, ice, coastal shallows,
-// a sun glint, city lights on the night side, a lit atmosphere rim and the Moon on its orbit.
+// a sun glint, city lights on the night side, a lit atmosphere rim and the Moon on its orbit. On desktop a
+// distant Sun sits in the open space left of the hero text, and the light comes from where it is.
 import { hash } from '../../ascii';
+import { drawSun } from '../suns';
 import { TAU, clamp, fbm, lunar, norm, smooth, wrap } from '../math';
 import { isLand } from '../land';
 import type { Kit, Scene } from '../kit';
 
-const LIGHT = norm([-0.78, -0.22, 0.58]);
-const HALF = norm([LIGHT[0], LIGHT[1], LIGHT[2] + 1]); // half vector for the ocean glint
+const DEFAULT_LIGHT = norm([-0.78, -0.22, 0.58]);
+let LIGHT = DEFAULT_LIGHT;
+let HALF = norm([LIGHT[0], LIGHT[1], LIGHT[2] + 1]); // half vector for the ocean glint
+let moonShade = lunar(LIGHT);
 const AXIS = 0.41; // axial tilt on screen, radians
-const moonShade = lunar(LIGHT);
+
+/** Point the light from the Sun toward Earth; z keeps the Sun a little in front so the globe stays mostly lit. */
+function aim(light: number[]) {
+  LIGHT = light;
+  HALF = norm([LIGHT[0], LIGHT[1], LIGHT[2] + 1]);
+  moonShade = lunar(LIGHT);
+}
 // The great deserts as lon/lat boxes in degrees (west, east, south, north); noise frays their edges.
 const DESERTS = [
   [-17, 35, 15, 32], [35, 60, 13, 32], [55, 75, 24, 35], [52, 112, 36, 47], // Sahara, Arabia, Iran-Thar, Central Asia-Gobi
@@ -24,20 +34,34 @@ export const earth: Scene = {
   label: 'Earth and Moon',
   layout(k) {
     const { W, H, phone } = k;
-    // Desktop: the whole globe sits in the hero's open right side, between the bar and the first section rule.
-    k.L.e = phone ? { x: W * 0.7, y: H * 0.8, r: W * 0.34 } : { x: W * 0.83, y: H * 0.42, r: Math.min(H * 0.25, W * 0.135) };
+    // Desktop: over the hero the whole globe sits in its open right side, between the bar and the first section
+    // rule. Past the hero (and on inner pages) it settles into the bottom-right corner, rising from the edge.
+    k.L.e0 = phone ? { x: W * 0.7, y: H * 0.8, r: W * 0.34 } : { x: W * 0.83, y: Math.min(H * 0.42, 390), r: Math.min(H * 0.25, W * 0.135, 225) };
+    k.L.e1 = phone ? k.L.e0 : { x: W * 0.9, y: H * 1.02, r: Math.min(H * 0.38, W * 0.24) };
     k.pivot = phone ? { x: W * 0.2, y: -H * 0.4 } : { x: W * 0.42, y: -H * 0.9 };
     k.gap = 0.35; // near-seamless mosaic
+    // no room for the Sun beside phone-width text
+    // centred in the photo column (wrap 1240px, gutter 32px, column 132px), below the headshot
+    k.L.sun = phone ? null : { x: Math.max(0, (W - 1240) / 2) + 32 + 66, y: H * 0.5, r: 18 };
+    k.L.sunStyle = new URLSearchParams(location.search).get('sun') || 'point'; // ?sun= previews a style (suns.ts)
+    if (!k.L.sun) aim(DEFAULT_LIGHT);
   },
   draw(k: Kit) {
     const { ctx, P, L, T, W, phone, tile, sphere, orbiter, calmAt } = k;
-    const { x: cx, y: cy, r: R } = L.e, ct = Math.cos(AXIS), st = Math.sin(AXIS), fine = phone ? 5 : 6;
+    const q = smooth(0, 1, k.p), mix = (a: number, b: number) => a + (b - a) * q;
+    const cx = mix(L.e0.x, L.e1.x), cy = mix(L.e0.y, L.e1.y), R = mix(L.e0.r, L.e1.r), ct = Math.cos(AXIS), st = Math.sin(AXIS), fine = phone ? 5 : 6;
     k.backdrop([P.bg]);
     k.drawStars((x, y) => clamp((Math.hypot(x - cx, y - cy) / R - 1) / 0.5));
     ctx.globalAlpha = 1;
     const g = ctx.createRadialGradient(cx, cy, R * 0.98, cx, cy, R * 1.3);
     g.addColorStop(0, `rgba(${P.halo},.15)`); g.addColorStop(1, `rgba(${P.halo},0)`);
     ctx.fillStyle = g; ctx.fillRect(0, cy - R * 1.4, W, R * 2.8);
+    if (L.sun) {
+      // light comes from the Sun wherever Earth is; the Sun itself fades as content takes over the left side
+      const ux = L.sun.x - cx, uy = L.sun.y - cy, d = Math.hypot(ux, uy);
+      aim(norm([(ux / d) * 0.81, (uy / d) * 0.81, 0.58]));
+      drawSun(k, L.sun, L.sunStyle, 1 - smooth(0, 0.5, k.p));
+    }
     const occl = (x: number, y: number) => (x - cx) ** 2 + (y - cy) ** 2 < R * R;
     const near = (lon: number, lat: number, e: number) => isLand(lon + e, lat) || isLand(lon - e, lat) || isLand(lon, lat + e) || isLand(lon, lat - e);
     orbiter(cx, cy, 1.45 * R, 0.09, -0.2, 0.28, R * 0.18, P.moon, LIGHT, true, occl, moonShade, fine);

@@ -41,15 +41,19 @@ const MARS = ['#2a0a05', '#5a1208', '#9a170b', '#d01b0b', '#ef5a3c'];
 
 const SUN = lut([[0, '#4a1004'], [.2, '#8f240a'], [.4, '#c2410f'], [.58, '#e2691b'], [.74, '#f2932c'], [.86, '#f9bd52'], [.95, '#fde39a'], [1, '#fff6d8']]);
 const PROM = lut([[0, '#5a1208'], [.5, RED], [1, '#f2a03a']]);
-const OCEAN = lut([[0, '#050f20'], [.35, '#0b2547'], [.6, '#164477'], [.85, '#2c6aa8'], [1, '#5b97cf']]);
-const GREEN = lut([[0, '#0f170b'], [.4, '#2a3f1c'], [.7, '#4f6a2c'], [1, '#93995a']]);
-const DESERT = lut([[0, '#241a0c'], [.45, '#6b4f26'], [.75, '#a8844a'], [1, '#e0c48e']]);
-const ICE = lut([[0, '#2a3038'], [.5, '#9aa4ae'], [1, '#f4f7f9']]);
+const OCEAN = lut([[0, '#03122e'], [0.3, '#0a3170'], [0.55, '#1252a8'], [0.75, '#1f74cf'], [0.9, '#3d9be6'], [1, '#8fd0ff']]);
+const GREEN = lut([[0, '#0c1a08'], [0.35, '#1f4a17'], [0.6, '#3c7a25'], [0.8, '#6a9f3a'], [1, '#a8c46a']]);
+const DESERT = lut([[0, '#2a1a0a'], [0.4, '#8a5a2a'], [0.7, '#d09a55'], [0.9, '#ecc48a'], [1, '#f8e2b8']]);
+const ICE = lut([[0, '#2c3a4a'], [0.5, '#b8c8d8'], [1, '#ffffff']]);
 const ZONE = lut([[0, '#2a1d10'], [0.4, '#8a6534'], [0.7, '#d9ad62'], [1, '#f6e2ac']]);
 const BELT = lut([[0, '#22150c'], [0.4, '#6e4524'], [0.7, '#b07a3c'], [1, '#dcae6a']]);
 const POLE = lut([[0, '#1c2026'], [0.5, '#5d6a76'], [1, '#a9b6c0']]);
 const RINGL = lut([[0, '#1d1a16'], [0.45, '#7d7262'], [0.8, '#c9bc9c'], [1, '#efe6cc']]);
-const CLOUD = lut([[0, '#20242b'], [.5, '#8d96a0'], [1, '#f3f5f7']]);
+const SHALLOW = lut([[0, '#062a3a'], [0.5, '#0f6f8c'], [0.8, '#21a7b8'], [1, '#7fe0e0']]);
+const TUNDRA = lut([[0, '#1c1a16'], [0.5, '#6b6650'], [1, '#b8b49a']]);
+const DUSK = lut([[0, '#2a1410'], [0.5, '#a8583a'], [1, '#f2a06a']]);
+const ATMO = lut([[0, '#123a6e'], [0.6, '#4aa6e8'], [1, '#bfe8ff']]);
+const CLOUD = lut([[0, '#2a3038'], [0.4, '#a8b2bd'], [0.75, '#eef2f6'], [1, '#ffffff']]);
 
 // ── math ─────────────────────────────────────────────
 const norm = (v: number[]) => { const l = Math.hypot(...v); return v.map((x) => x / l); };
@@ -365,7 +369,7 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string) 
         drawStars((x, y) => clamp((Math.hypot(x - cx, y - cy) / R - 1) / 0.5));
         ctx.globalAlpha = 1;
         const g = ctx.createRadialGradient(cx, cy, R * 0.98, cx, cy, R * 1.3);
-        g.addColorStop(0, 'rgba(90,150,230,.26)'); g.addColorStop(1, 'rgba(90,150,230,0)');
+        g.addColorStop(0, 'rgba(90,170,255,.36)'); g.addColorStop(1, 'rgba(90,170,255,0)');
         ctx.fillStyle = g; ctx.fillRect(0, cy - R * 1.4 + oy * 0, W, R * 2.8);
         const occl = (x: number, y: number) => (x - cx) ** 2 + (y - cy) ** 2 < R * R;
         const moonFn = lunar(light);
@@ -379,16 +383,20 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string) 
             if (land && al < 1.15 && hash(Math.floor(lon * 90), Math.floor(lat * 90), 3) > 0.83) return { v: 0.8, ramp: [WARM] };
             return { v: land ? 0.1 : 0.04, ramp: land ? GREEN : OCEAN };
           }
-          const shade = 0.1 + 0.9 * day * (0.55 + 0.45 * nz);
+          const shade = 0.12 + 0.88 * day * (0.72 + 0.28 * nz);
+          // Sunlit limb: the atmosphere scatters blue over whatever is below
+          if (nz < 0.22 && day > 0.3) return { v: clamp(shade * (0.55 + 0.45 * (1 - nz / 0.22))), ramp: ATMO };
           // Clouds: domain-warped noise, drifting slower than the surface turns
           const w = fbm(lon * 3 + 4, lat * 3);
           const cl = fbm(lon * 1.8 + 0.9 * w + T * 0.012, lat * 4.2 + 0.6 * w);
-          if (cl > 0.64) return { v: shade * (0.6 + 0.4 * smooth(0.64, 0.74, cl)), ramp: CLOUD };
+          // Clouds turn orange where they cross into dusk
+          if (cl > 0.64) return { v: clamp(shade * (0.65 + 0.45 * smooth(0.64, 0.74, cl))), ramp: day < 0.45 ? DUSK : CLOUD };
           if (al > 1.15 || (land && al > 1.02)) return { v: shade, ramp: ICE };
-          if (land) return { v: shade * 0.92, ramp: al > 0.26 && al < 0.62 && fbm(lon * 2, lat * 2) > 0.5 ? DESERT : GREEN };
-          // Ocean with a sun glint
+          if (land) return { v: shade, ramp: al > 0.9 ? TUNDRA : al > 0.26 && al < 0.62 && fbm(lon * 2, lat * 2) > 0.5 ? DESERT : GREEN };
+          // Ocean: turquoise shallows next to land, a sun glint on open water
+          const e = 0.045, coast = isLand(lon + e, lat) || isLand(lon - e, lat) || isLand(lon, lat + e) || isLand(lon, lat - e);
           const spec = Math.pow(Math.max(0, dx * half[0] + dy * half[1] + nz * half[2]), 60);
-          return { v: clamp(shade * 0.85 + spec * 0.9) };
+          return { v: clamp(shade * 0.9 + spec * 0.9), ramp: coast && al < 1 ? SHALLOW : OCEAN };
         }, undefined, fine);
         // Atmosphere: a thin lit rim that fades toward the night side
         for (let a = 0; a < TAU; a += fine / (R * 1.02)) {
@@ -396,7 +404,7 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string) 
           if (lit < 0.05) continue;
           for (const k of [1.012, 1.03]) {
             const x = cx + Math.cos(a) * R * k, y = cy + Math.sin(a) * R * k;
-            tile(Math.floor(x / fine) * fine, Math.floor(y / fine) * fine, k < 1.02 ? '#7fb2e5' : '#3f6fae', 0.5, lit * (k < 1.02 ? 0.8 : 0.45) * calmAt(x, y), fine);
+            tile(Math.floor(x / fine) * fine, Math.floor(y / fine) * fine, k < 1.02 ? '#9fdcff' : '#3d8fe0', 0.5, lit * (k < 1.02 ? 0.95 : 0.55) * calmAt(x, y), fine);
           }
         }
         orbiter(cx, cy, R, 2.5 * R, 0.09, -0.2, 0.28, R * 0.27, MOON, light, false, occl, moonFn, fine);

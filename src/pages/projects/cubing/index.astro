@@ -1,0 +1,178 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Header from '../../../components/Header.astro';
+import ArticleFooter from '../../../components/ArticleFooter.astro';
+import CubingCase from '../../../components/CubingCase.astro';
+import CubingToc from '../../../components/CubingToc.astro';
+import { site } from '../../../data/site';
+import { sheet, cubingData, caseById, sheetHolds } from '../../../data/cubing';
+import '../../../styles/cubing.css';
+
+const toc = [
+  { href: '#sheet-top', label: 'Overview' },
+  ...sheet.phases.map((p) => ({ href: `#${p.id}`, label: p.toc })),
+  { href: '#next-step', label: 'Next step' },
+  { href: '#changes', label: 'What changed' },
+  { href: '#method', label: 'Method' },
+];
+const nextCount = sheet.nextStep.groups.reduce((n, g) => n + g.cases.length, 0);
+const description =
+  'Sixteen 2-look OLL and PLL algorithms, each run on a 54-facelet cube model: setups, recognition notes, case diagrams and the full PLL checklist.';
+---
+<Base title={`${sheet.title}: verified sheet — ${site.name}`} description={description} ogType="article">
+  <Header />
+  <main>
+    <header class="wrap sheet-head" id="sheet-top">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/#gallery"><span aria-hidden="true">←</span> Gallery</a>
+        <span class="sep" aria-hidden="true">/</span>
+        <span>Coding</span>
+      </nav>
+      <div class="sheet-title">
+        <div>
+          <p class="label">{sheet.kind}</p>
+          <h1>{sheet.title}</h1>
+        </div>
+        <p class="sheet-stamp"><span>Verified</span><b>16 / 16</b><span>{sheet.date}</span></p>
+      </div>
+      <p class="sheet-lede">{sheet.summary}</p>
+      <div class="spec" role="list">
+        {sheet.stats.map((s) => (
+          <div class:list={['spec-cell', { accent: s.accent }]} role="listitem">
+            <b>{s.value}</b>
+            <span>{s.label}</span>
+          </div>
+        ))}
+      </div>
+      <div class="legend">
+        <span><i class="sw sw-y" aria-hidden="true"></i>yellow sticker</span>
+        <span><i class="sw sw-n" aria-hidden="true"></i>not yellow</span>
+        <span class="legend-note">{sheet.legend.hold}</span>
+        <span class="legend-note">{sheet.legend.burst}</span>
+      </div>
+    </header>
+
+    <div class="wrap sheet-layout">
+      <aside class="sheet-toc">
+        <p class="label">On this sheet</p>
+        <CubingToc items={toc} />
+        <p class="sheet-hold"><b>Hold</b>{sheet.legend.hold}</p>
+      </aside>
+
+      <div class="sheet-body">
+        <details class="sheet-toc-m">
+          <summary>On this sheet</summary>
+          <CubingToc items={toc} />
+        </details>
+
+        {sheet.phases.map((p) => (
+          <section class="sheet-sec" id={p.id} aria-labelledby={`${p.id}-h`}>
+            <header class="sheet-sec-head">
+              <div>
+                <p class="sec-step">{p.step}</p>
+                <h2 id={`${p.id}-h`}>{p.title}</h2>
+                <p class="goal">{p.goal}</p>
+              </div>
+              <span class="count">{p.caseIds.length} cards</span>
+            </header>
+            {p.note && <p class="fam">{p.note}</p>}
+            <div class="case-grid">
+              {p.caseIds.map((id) => {
+                const c = caseById.get(id);
+                return c ? <CubingCase c={c} /> : null;
+              })}
+            </div>
+          </section>
+        ))}
+
+        <section class="sheet-sec" id="next-step" aria-labelledby="next-step-h">
+          <header class="sheet-sec-head">
+            <div>
+              <p class="sec-step">Learn</p>
+              <h2 id="next-step-h">{sheet.nextStep.title}</h2>
+              <p class="goal">{sheet.nextStep.goal}</p>
+            </div>
+            <span class="count">{nextCount} to learn</span>
+          </header>
+
+          <div class="checklist" data-checklist>
+            <div class="check-top">
+              <p class="check-progress" aria-live="polite"><b data-check-count>0</b> of {nextCount} learned</p>
+              <div class="check-bar" aria-hidden="true"><i data-check-bar></i></div>
+              <button class="check-reset" type="button" data-check-reset hidden>Reset</button>
+            </div>
+            <div class="check-groups">
+              {sheet.nextStep.groups.map((g) => (
+                <fieldset>
+                  <legend>{g.label}</legend>
+                  <ul>
+                    {g.cases.map((name) => (
+                      <li><label><input type="checkbox" value={name} /><span>{name}</span></label></li>
+                    ))}
+                  </ul>
+                </fieldset>
+              ))}
+            </div>
+          </div>
+
+          <p class="note2">{sheet.nextStep.note}</p>
+        </section>
+
+        <section class="sheet-sec" id="changes" aria-labelledby="changes-h">
+          <header class="sheet-sec-head">
+            <div>
+              <p class="sec-step">Audit</p>
+              <h2 id="changes-h">What the checks changed</h2>
+            </div>
+          </header>
+          <ul class="changed">
+            <li>
+              <b>{sheet.changes.z.id}</b>. Your list gave <code>{sheet.changes.z.given}</code>. {sheet.changes.z.note}
+              The sheet uses <code>{sheet.changes.z.used}</code>, {sheet.changes.z.found}
+            </li>
+          </ul>
+          <p class="note2">{sheet.changes.holdsIntro}</p>
+          <ul class="changed holds">
+            {sheetHolds.map((c) => <li><b>{c.id} {c.name}</b>: {c.hold}</li>)}
+          </ul>
+        </section>
+
+        <section class="sheet-sec" id="method" aria-labelledby="method-h">
+          <header class="sheet-sec-head">
+            <div>
+              <p class="sec-step">Verification</p>
+              <h2 id="method-h">Method</h2>
+            </div>
+          </header>
+
+          <details class="method" open>
+            <summary>How these were checked</summary>
+            <div class="method-body">
+              <p>{sheet.method.checked}</p>
+              <p>{sheet.method.coverage}</p>
+              <p>{sheet.method.notation}</p>
+              <p>{sheet.method.diagrams}</p>
+            </div>
+          </details>
+
+          <details class="method">
+            <summary>Machine-readable data</summary>
+            <div class="method-body">
+              <p>{sheet.method.dataNote} <a href="cases.json">cases.json</a>.</p>
+              <pre class="cases">{JSON.stringify(cubingData, null, 1)}</pre>
+            </div>
+          </details>
+        </section>
+
+        <footer class="sheet-colophon">
+          <p><a href="/">Bosco Chanam</a> / <a href="/#gallery">projects</a> / cubing</p>
+          <p>{sheet.date}. {sheet.colophon}</p>
+        </footer>
+      </div>
+    </div>
+  </main>
+  <ArticleFooter />
+  <script>
+    import '../../../scripts/cubing';
+  </script>
+</Base>

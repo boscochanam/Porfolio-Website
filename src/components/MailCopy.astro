@@ -2,8 +2,11 @@
 // Email as visible text + a Copy button (shown only when the Clipboard API exists).
 import { links } from '../data/site';
 import Icon from './Icon.astro';
+const at = links.email.lastIndexOf('@');
+const user = at > 0 ? links.email.slice(0, at + 1) : links.email;
+const domain = at > 0 ? links.email.slice(at + 1) : '';
 ---
-<span class="mail"><a href={`mailto:${links.email}`}><Icon name="mail" />{links.email}</a><button class="copy" type="button" data-copy={links.email} hidden>Copy</button></span>
+<span class="mail"><a href={`mailto:${links.email}`}><Icon name="mail" />{user}{domain && <wbr />}{domain}</a><button class="copy" type="button" data-copy={links.email} hidden>Copy</button></span>
 
 <script>
   document.querySelectorAll<HTMLButtonElement>('.copy').forEach((c) => {

@@ -1,7 +1,11 @@
 ---
 import { site } from '../data/site';
+// The same tabs on every page; on project pages they point back to the home page sections.
+const home = Astro.url.pathname === '/';
+const base = home ? '' : '/';
 const nav = [
-  ['#projects', 'Projects'],
+  ['#work', 'Work'],
+  ['#gallery', 'Gallery'],
   ['#background', 'Background'],
   ['#about', 'About'],
   ['#contact', 'Contact'],
@@ -9,9 +13,11 @@ const nav = [
 ---
 <header class="bar">
   <div class="wrap">
-    <a class="brand" href="#top">{site.name}</a>
+    <a class="brand" href={home ? '#top' : '/'}>{site.name}</a>
     <nav class="tabs" aria-label="Sections">
-      {nav.map(([href, label]) => <a href={href}>{label}</a>)}
+      {nav.map(([hash, label]) => (
+        <a href={`${base}${hash}`} aria-current={!home && hash === '#gallery' ? 'true' : undefined}>{label}</a>
+      ))}
     </nav>
   </div>
 </header>

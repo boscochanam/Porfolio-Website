@@ -1,0 +1,21 @@
+---
+// A small triptych of real case diagrams from the sheet: the four steps, four states.
+import { caseById } from '../data/cubing';
+const figs = [
+  { id: 'OLL 45', label: 'OLL · edges', count: '3' },
+  { id: 'OLL 27', label: 'OLL · corners', count: '7' },
+  { id: 'PLL T', label: 'PLL · corners', count: '2' },
+  { id: 'PLL Ua', label: 'PLL · edges', count: '4' },
+];
+---
+<div class="gal-art" aria-hidden="true">
+  {figs.map((f) => {
+    const c = caseById.get(f.id);
+    return (
+      <div class="gal-fig">
+        <p class="gal-fig-cap"><span>{f.label}</span><b>{f.count}</b></p>
+        {c && <div class="gal-cube" set:html={c.svg} />}
+      </div>
+    );
+  })}
+</div>

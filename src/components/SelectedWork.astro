@@ -6,9 +6,9 @@ const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.da
 const featured = all.find((p) => p.data.featured);
 const rest = all.filter((p) => !p.data.featured);
 ---
-<section class="sec" id="projects">
+<section class="sec" id="work">
   <div class="wrap">
-    <header class="sec-head"><h2>Projects</h2><p>What I've built, at work and on my own.</p></header>
+    <header class="sec-head" data-ruler="Work" data-nav="work"><h2>Selected work</h2><p>What I've built, at work and on my own.</p></header>
     {featured && <FeaturedProject project={featured} />}
     <div class="cards">
       {rest.map((p) => <ProjectCard project={p} />)}

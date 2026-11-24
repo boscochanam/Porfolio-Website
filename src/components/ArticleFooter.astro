@@ -1,0 +1,19 @@
+---
+import { about, links, site } from '../data/site';
+import Icon from './Icon.astro';
+---
+<footer class="foot-block article-foot">
+  <div class="wrap article-foot-grid">
+    <div>
+      <p class="label">{site.name} · {site.role}</p>
+      <p class="article-foot-line">More project pages live in the gallery.</p>
+      <a class="article-foot-back" href="/#gallery">← Back to the gallery</a>
+    </div>
+    <div class="article-foot-links">
+      <a href={`mailto:${links.email}`}><Icon name="mail" />{links.email}</a>
+      <a href={links.github}><Icon name="github" />GitHub<Icon name="arrow" class="ext" /></a>
+      <a href={links.x}><Icon name="x" />{links.xHandle}<Icon name="arrow" class="ext" /></a>
+      <p class="copyr">{about.copyright}</p>
+    </div>
+  </div>
+</footer>

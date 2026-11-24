@@ -1,0 +1,9 @@
+---
+interface Props { items: { href: string; label: string }[] }
+const { items } = Astro.props;
+---
+<nav class="sheet-toc-nav" aria-label="On this sheet">
+  <ol>
+    {items.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+  </ol>
+</nav>

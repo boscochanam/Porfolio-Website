@@ -7,7 +7,7 @@ import Icon from './Icon.astro';
 <footer class="foot-block">
   <Ruler variant="footer" />
   <div class="wrap foot-grid">
-    <section id="about" aria-labelledby="about-h">
+    <section id="about" aria-labelledby="about-h" data-ruler="About · Contact" data-nav="about,contact">
       <h2 id="about-h">About</h2>
       {about.paragraphs.map((p) => <p>{p}</p>)}
     </section>

@@ -1,0 +1,81 @@
+---
+import { projectPages } from '../data/project-pages';
+import CubingPlate from './CubingPlate.astro';
+import Icon from './Icon.astro';
+const multiple = projectPages.length > 1;
+const num = (n: number) => String(n + 1).padStart(2, '0');
+---
+<section class="sec" id="gallery">
+  <div class="wrap">
+    <header class="sec-head" data-ruler="Gallery" data-nav="gallery">
+      <h2>Gallery</h2>
+      <p>One-off tools and references, with their working shown.</p>
+    </header>
+
+    <div class="gal" data-gallery>
+      <nav class="gal-rail" aria-label="Project gallery index">
+        <p class="label">Index{multiple ? ` · ${projectPages.length}` : ''}</p>
+        <ul class="gal-list">
+          {projectPages.map((p, i) => (
+            <li>
+              {multiple ? (
+                <button class="gal-entry" type="button" data-gal-go={i} aria-current={i === 0 ? 'true' : undefined}>
+                  <span class="no">{num(i)}</span>
+                  <span><span class="ttl">{p.title}</span><span class="cat">{p.category}</span></span>
+                  <Icon name="arrow-right" class="ic" />
+                </button>
+              ) : (
+                <a class="gal-entry" href={p.href}>
+                  <span class="no">{num(i)}</span>
+                  <span><span class="ttl">{p.title}</span><span class="cat">{p.category}</span></span>
+                  <Icon name="arrow-right" class="ic" />
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+
+        {multiple && (
+          <div class="gal-controls">
+            <button class="gal-arrow" type="button" data-gal-prev aria-label="Previous project"><Icon name="arrow-left" /></button>
+            <button class="gal-arrow" type="button" data-gal-next aria-label="Next project"><Icon name="arrow-right" /></button>
+          </div>
+        )}
+
+        <p class="gal-note">More project pages are added as they're built.</p>
+      </nav>
+
+      <div class="gal-view">
+        {projectPages.map((p, i) => (
+          <article class="gal-exhibit" data-gal-item>
+            <div class="gal-plate">
+              <div class="gal-plate-top">
+                <p class="label">{p.category} · {p.title}</p>
+                <span class="gal-fig-no">{num(i)} / {num(projectPages.length - 1)}</span>
+              </div>
+              {p.art === 'cubing' && <CubingPlate />}
+              <div class="gal-plate-foot">
+                {p.plateFoot.map(([value, label]) => <span><b>{value}</b> {label}</span>)}
+              </div>
+            </div>
+
+            <div class="gal-caption">
+              <p class="label">{p.category}</p>
+              <h3><a href={p.href}>{p.title}</a></h3>
+              <p class="gal-summary">{p.summary}</p>
+              <ul class="gal-meta">
+                {p.meta.map(([label, value]) => <li><span>{label}</span><b>{value}</b></li>)}
+              </ul>
+              <a class="gal-open" href={p.href}>{p.cta} <Icon name="arrow-right" class="ic" /></a>
+            </div>
+          </article>
+        ))}
+        <p class="sr-only" data-gal-status aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/gallery';
+</script>

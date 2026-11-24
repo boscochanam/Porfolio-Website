@@ -35,13 +35,34 @@ export const earth: Scene = {
   label: 'Earth and Moon',
   layout(k) {
     const { W, H, phone } = k;
-    // One fixed spot on every page: right of centre at mid-height, whole on the hero, behind the content below it.
-    k.L.e = phone ? { x: W * 0.7, y: H * 0.8, r: W * 0.34 } : { x: W * 0.83, y: H * 0.5, r: Math.min(H * 0.25, W * 0.135, 225) };
-    k.pivot = phone ? { x: W * 0.2, y: -H * 0.4 } : { x: W * 0.42, y: -H * 0.9 };
+    const b = k.bandRect;
+    // Narrow layouts reserve an empty band in the page flow: Earth sits whole and centred in it, and travels with
+    // the page so the globe never has to share space with copy. The radius leaves room for the satellites' orbits.
+    if (b && b.width > 0 && b.height > 0) {
+      k.L.band = true;
+      k.L.e = { x: b.left + b.width / 2, y: H * 0.5, r: Math.min(b.height / 3.9, W * 0.24, 96) };
+      k.pivot = { x: W * 0.5, y: -H * 0.15 };
+    } else {
+      k.L.band = false;
+      // On home, measure the copy and put Earth in the free column to its right, shrinking it to fit. Pages with no
+      // hero copy and no band keep the fixed right-of-centre anchor that lets the globe peek past the grid.
+      const hero = document.querySelector('.hero-text');
+      const now = document.querySelector('.now');
+      const textRight = Math.max(hero ? hero.getBoundingClientRect().right : 0, now ? now.getBoundingClientRect().right : 0);
+      if (textRight > 0 && W - textRight > 160) {
+        k.L.e = { x: (textRight + W) / 2, y: H * 0.5, r: Math.min((W - textRight - 48) / 2, H * 0.25, W * 0.135, 225) };
+      } else if (phone) {
+        // Pages without a sky window keep the old small-screen corner treatment rather than sitting mid-copy.
+        k.L.e = { x: W * 0.7, y: H * 0.8, r: W * 0.34 };
+      } else {
+        k.L.e = { x: W * 0.83, y: H * 0.5, r: Math.min(H * 0.25, W * 0.135, 225) };
+      }
+      k.pivot = phone ? { x: W * 0.2, y: -H * 0.4 } : { x: W * 0.42, y: -H * 0.9 };
+    }
     k.gap = 0.35; // near-seamless mosaic
-    // no room for the Sun beside phone-width text
+    // no room for the Sun beside phone-width text or in a sky window
     // centred in the photo column (wrap 1240px, gutter 32px, column 132px), below the headshot
-    k.L.sun = phone ? null : { x: Math.max(0, (W - 1240) / 2) + 32 + 66, y: H * 0.5, r: 18 };
+    k.L.sun = phone || k.L.band ? null : { x: Math.max(0, (W - 1240) / 2) + 32 + 66, y: H * 0.5, r: 18 };
     const q = new URLSearchParams(location.search);
     k.L.sunStyle = q.get('sun') || 'point'; // ?sun= previews a style (suns.ts)
     k.L.satStyle = q.get('sats') || 'craft'; // ?sats= previews a style (sats.ts)
@@ -51,7 +72,11 @@ export const earth: Scene = {
   },
   draw(k: Kit) {
     const { ctx, P, L, T, W, phone, tile, sphere, orbiter, calmAt } = k;
-    const { x: cx, y: cy, r: R } = L.e, ct = Math.cos(AXIS), st = Math.sin(AXIS), fine = phone ? 5 : 6;
+    const { r: R } = L.e, ct = Math.cos(AXIS), st = Math.sin(AXIS), fine = phone ? 5 : 6;
+    // In a sky window the globe follows the band as it scrolls; otherwise it uses the laid-out anchor.
+    const b = L.band ? k.bandRect : null;
+    const cx = b && b.height ? b.left + b.width / 2 : L.e.x;
+    const cy = b && b.height ? b.top + b.height / 2 : L.e.y;
     k.backdrop([P.bg]);
     k.drawStars((x, y) => clamp((Math.hypot(x - cx, y - cy) / R - 1) / 0.5));
     ctx.globalAlpha = 1;

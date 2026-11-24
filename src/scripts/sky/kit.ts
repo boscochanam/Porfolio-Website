@@ -50,6 +50,8 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     pivot: { x: 0, y: 0 },
     /** Text boxes (viewport coords) the sky dims behind. */
     rects: [] as DOMRect[],
+    /** Empty band reserved for the scene on narrow layouts (viewport coords), or null when there is none. */
+    bandRect: null as DOMRect | null,
     snap, tileFont, glyphFont, calmAt, tile, glyph, sphere, orbiter,
     makeStars, backdrop, drawStars, graticule, constellations, comet,
   };

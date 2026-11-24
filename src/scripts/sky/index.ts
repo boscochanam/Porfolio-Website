@@ -19,6 +19,7 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
   const k = createKit(ctx);
   const home = !!document.querySelector('.hero');
   const calmEls = [...document.querySelectorAll(calmSel)];
+  const bandEl = document.querySelector<HTMLElement>('.sky-window');
   let cur = SCENES[first] ? first : 'earth', palName = '';
 
   /** Activate a look by name (falls back to the scene's first); ramps become lookup tables. */
@@ -31,9 +32,10 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
 
   function layout() {
     const dpr = Math.min(devicePixelRatio || 1, 2);
-    k.W = innerWidth; k.H = innerHeight; k.phone = k.W < 760; k.C = k.phone ? 10 : 12;
+    k.W = innerWidth; k.H = innerHeight; k.phone = k.W <= 760; k.C = k.phone ? 10 : 12;
     cv.width = Math.round(k.W * dpr); cv.height = Math.round(k.H * dpr);
     k.gap = 1;
+    k.bandRect = bandEl ? bandEl.getBoundingClientRect() : null;
     SCENES[cur].layout(k);
     k.makeStars();
   }
@@ -47,6 +49,7 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
   function frame() {
     k.rects = [];
     for (const e of calmEls) { const r = e.getBoundingClientRect(); if (r.width && r.bottom > -40 && r.top < k.H + 40) k.rects.push(r); }
+    k.bandRect = bandEl ? bandEl.getBoundingClientRect() : null; // it scrolls with the page, so refresh it every frame
     recede();
     const dpr = cv.width / k.W;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);

@@ -30,6 +30,7 @@ npm run preview   # serve dist/
 | Sky looks (colour ramps per scene) | `src/scripts/sky/palettes.ts` |
 | Sky scenes (Earth, ringed planet, Sun, Death Star II) | `src/scripts/sky/scenes/*.ts` |
 | Sky engine, drawing kit, text calm zones | `src/scripts/sky/index.ts`, `src/scripts/sky/kit.ts`, `src/components/Sky.astro` |
+| Sky window band on narrow layouts | `src/components/SkyWindow.astro` |
 | 404 page | `src/pages/404.astro` |
 | Styles | `src/styles/global.css` (night theme tokens, page, projects grid, sky picker, 404), `src/styles/ruler.css` (gutter ruler + slider), `src/styles/cubing.css` (project pages) |
 | Gutter ruler / slider / nav behaviour | `src/scripts/ruler.ts`, `slider.ts`, `nav.ts` |
@@ -53,7 +54,7 @@ Every page sits on a fixed canvas (`Sky.astro`) that draws one scene in lit tile
 - **Preview looks:** open any page with `?scenes` to get a picker of the current scene's looks. The choice is kept for the browser session. `?scene=earth|saturn|sun|deathstar` and `?palette=<look>` override the config for one page load.
 - **Add a look:** add an entry under the scene in `palettes.ts`. Each key is a colour ramp (stops from shadow to highlight) or a single colour. The first entry is the scene's default.
 - **Add a scene:** write a `Scene` in `src/scripts/sky/scenes/` using the drawing kit (`kit.ts`), register it in `SCENES` in `src/scripts/sky/index.ts`, and give it palettes.
-- **Legibility:** the sky holds still at one strength on every page; Earth sits right of centre at mid-height, whole on the hero, and cards cover it further down. Text that sits straight on the sky dims it locally; the selectors are in `CALM` in `Sky.astro`. The small Sun gives way once you scroll past the hero (`?sun=` previews its other styles in `suns.ts`).
+- **Legibility:** the sky holds still at one strength on every page; text that sits straight on the sky dims it locally via the selectors in `CALM` in `Sky.astro`. On wide screens Earth sits right of centre at mid-height, in the free column beside the hero copy. Below that it moves into an empty `.sky-window` band (`SkyWindow.astro`) after the hero, or after the Projects header, so the globe and its satellites never sit behind text; the band travels with the page. The small Sun gives way once you scroll past the hero (`?sun=` previews its other styles in `suns.ts`).
 - **Motion:** 25 fps, and a still frame with `prefers-reduced-motion`.
 - **Earth map:** `land.ts` is a 256×128 land bitmap rasterised from Natural Earth 110m land (public domain).
 

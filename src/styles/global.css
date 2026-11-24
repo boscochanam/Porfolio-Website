@@ -232,6 +232,18 @@ video.prj-media{object-fit:cover}
   .feat-vis svg.dg-h{max-width:640px}
   .feat-txt{padding:18px 24px 20px}
 }
+/* Keep a real column for Earth beside the copy on small laptops; below this it gets its own sky window. */
+@media (min-width:1000px) and (max-width:1180px){
+  .hero-grid{grid-template-columns:116px minmax(0,560px) minmax(0,1fr)}
+}
+.sky-window{display:none;height:clamp(260px,38vh,360px);height:clamp(260px,38svh,360px)}
+@media (max-width:999px){
+  .sky-window{display:block}
+}
+@media (max-width:1359px){
+  .sky-window--projects{display:block}
+}
+html[data-sky-scene]:not([data-sky-scene="earth"]) .sky-window{display:none}
 @media (max-width:1100px){
   .prj{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -350,7 +362,7 @@ a.ik:hover .ext{opacity:1;transform:translate(1.5px,-1.5px)}
 .sky-pick.min .sky-pick-min{margin:0}
 .sky-pick button{border:1px solid var(--line);background:transparent;color:var(--ink);padding:7px 9px;cursor:pointer;font:inherit}
 .sky-pick button[aria-pressed="true"]{background:var(--ink);color:var(--night);border-color:var(--ink);box-shadow:inset 0 -3px 0 var(--red)}
-@media print{.sky,.sky-pick{display:none}}
+@media print{.sky,.sky-pick,.sky-window{display:none}}
 
 /* ── 404 ── */
 .nf{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);margin:48px 0 0;background:var(--plate);border:1px solid var(--line);border-right:2px solid var(--red)}

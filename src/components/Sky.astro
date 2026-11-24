@@ -17,6 +17,7 @@ import { sky } from '../data/site';
   if (q.has('scenes')) store('sky-pick', '1');
   const scene = q.get('scene') || cv.dataset.scene || 'earth';
   const palette = q.get('palette') || store(`sky-pal-${scene}`) || cv.dataset.palette || undefined;
+  document.documentElement.dataset.skyScene = scene; // the sky-window band only belongs to the Earth scene
   const sky = startSky(cv, scene, CALM, palette);
 
   if (store('sky-pick')) {

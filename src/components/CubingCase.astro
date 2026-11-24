@@ -11,7 +11,6 @@ const id = `case-${c.id.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$
   <header class="case-head">
     <span class="case-code">{c.id}</span>
     <h3 id={id}>{c.name}</h3>
-    {c.verified && <span class="case-check"><Icon name="check" class="ic" />checked</span>}
     <button class="case-copy" type="button" data-copy-alg={c.alg} aria-label={`Copy the ${c.id} algorithm`} title="Copy sequence" hidden>
       <Icon name="copy" class="ic" />
     </button>
@@ -23,11 +22,7 @@ const id = `case-${c.id.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$
         {c.bursts.map((b) => <code class="burst">{b}</code>)}
         <span class="beats">{c.bursts.length} bursts</span>
       </div>
-      <p class="algline">{c.alg}</p>
-      {c.family_cases > 0 && (
-        <p class="case-family"><b>{c.family_cases} of the 57 OLL cases</b> share this edge pattern.</p>
-      )}
-      <p class="setup-label">To reach it, run it backwards:</p>
+      <p class="setup-label">Setup</p>
       <code class="setup">{c.setup}</code>
       <p class="recog">{c.recog}</p>
       {c.hold && <p class="hold"><b>Hold check:</b> {c.hold}</p>}

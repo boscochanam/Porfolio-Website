@@ -5,21 +5,19 @@ import ArticleFooter from '../../../components/ArticleFooter.astro';
 import CubingCase from '../../../components/CubingCase.astro';
 import CubingToc from '../../../components/CubingToc.astro';
 import { site } from '../../../data/site';
-import { sheet, cubingData, caseById, sheetHolds } from '../../../data/cubing';
+import { sheet, caseById } from '../../../data/cubing';
 import '../../../styles/cubing.css';
 
 const toc = [
   { href: '#sheet-top', label: 'Overview' },
   ...sheet.phases.map((p) => ({ href: `#${p.id}`, label: p.toc })),
   { href: '#next-step', label: 'Next step' },
-  { href: '#changes', label: 'What changed' },
-  { href: '#method', label: 'Method' },
 ];
 const nextCount = sheet.nextStep.groups.reduce((n, g) => n + g.cases.length, 0);
 const description =
-  'Sixteen 2-look OLL and PLL algorithms, each run on a 54-facelet cube model: setups, recognition notes, case diagrams and the full PLL checklist.';
+  'Sixteen 2-look OLL and PLL algorithms with bursts, setups, recognition notes and case diagrams.';
 ---
-<Base title={`${sheet.title}: verified sheet — ${site.name}`} description={description} ogType="article">
+<Base title={`${sheet.title} — ${site.name}`} description={description} ogType="article">
   <Header />
   <main>
     <header class="wrap sheet-head" id="sheet-top">
@@ -29,21 +27,10 @@ const description =
         <span>Coding</span>
       </nav>
       <div class="sheet-title">
-        <div>
-          <p class="label">{sheet.kind}</p>
-          <h1>{sheet.title}</h1>
-        </div>
-        <p class="sheet-stamp"><span>Verified</span><b>16 / 16</b><span>{sheet.date}</span></p>
+        <p class="label">{sheet.kind}</p>
+        <h1>{sheet.title}</h1>
       </div>
-      <p class="sheet-lede">{sheet.summary}</p>
-      <div class="spec" role="list">
-        {sheet.stats.map((s) => (
-          <div class:list={['spec-cell', { accent: s.accent }]} role="listitem">
-            <b>{s.value}</b>
-            <span>{s.label}</span>
-          </div>
-        ))}
-      </div>
+      <p class="sheet-lede">{sheet.intro}</p>
       <div class="legend">
         <span><i class="sw sw-y" aria-hidden="true"></i>yellow sticker</span>
         <span><i class="sw sw-n" aria-hidden="true"></i>not yellow</span>
@@ -56,7 +43,6 @@ const description =
       <aside class="sheet-toc">
         <p class="label">On this sheet</p>
         <CubingToc items={toc} />
-        <p class="sheet-hold"><b>Hold</b>{sheet.legend.hold}</p>
       </aside>
 
       <div class="sheet-body">
@@ -71,7 +57,6 @@ const description =
               <div>
                 <p class="sec-step">{p.step}</p>
                 <h2 id={`${p.id}-h`}>{p.title}</h2>
-                <p class="goal">{p.goal}</p>
               </div>
               <span class="count">{p.caseIds.length} cards</span>
             </header>
@@ -90,7 +75,6 @@ const description =
             <div>
               <p class="sec-step">Learn</p>
               <h2 id="next-step-h">{sheet.nextStep.title}</h2>
-              <p class="goal">{sheet.nextStep.goal}</p>
             </div>
             <span class="count">{nextCount} to learn</span>
           </header>
@@ -118,55 +102,9 @@ const description =
           <p class="note2">{sheet.nextStep.note}</p>
         </section>
 
-        <section class="sheet-sec" id="changes" aria-labelledby="changes-h">
-          <header class="sheet-sec-head">
-            <div>
-              <p class="sec-step">Audit</p>
-              <h2 id="changes-h">What the checks changed</h2>
-            </div>
-          </header>
-          <ul class="changed">
-            <li>
-              <b>{sheet.changes.z.id}</b>. Your list gave <code>{sheet.changes.z.given}</code>. {sheet.changes.z.note}
-              The sheet uses <code>{sheet.changes.z.used}</code>, {sheet.changes.z.found}
-            </li>
-          </ul>
-          <p class="note2">{sheet.changes.holdsIntro}</p>
-          <ul class="changed holds">
-            {sheetHolds.map((c) => <li><b>{c.id} {c.name}</b>: {c.hold}</li>)}
-          </ul>
-        </section>
-
-        <section class="sheet-sec" id="method" aria-labelledby="method-h">
-          <header class="sheet-sec-head">
-            <div>
-              <p class="sec-step">Verification</p>
-              <h2 id="method-h">Method</h2>
-            </div>
-          </header>
-
-          <details class="method" open>
-            <summary>How these were checked</summary>
-            <div class="method-body">
-              <p>{sheet.method.checked}</p>
-              <p>{sheet.method.coverage}</p>
-              <p>{sheet.method.notation}</p>
-              <p>{sheet.method.diagrams}</p>
-            </div>
-          </details>
-
-          <details class="method">
-            <summary>Machine-readable data</summary>
-            <div class="method-body">
-              <p>{sheet.method.dataNote} <a href="cases.json">cases.json</a>.</p>
-              <pre class="cases">{JSON.stringify(cubingData, null, 1)}</pre>
-            </div>
-          </details>
-        </section>
-
         <footer class="sheet-colophon">
           <p><a href="/">Bosco Chanam</a> / <a href="/#gallery">projects</a> / cubing</p>
-          <p>{sheet.date}. {sheet.colophon}</p>
+          <p>{sheet.date}</p>
         </footer>
       </div>
     </div>

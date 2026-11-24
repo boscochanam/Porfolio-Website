@@ -18,7 +18,7 @@ npm run preview   # serve dist/
 | Gallery entries (one object per project page; the browser controls appear automatically at 2+) | `src/data/project-pages.ts` |
 | Cubing sheet prose and sections | `src/data/cubing.ts` |
 | Cubing algorithms, setups, recognition notes and diagrams | `src/data/cubing-cases.json` |
-| Cubing page route / machine-readable download | `src/pages/projects/cubing/index.astro`, `cases.json.ts` |
+| Cubing page route | `src/pages/projects/cubing/index.astro` |
 | Cubing page styles | `src/styles/cubing.css` |
 | Demo clip for a card | put an MP4 in `public/media/`, set `demoVideo: /media/x.mp4` (+ optional `demoPoster`) in the project's frontmatter |
 | Featured architecture diagram | `src/components/ArchDiagram.astro` |

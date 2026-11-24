@@ -1,5 +1,5 @@
-// One entry per project page in the homepage gallery. Add an object here (and its page under
-// src/pages/projects/<slug>/) and the gallery browser picks it up automatically.
+// One entry per project page in the /projects/ grid. Add an object here (and its page under
+// src/pages/projects/<slug>/) and the grid picks it up automatically.
 import { sheet } from './cubing';
 
 export interface ProjectPage {

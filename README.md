@@ -15,16 +15,18 @@ npm run preview   # serve dist/
 | --- | --- |
 | Name, positioning line, proof line, Now list, links, background, About | `src/data/site.ts` |
 | Selected work cards (one file each; `featured: true` = the big card, `order` = position) | `src/content/projects/*.md` |
-| Gallery entries (one object per project page; the browser controls appear automatically at 2+) | `src/data/project-pages.ts` |
+| Project-page entries for the Projects grid (one object per page) | `src/data/project-pages.ts` |
+| Projects index page (selected work + project pages, linked entries first) | `src/pages/projects/index.astro` |
+| Projects grid tiles | `src/components/ProjectsGrid.astro` |
+| Compact projects link on the home page | `src/components/ProjectsTeaser.astro` |
 | Cubing sheet prose and sections | `src/data/cubing.ts` |
 | Cubing algorithms, setups, recognition notes and diagrams | `src/data/cubing-cases.json` |
 | Cubing page route | `src/pages/projects/cubing/index.astro` |
 | Cubing page styles | `src/styles/cubing.css` |
 | Demo clip for a card | put an MP4 in `public/media/`, set `demoVideo: /media/x.mp4` (+ optional `demoPoster`) in the project's frontmatter |
 | Featured architecture diagram | `src/components/ArchDiagram.astro` |
-| Styles | `src/styles/global.css` (page + gallery), `src/styles/ruler.css` (gutter ruler + slider), `src/styles/cubing.css` (project pages) |
+| Styles | `src/styles/global.css` (page + projects grid), `src/styles/ruler.css` (gutter ruler + slider), `src/styles/cubing.css` (project pages) |
 | Gutter ruler / slider / nav behaviour | `src/scripts/ruler.ts`, `slider.ts`, `nav.ts` |
-| Gallery browser behaviour | `src/scripts/gallery.ts` |
 | Cubing copy, checklist and contents rail | `src/scripts/cubing.ts` |
 | Share card | `design/og-card.html` → render to `public/og.png` (1200×630) |
 
@@ -34,9 +36,9 @@ Strings in `site.ts` and project frontmatter may use `**bold**`.
 
 1. Add a route under `src/pages/projects/<slug>/`.
 2. Add an object to `src/data/project-pages.ts` with its `href`, `category`, summary and metadata.
-3. If it needs a new gallery plate, extend the `art` union and add a plate component (see `src/components/CubingPlate.astro`).
+3. If it needs a new plate visual, extend the `art` union and add a plate component (see `src/components/CubingPlate.astro`).
 
-With one entry the gallery index is a direct link and no arrows are shown; add a second and the index becomes a browser.
+The `/projects/` page shows every selected-work project plus every project page at once. Entries with a `codeUrl` or `demoUrl` are listed first; entries without a public link stay at the end. Add a project-page object and it appears automatically. The home page keeps only a slim link to the grid.
 
 ### Ruler labels
 
@@ -46,7 +48,7 @@ The gutter ruler reads section heads marked with `data-ruler="Label"` and `data-
 
 - CV PDF URL (`links.cv`)
 - Real domain in `astro.config.mjs` (`site`) — canonical/OG/Twitter URLs are built from it
-- `codeUrl` / `demoUrl` / `demoVideo` per selected-work card (cards link to `#` until set)
+- `codeUrl` / `demoUrl` / `demoVideo` per selected-work card (links are hidden until set)
 - DRAFT copy: positioning line (`site.lede`), featured `problem`, About paragraphs, share-card tagline
 - Decide: keep "Work project · details under NDA" (`note` in `sop-monitoring.md`)?
 - Optional: hide the Now aside on mobile so projects start sooner

@@ -1,22 +1,24 @@
 ---
 import { site } from '../data/site';
-// The same tabs on every page; on project pages they point back to the home page sections.
-const home = Astro.url.pathname === '/';
-const base = home ? '' : '/';
-const nav = [
-  ['#work', 'Work'],
-  ['#gallery', 'Gallery'],
-  ['#background', 'Background'],
-  ['#about', 'About'],
-  ['#contact', 'Contact'],
+// The same tabs on every page. Work/Background/About/Contact point at home sections; Projects
+// has its own page and stays current while browsing a project page.
+const path = Astro.url.pathname;
+const onProjects = path === '/projects' || path.startsWith('/projects/');
+type NavItem = { href: string; label: string; current?: boolean; section?: boolean };
+const nav: NavItem[] = [
+  { href: '/#work', label: 'Work', section: true },
+  { href: '/projects/', label: 'Projects', current: onProjects },
+  { href: '/#background', label: 'Background', section: true },
+  { href: '/#about', label: 'About', section: true },
+  { href: '/#contact', label: 'Contact', section: true },
 ];
 ---
 <header class="bar">
   <div class="wrap">
-    <a class="brand" href={home ? '#top' : '/'}>{site.name}</a>
+    <a class="brand" href={path === '/' ? '#top' : '/'}>{site.name}</a>
     <nav class="tabs" aria-label="Sections">
-      {nav.map(([hash, label]) => (
-        <a href={`${base}${hash}`} aria-current={!home && hash === '#gallery' ? 'true' : undefined}>{label}</a>
+      {nav.map(({ href, label, current, section }) => (
+        <a href={href} aria-current={current ? 'true' : undefined} data-section={section ? '' : undefined}>{label}</a>
       ))}
     </nav>
   </div>

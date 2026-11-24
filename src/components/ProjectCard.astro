@@ -5,6 +5,8 @@ import ProjectArt from './ProjectArt.astro';
 import Icon from './Icon.astro';
 interface Props { project: CollectionEntry<'projects'> }
 const p = Astro.props.project.data;
+const code = p.codeUrl && p.codeUrl !== '#' ? p.codeUrl : null;
+const demo = p.demoUrl && p.demoUrl !== '#' ? p.demoUrl : null;
 ---
 <article class="card">
   {p.demoVideo ? (
@@ -20,10 +22,12 @@ const p = Astro.props.project.data;
     <p class="does">{p.summary}</p>
     <p class="out" set:html={rich(p.outcome)} />
     <p class="stack">{p.stack.join(' · ')}</p>
-    <div class="card-foot">
-      <a class="ik" href={p.codeUrl ?? '#'}><span>Code</span>{p.codeUrl && <Icon name="arrow" class="ext" />}</a>
-      <a class="ik" href={p.demoUrl ?? '#'}><span>Demo</span>{p.demoUrl && <Icon name="arrow" class="ext" />}</a>
-    </div>
+    {(code || demo) && (
+      <div class="card-foot">
+        {code && <a class="ik" href={code}><span>Code</span><Icon name="arrow" class="ext" /></a>}
+        {demo && <a class="ik" href={demo}><span>Demo</span><Icon name="arrow" class="ext" /></a>}
+      </div>
+    )}
   </div>
 </article>
 

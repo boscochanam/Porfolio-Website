@@ -1,0 +1,21 @@
+---
+// The compact projects link on the home page. The full grid lives at /projects/.
+import { getCollection } from 'astro:content';
+import { projectPages } from '../data/project-pages';
+import { caseById } from '../data/cubing';
+import Icon from './Icon.astro';
+const first = projectPages[0];
+const cube = first?.art === 'cubing' ? caseById.get('OLL 45')?.svg : null;
+const work = await getCollection('projects');
+const count = String(projectPages.length + work.length).padStart(2, '0');
+---
+<a class="prj-teaser" href="/projects/">
+  <span class="prj-teaser-thumb" aria-hidden="true">
+    {cube ? <span class="prj-cube" set:html={cube} /> : <span class="prj-more-mark">+</span>}
+  </span>
+  <span class="prj-teaser-txt">
+    <span class="label">Projects · {count}</span>
+    <span class="prj-teaser-line"><b>Selected work and project pages</b> — from factory deployments to one-off tools.</span>
+  </span>
+  <span class="prj-teaser-go">View projects <Icon name="arrow-right" class="ic" /></span>
+</a>

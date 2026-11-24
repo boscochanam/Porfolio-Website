@@ -8,13 +8,13 @@ const figs = [
   { id: 'PLL Ua', label: 'PLL · edges', count: '4' },
 ];
 ---
-<div class="gal-art" aria-hidden="true">
+<div class="prj-art" aria-hidden="true">
   {figs.map((f) => {
     const c = caseById.get(f.id);
     return (
-      <div class="gal-fig">
-        <p class="gal-fig-cap"><span>{f.label}</span><b>{f.count}</b></p>
-        {c && <div class="gal-cube" set:html={c.svg} />}
+      <div class="prj-fig">
+        <p class="prj-fig-cap"><span>{f.label}</span><b>{f.count}</b></p>
+        {c && <div class="prj-cube" set:html={c.svg} />}
       </div>
     );
   })}

@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import FeaturedProject from './FeaturedProject.astro';
 import ProjectCard from './ProjectCard.astro';
+import ProjectsTeaser from './ProjectsTeaser.astro';
 const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const featured = all.find((p) => p.data.featured);
 const rest = all.filter((p) => !p.data.featured);
@@ -13,5 +14,6 @@ const rest = all.filter((p) => !p.data.featured);
     <div class="cards">
       {rest.map((p) => <ProjectCard project={p} />)}
     </div>
+    <ProjectsTeaser />
   </div>
 </section>

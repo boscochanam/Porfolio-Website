@@ -1,0 +1,115 @@
+---
+// The /projects/ index: every project page plus every selected-work project, all visible at once.
+// Linked entries come first; projects without a public link stay at the end.
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { projectPages, type ProjectPage } from '../data/project-pages';
+import CubingPlate from './CubingPlate.astro';
+import ProjectArt from './ProjectArt.astro';
+import ArchDiagram from './ArchDiagram.astro';
+import { rich } from '../lib/rich';
+import Icon from './Icon.astro';
+
+type WorkProject = CollectionEntry<'projects'>;
+type PageEntry = { type: 'page'; data: ProjectPage };
+type WorkEntry = {
+  type: 'work';
+  project: WorkProject;
+  code: string | null;
+  demo: string | null;
+};
+type Entry = PageEntry | WorkEntry;
+
+const num = (n: number) => String(n).padStart(2, '0');
+
+const work = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const workEntry = (project: WorkProject): WorkEntry => ({
+  type: 'work',
+  project,
+  code: project.data.codeUrl && project.data.codeUrl !== '#' ? project.data.codeUrl : null,
+  demo: project.data.demoUrl && project.data.demoUrl !== '#' ? project.data.demoUrl : null,
+});
+const workEntries = work.map(workEntry);
+const linked = workEntries.filter((entry) => entry.code || entry.demo);
+const unlinked = workEntries.filter((entry) => !entry.code && !entry.demo);
+const entries: Entry[] = [
+  ...projectPages.map((data): PageEntry => ({ type: 'page', data })),
+  ...linked,
+  ...unlinked,
+];
+// Keep the grid even when there is an odd number of tiles.
+const showMore = entries.length % 2 === 1;
+---
+<div class="prj">
+  {entries.map((entry, i) => entry.type === 'page' ? (
+    <article class="prj-tile">
+      <a class="prj-plate" href={entry.data.href}>
+        <span class="prj-plate-top">
+          <span class="label">{entry.data.category} · {entry.data.title}</span>
+          <span class="prj-fig-no">{num(i + 1)} / {num(entries.length)}</span>
+        </span>
+        {entry.data.art === 'cubing' && <CubingPlate />}
+        <span class="prj-plate-foot">
+          {entry.data.plateFoot.map(([value, label]) => <span><b>{value}</b> {label}</span>)}
+        </span>
+      </a>
+
+      <div class="prj-body">
+        <p class="label">{entry.data.category}</p>
+        <h2><a href={entry.data.href}>{entry.data.title}</a></h2>
+        <p class="prj-summary">{entry.data.summary}</p>
+        <ul class="prj-meta">
+          {entry.data.meta.map(([label, value]) => <li><span>{label}</span><b>{value}</b></li>)}
+        </ul>
+        <a class="prj-open" href={entry.data.href}>{entry.data.cta} <Icon name="arrow-right" class="ic" /></a>
+      </div>
+    </article>
+  ) : (
+    <article class="prj-tile">
+      {entry.project.data.demoVideo ? (
+        <video class="prj-media" data-autoplay src={entry.project.data.demoVideo} poster={entry.project.data.demoPoster} muted loop playsinline preload="none" aria-label={`${entry.project.data.title} demo`}></video>
+      ) : entry.project.data.art ? (
+        <div class="prj-media media-art"><ProjectArt art={entry.project.data.art} label={`Illustration: ${entry.project.data.title}`} /></div>
+      ) : entry.project.data.featured ? (
+        <div class="prj-media prj-media-dark"><ArchDiagram /></div>
+      ) : (
+        <div class="prj-media prj-media-empty"><span class="label">Visual coming</span></div>
+      )}
+
+      <div class="prj-body">
+        <p class="label">{entry.project.data.kind}</p>
+        <h2>{entry.project.data.title}</h2>
+        <p class="prj-summary">{entry.project.data.summary}</p>
+        <p class="prj-outcome" set:html={rich(entry.project.data.outcome)} />
+        {entry.project.data.stack.length > 0 && <p class="prj-stack">{entry.project.data.stack.join(' · ')}</p>}
+        {(entry.code || entry.demo) && (
+          <div class="prj-links">
+            {entry.code && <a class="ik" href={entry.code}><span>Code</span><Icon name="arrow" class="ext" /></a>}
+            {entry.demo && <a class="ik" href={entry.demo}><span>Demo</span><Icon name="arrow" class="ext" /></a>}
+          </div>
+        )}
+        {entry.project.data.note && <p class="prj-note">{entry.project.data.note}</p>}
+      </div>
+    </article>
+  ))}
+
+  {showMore && (
+    <aside class="prj-more">
+      <span class="prj-more-mark" aria-hidden="true">+</span>
+      <p class="label">More on the bench</p>
+      <p class="prj-more-line">More projects are added as they're built.</p>
+      <a class="prj-open" href="/#work">See selected work <Icon name="arrow-right" class="ic" /></a>
+    </aside>
+  )}
+</div>
+
+<script>
+  // Demo clips: play only while on screen (and never with reduced motion).
+  const vids = [...document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]')];
+  if (vids.length && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      const v = e.target as HTMLVideoElement;
+      e.isIntersecting ? v.play().catch(() => {}) : v.pause();
+    }), { threshold: 0.4 });
+    vids.forEach((v) => io.observe(v));
+  }
+</script>

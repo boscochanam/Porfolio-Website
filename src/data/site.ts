@@ -1,4 +1,6 @@
 
+const valorantProfile = 'https://tracker.gg/valorant/profile/riot/Fazbear%231983/overview';
+
 export const site = {
   name: 'Bosco Chanam',
   role: 'AI/ML Engineer',
@@ -16,7 +18,7 @@ export const site = {
     "I’m an AI/ML engineer at [[bharatforge|Bharat Forge]], one of the world’s largest forging companies. I build computer vision that checks factory work as it happens. It’s rolling out to **10+ edge stations** on [[nvidia|Jetson]], and I’m the primary inventor on its patent.",
     'I also own the software platform for a robotic bin-picking cell built on [[ros|ROS 2]], and I’m learning robot simulation in [[nvidia|Isaac Sim]].',
     'At home I run Clawsco, my fork of [[nous|Hermes Agent|https://github.com/NousResearch/hermes-agent]], and I build with [[claude|Claude Code]], [[openai|Codex]], [[cursor|Cursor]] and [[opencode|opencode]].',
-    'Away from the screen, I love movies and making videos. I log what I watch on [[letterboxd|Letterboxd|https://letterboxd.com/boscochanam]] and post on [[youtube|YouTube|https://www.youtube.com/@boscochanam]]. I also play [[valorant|Valorant]] and [[deadlock|Deadlock]].',
+    `Away from the screen, I love movies and making videos. I log what I watch on [[letterboxd|Letterboxd|https://letterboxd.com/boscochanam]] and post on [[youtube|YouTube|https://www.youtube.com/@boscochanam]]. I also play [[valorant|Valorant|${valorantProfile}]] and [[deadlock|Deadlock]].`,
   ],
 };
 
@@ -33,7 +35,7 @@ export const links = {
   xHandle: '@boscochanam',
   youtube: 'https://www.youtube.com/@boscochanam',
   letterboxd: 'https://letterboxd.com/boscochanam',
-  valorant: 'https://tracker.gg/valorant/profile/riot/Fazbear%231983/overview',
+  valorant: valorantProfile,
 };
 
 export const experience = [

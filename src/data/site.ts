@@ -94,6 +94,5 @@ export const background = {
 };
 
 export const about = {
-  open: 'Happy to talk about computer vision, edge AI, robotics and agents.',
   copyright: '© 2026 Bosco Chanam',
 };

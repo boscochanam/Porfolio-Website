@@ -26,18 +26,18 @@ const mkI = (p: HTMLElement, c: string, st?: Partial<CSSStyleDeclaration>) => {
 function build() {
   R.forEach((r) => (r.textContent = ''));
   marks = [];
-  if (!mq.matches || !M || !Ft) return;
+  if (!mq.matches || !M) return;
 
   const m = M.getBoundingClientRect(),
-    w = q('.sec .wrap') ?? q('.wrap'),
+    w = q('.sec .wrap') ?? q('.wrap') ?? q('.col'),
     wr = w?.getBoundingClientRect() ?? m,
     pad = w ? parseFloat(getComputedStyle(w).paddingLeft) : 0,
     cx = wr.left - m.left + pad,
     lx = Math.round(Math.min(cx * 0.575, cx - 64)),
     y = (e: Element) => Math.round(e.getBoundingClientRect().top - m.top);
 
-  const fy = y(Ft),
-    end = Math.round(m.height);
+  const end = Math.round(m.height),
+    fy = Ft ? y(Ft) : end;
 
   marks = qa('[data-ruler]').map((el) => {
     const keys = (el.dataset.nav ?? '').split(',').filter(Boolean);

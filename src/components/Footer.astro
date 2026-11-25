@@ -1,16 +1,14 @@
 ---
 import { about, links } from '../data/site';
 import { mark } from '../lib/rich';
-import MailCopy from './MailCopy.astro';
 import Icon from './Icon.astro';
 ---
 <footer class="foot" id="contact">
   <div class="col">
-    <p class="foot-open" data-ruler="Contact" data-nav="contact">{about.open}</p>
-    <MailCopy />
     <div class="foot-bar">
       <span>{about.copyright}</span>
       <span class="intro-links">
+        <a href={`mailto:${links.email}`} aria-label="Email"><Icon name="mail" /></a>
         <a href={links.github} aria-label="GitHub"><Icon name="github" /></a>
         <a href={links.linkedin} aria-label="LinkedIn"><Icon name="linkedin" /></a>
         <a href={links.x} aria-label="X"><Icon name="x" /></a>

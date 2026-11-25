@@ -6,7 +6,7 @@ import { sky } from '../data/site';
 <script>
   import { startSky } from '../scripts/sky/index';
 
-  const CALM = '.intro-meta,.intro-id,.intro-text>p,.blk-h,.tl-head,.tl-role,.ln-list li,.tg,.tg-h,.blk-more,.foot-open,.foot-bar,.sec-head>*,.sheet-head>*,.sheet-sec-head>*,.note2,.sheet-toc,.sheet-toc-m,[data-sky-calm]';
+  const CALM = '.intro-meta,.intro-id,.intro-text>p,.blk-h,.tl-head,.tl-role,.ln-list li,.tg,.tg-h,.blk-more,.foot-bar,.sec-head>*,.sheet-head>*,.sheet-sec-head>*,.note2,.sheet-toc,.sheet-toc-m,[data-sky-calm]';
   const cv = document.getElementById('sky') as HTMLCanvasElement;
   const q = new URLSearchParams(location.search);
   const store = (k: string, v?: string) => { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch { } return null; };

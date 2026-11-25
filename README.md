@@ -25,7 +25,7 @@ src/
   scripts/                ruler, slider, nav, cubing, ascii (404)
   styles/                 global.css, ruler.css, cubing.css, fonts.css
 public/brands/            organisation icons (Bharat Forge, Symbiosis, Nous, All India Radio, Flipkart)
-design/og-card.html       share card source, rendered to public/og.png (1200x630)
+design/og-card.html       share card source, rendered to public/og.jpg (1200x630, sky from og-sky.png)
 bench/                    performance benchmark
 ```
 
@@ -40,7 +40,7 @@ bench/                    performance benchmark
 | Row icon tiles (brand, calendar, paper, cube) | `src/components/Tile.astro` |
 | Cubing sheet copy and cases | `src/data/cubing.ts`, `src/data/cubing-cases.json` |
 | Sky scene and look | `sky` in `src/data/site.ts`, looks in `src/scripts/sky/palettes.ts` |
-| Share card | `design/og-card.html`, then render to `public/og.png` |
+| Share card | `design/og-card.html`, then render to `public/og.jpg` |
 | Third-party credits | `THIRD_PARTY_NOTICES.md` |
 
 Strings in `site.ts` and project frontmatter may use `**bold**`.

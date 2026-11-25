@@ -4,12 +4,12 @@ export const site = {
   role: 'AI/ML Engineer',
   timeZone: 'Asia/Kolkata',
   zoneLabel: 'Pune, GMT+5:30',
-  title: 'Bosco Chanam · AI/ML engineer, edge vision, robotics and agents',
+  title: 'Bosco Chanam · AI/ML Engineer',
   description:
-    'AI/ML engineer at Bharat Forge in Pune. Computer vision on NVIDIA Jetson, rolling out to 10+ edge stations; robotics software on ROS 2; AI agents I use every day.',
-  ogDescription:
-    'Computer vision on NVIDIA Jetson, rolling out to 10+ edge stations. Primary inventor on its patent. Robotics on ROS 2, and AI agents at home.',
-  ogImage: '/og.png',
+    'AI/ML engineer at Bharat Forge in Pune. I build computer vision for NVIDIA Jetson edge devices, robotics software on ROS 2, and AI agents.',
+  ogDescription: 'Edge computer vision on NVIDIA Jetson, robotics on ROS 2, and AI agents. AI/ML engineer at Bharat Forge, Pune.',
+  ogImageAlt: 'Bosco Chanam, AI/ML engineer: edge vision, robotics and AI agents.',
+  ogImage: '/og.jpg',
   avatar: '/assets/avatar.webp',
 
   intro: [

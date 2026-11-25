@@ -54,7 +54,7 @@ Every page sits on a fixed canvas (`Sky.astro`) that draws one scene in lit tile
 - **Add a look:** add an entry under the scene in `palettes.ts`. Each key is a colour ramp (stops from shadow to highlight) or a single colour. The first entry is the scene's default.
 - **Add a scene:** write a `Scene` in `src/scripts/sky/scenes/` using the drawing kit (`kit.ts`), register it in `SCENES` in `src/scripts/sky/index.ts`, and give it palettes.
 - **Legibility:** the sky holds still at one strength on every page. On phones and tablets Earth is fixed dead centre behind the copy; on desktop it keeps the right-of-centre spot beside the hero. Text that sits straight on the sky dims it locally via the selectors in `CALM` in `Sky.astro` (the Now panel included). The small Sun gives way once you scroll past the hero (`?sun=` previews its other styles in `suns.ts`).
-- **Motion:** the Earth scene is `static` — it draws once and repaints only after scrolling settles or on resize/palette change, so scrolling never runs the canvas. Other scenes animate at 25 fps. `prefers-reduced-motion` makes every scene still.
+- **Motion:** every scene animates at 25 fps, with Earth's globe turning in place. It keeps one fixed spot in the viewport, so scrolling never moves it. `prefers-reduced-motion` makes every scene still; the sky then repaints only when the page moves or resizes.
 - **Earth map:** `land.ts` is a 256×128 land bitmap rasterised from Natural Earth 110m land (public domain).
 
 ### Ruler labels

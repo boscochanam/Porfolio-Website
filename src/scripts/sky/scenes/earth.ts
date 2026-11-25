@@ -1,6 +1,6 @@
-// Earth: real coastlines (land.ts) on a tilted globe, with clouds, ice, coastal shallows, a sun glint, city
-// lights on the night side, a lit atmosphere rim, and static polar-orbit satellites. On desktop a distant Sun
-// sits in the open space left of the hero text, and the light comes from where it is.
+// Earth: real coastlines (land.ts) on a tilted, turning globe, with clouds, ice, coastal shallows, a sun glint,
+// city lights on the night side, a lit atmosphere rim, and polar-orbit satellites. On desktop a distant Sun sits
+// in the open space left of the hero text, and the light comes from where it is.
 import { hash } from '../../ascii';
 import { drawSun } from '../suns';
 import { drawSats } from '../sats';
@@ -31,11 +31,10 @@ const isArid = (lon: number, lat: number) => {
 
 export const earth: Scene = {
   label: 'Earth',
-  static: true, // one still globe, fixed behind the page
   layout(k) {
     const { W, H, phone } = k;
     if (W < 1000) {
-      // Phones and tablets: dead centre behind the copy, drawn once and never tracking scroll.
+      // Phones and tablets: dead centre behind the copy, holding this spot as the page scrolls.
       k.L.e = { x: W / 2, y: H / 2, r: Math.min(W * 0.3, H * 0.28, 240) };
       k.pivot = { x: W * 0.5, y: -H * 0.2 };
     } else {

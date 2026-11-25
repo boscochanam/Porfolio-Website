@@ -12,8 +12,6 @@ export type Occluder = (x: number, y: number) => boolean;
 
 export interface Scene {
   label: string;
-  /** Draw once and redraw after scrolling settles; for a scene that should sit still behind the page. */
-  static?: boolean;
   /** Place the scene's bodies for the current viewport (store them in k.L) and set k.pivot for the stars. */
   layout(k: Kit): void;
   draw(k: Kit): void;

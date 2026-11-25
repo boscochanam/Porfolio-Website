@@ -64,8 +64,7 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
   k.T = 40;
   frame();
 
-  const still = REDUCE || !!SCENES[cur].static;
-  if (!still) {
+  if (!REDUCE) {
     let last = 0;
     const loop = (now: number) => {
       if (now - last >= FRAME_MS) { last = now; k.T = (now - T0) / 1000 + 40; frame(); }
@@ -75,15 +74,15 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
     addEventListener('pointermove', (e) => { k.mouse = [e.clientX, e.clientY]; }, { passive: true });
     document.addEventListener('pointerleave', () => { k.mouse = null; });
   } else {
-    // Re-measure the calm boxes once webfonts land; a still scene would otherwise keep the fallback-font positions.
+    // With motion reduced the sky is a still frame; re-measure once webfonts land so the calm boxes are current.
     document.fonts?.ready.then(() => frame());
     addEventListener('load', frame, { once: true });
   }
-  // A still scene costs nothing while the page scrolls; redraw once it settles so the calm zones follow the copy.
+  // With motion reduced, redraw once scrolling settles so the calm zones follow the copy.
   let settle = 0;
   addEventListener('scroll', () => {
     recede();
-    if (!still) return;
+    if (!REDUCE) return;
     clearTimeout(settle);
     settle = window.setTimeout(frame, 120);
   }, { passive: true });

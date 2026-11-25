@@ -171,7 +171,7 @@ a.ik:hover .ext{opacity:1;transform:translate(1.5px,-1.5px)}
 .art .tx text{font:500 10.5px/1 ui-monospace,"SF Mono",Menlo,Consolas,"DejaVu Sans Mono",monospace;letter-spacing:.08em;text-transform:uppercase;fill:#9a958b}
 .art .tx text.inv{fill:var(--night)}
 @container (max-width:220px){.art .tx,.art .lg{display:none}}
-@media (prefers-reduced-motion:reduce){a.ik .ext{transition:none}}
+@media (prefers-reduced-motion:reduce){a.ik .ext,a.ln-link .ext{transition:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 .sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none}
@@ -244,6 +244,10 @@ a.br{text-decoration-thickness:1px;text-decoration-color:var(--muted)}
 .ln-main{display:flex;flex-direction:column;min-width:0;text-decoration:none;color:inherit}
 .ln-name{font:500 16.5px/1.35 var(--sans);color:var(--ink)}
 a.ln-main:hover .ln-name{text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:2px;text-underline-offset:4px}
+a.ln-link .ln-name{text-decoration:underline;text-decoration-color:var(--muted);text-decoration-thickness:1px;text-underline-offset:4px}
+a.ln-link:hover .ln-name{text-decoration-color:var(--red);text-decoration-thickness:2px}
+a.ln-link .ext{width:11px;height:11px;margin-left:5px;vertical-align:-1px;opacity:.45;transition:transform .15s,opacity .15s}
+a.ln-link:hover .ext{opacity:1;transform:translate(1.5px,-1.5px)}
 .ln-short{font:400 14.5px/1.45 var(--sans);color:var(--muted)}
 .tl-head.edu{margin-top:0}
 .tl-head.edu .tl-span{white-space:normal;text-align:right}

@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 import Tile from './Tile.astro';
 interface Props {
   icon?: string;
@@ -11,8 +12,8 @@ const { icon, title, meta, url } = Astro.props;
 <li>
   <Tile icon={icon} />
   {url ? (
-    <a class="ln-main" href={url}>
-      <span class="ln-name">{title}</span>
+    <a class="ln-main ln-link" href={url}>
+      <span class="ln-name">{title}<Icon name="arrow" class="ext" /></span>
       <span class="ln-short">{meta}</span>
     </a>
   ) : (

@@ -1,5 +1,5 @@
 ---
-import { site, links } from '../data/site';
+import { site, links, experience, education } from '../data/site';
 import fontCss from '../styles/fonts.css?raw';
 import '../styles/global.css';
 import '../styles/ruler.css';
@@ -9,12 +9,35 @@ interface Props {
   title?: string;
   description?: string;
   ogType?: string;
+  noindex?: boolean;
 }
-const { title = site.title, description, ogType = 'website' } = Astro.props;
+const { title = site.title, description, ogType = 'website', noindex = false } = Astro.props;
 const url = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(site.ogImage, Astro.site);
 const metaDescription = description ?? site.description;
 const ogDescription = description ?? site.ogDescription;
+const home = new URL('/', Astro.site).href;
+const [givenName, familyName] = site.name.split(' ');
+const jsonLd = Astro.url.pathname === '/' && JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'WebSite', '@id': `${home}#website`, url: home, name: site.name, publisher: { '@id': `${home}#person` } },
+    {
+      '@type': 'Person',
+      '@id': `${home}#person`,
+      name: site.name,
+      givenName,
+      familyName,
+      url: home,
+      image: new URL(site.avatar, Astro.site).href,
+      jobTitle: site.role,
+      worksFor: { '@type': 'Organization', name: experience[0].org },
+      alumniOf: { '@type': 'CollegeOrUniversity', name: education.school },
+      address: { '@type': 'PostalAddress', addressLocality: 'Pune', addressCountry: 'IN' },
+      sameAs: [links.github, links.linkedin, links.x, links.youtube, links.letterboxd],
+    },
+  ],
+});
 ---
 <!doctype html>
 <html lang="en">
@@ -30,7 +53,7 @@ const ogDescription = description ?? site.ogDescription;
 </script>
 <title>{title}</title>
 <meta name="description" content={metaDescription}>
-<link rel="canonical" href={url}>
+{noindex ? <meta name="robots" content="noindex"> : <link rel="canonical" href={url}>}
 <meta property="og:type" content={ogType}>
 <meta property="og:title" content={title}>
 <meta property="og:description" content={ogDescription}>
@@ -46,6 +69,7 @@ const ogDescription = description ?? site.ogDescription;
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+{jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
 </head>
 <body>
 <Sky />

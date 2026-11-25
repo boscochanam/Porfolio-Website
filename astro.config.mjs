@@ -32,8 +32,24 @@ function preloadSharedChunks() {
   };
 }
 
+function sitemap(site) {
+  return {
+    name: 'sitemap',
+    hooks: {
+      'astro:build:done': ({ pages, dir }) => {
+        const urls = pages.map((p) => p.pathname).filter((p) => p !== '404/' && p !== '404')
+          .map((p) => `<url><loc>${new URL(p, site)}</loc></url>`).sort();
+        writeFileSync(join(fileURLToPath(dir), 'sitemap.xml'),
+          `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.join('')}</urlset>\n`);
+      },
+    },
+  };
+}
+
+const site = 'https://boscochanam.com';
+
 export default defineConfig({
-  site: 'https://example.com',
+  site,
   build: { inlineStylesheets: 'always' },
-  integrations: [preloadSharedChunks()],
+  integrations: [preloadSharedChunks(), sitemap(site)],
 });

@@ -30,7 +30,9 @@ Results are written to `bench/results/<label>.json`; the tables are printed to s
 | File | What it is |
 | --- | --- |
 | `baseline-304f1a4.json` | The page before optimisation (Google Fonts, per-frame sky allocations, field canvas churn). |
-| `final.json` | The optimised page (see the summary in the repo README). |
+| `final.json` | The optimised page, before the single-column redesign. |
+| `regressed-9ed1ef6.json` | After the redesign: phone CLS 0.219 from the intro re-wrapping on the font swap, plus 35 KB of PNG icons. |
+| `fixed.json` | Width-matched serif fallbacks and WebP icons: back at or under `final.json`. |
 
 Use the same machine for before/after runs; the profiles slow the CPU and network, but host load still
 moves the medians by a few percent.

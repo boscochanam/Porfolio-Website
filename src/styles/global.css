@@ -6,7 +6,7 @@
   --pearl:#f3f1ec; --pearl-dim:#cfcac0; --ink-line:#3a3936;
   --plate:#111110; --night:#111110;
   --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-  --serif:"Source Serif 4","Source Serif Pro",Georgia,"Times New Roman",serif;
+  --serif:"Source Serif 4","Serif Fallback Georgia","Serif Fallback Times","Serif Fallback Noto","Serif Fallback DejaVu",serif;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,"DejaVu Sans Mono",monospace;
   --cube-y:#e9b500; --cube-b:#245a94; --cube-r:#b32b23; --cube-g:#2d7a4b; --cube-o:#c16527;
   --cube-mut:#4a4843; --cube-line:#111110;

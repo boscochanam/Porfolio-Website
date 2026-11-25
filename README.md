@@ -78,26 +78,25 @@ fonts removed (5 cold loads, Lighthouse mobile/desktop network and CPU presets; 
 
 | Median cold load | Phone | Desktop |
 | --- | --- | --- |
-| First text / largest paint | 264 ms (plain: 248 ms) | 132 ms (plain: 96 ms) |
-| Sky on screen | 584 ms | 164 ms |
-| Last web font | 946 ms | 294 ms |
-| Transferred | 122 KB (81 KB fonts, 18 KB JS) | 122 KB |
-| Blocking time after first paint | 160 ms | 20 ms |
-| Sky frame | 6.8 ms | 4.6 ms |
+| First text / largest paint | 252 ms (plain: 256 ms) | 92 ms (plain: 96 ms) |
+| Sky on screen | 557 ms | 158 ms |
+| Last web font | 936 ms | 289 ms |
+| Transferred | 125 KB (81 KB fonts, 15 KB JS) | 129 KB |
+| Blocking time after first paint | 117 ms | 0 ms |
+| Layout shift (CLS) | 0.002 | 0.051 |
+
+Serif text falls back to width-matched local faces (`size-adjust` in `fonts.css`, measured against
+Source Serif 4 at opsz 19) so the font swap does not re-wrap the intro.
 
 Before this work (`baseline-304f1a4.json`) the same phone profile reported first text at 1092 ms,
 fonts at 2031 ms, 229 KB transferred and 492 ms of blocking time; desktop was 672 ms / 1024 ms /
 279 KB. Runtime frames at 1920×1080 now draw the sky in under 5 ms with no long tasks; the phone's
 headless "busy" figure is dominated by software canvas compositing, not script (13–20%).
 
-## Still to fill in (search for `TODO` / `DRAFT`)
+## Still to fill in
 
-- CV PDF URL (`links.cv`)
-- Real domain in `astro.config.mjs` (`site`) — canonical/OG/Twitter URLs are built from it
-- `codeUrl` / `demoUrl` / `demoVideo` per selected-work card (links are hidden until set)
-- DRAFT copy: positioning line (`site.lede`), featured `problem`, About paragraphs, share-card tagline
-- Decide: keep "Work project · details under NDA" (`note` in `sop-monitoring.md`)?
-- Optional: hide the Now aside on mobile so projects start sooner
+- Real domain in `astro.config.mjs` (`site`): canonical, OG and Twitter URLs are built from it
+- `codeUrl` / `demoUrl` / `demoVideo` per project (links stay hidden until set)
 
 ## Deploy
 

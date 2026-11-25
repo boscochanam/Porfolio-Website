@@ -28,3 +28,23 @@
     U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+2248, U+2264-2265,
     U+2500, U+2726, U+FEFF, U+FFFD;
 }
+@font-face {
+  font-family: "Serif Fallback Georgia";
+  src: local("Georgia");
+  size-adjust: 99.6%;
+}
+@font-face {
+  font-family: "Serif Fallback Times";
+  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("Tinos");
+  size-adjust: 111%;
+}
+@font-face {
+  font-family: "Serif Fallback Noto";
+  src: local("Noto Serif"), local("NotoSerif");
+  size-adjust: 94.9%;
+}
+@font-face {
+  font-family: "Serif Fallback DejaVu";
+  src: local("DejaVu Serif");
+  size-adjust: 88%;
+}

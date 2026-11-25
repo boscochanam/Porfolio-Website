@@ -10,7 +10,7 @@ export const site = {
   ogDescription:
     'Computer vision on NVIDIA Jetson, rolling out to 10+ edge stations. Primary inventor on its patent. Robotics on ROS 2, and AI agents at home.',
   ogImage: '/og.png',
-  headshot: '/assets/headshot.jpg',
+  avatar: '/assets/avatar.webp',
 
   intro: [
     "I’m an AI/ML engineer at [[bharatforge|Bharat Forge]], one of the world’s largest forging companies. I build computer vision that checks factory work as it happens. It’s rolling out to **10+ edge stations** on [[nvidia|Jetson]], and I’m the primary inventor on its patent.",

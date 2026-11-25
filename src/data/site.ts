@@ -79,17 +79,48 @@ export const tools = [
   },
 ] as const;
 
-export const background = {
+type BackgroundItem = {
+  title: string;
+  meta: string;
+  icon?: string;
+  url?: string;
+};
+
+export const background: { papers: BackgroundItem[]; recognition: BackgroundItem[] } = {
   papers: [
     { title: 'From Hand-Drawn Schematics to Structural Circuit Netlists', meta: 'First author · manuscript' },
-    { title: 'Optimizing Text Summarization: Benchmarking LLMs vs Domain Specialized Architectures', meta: 'Co-author · IJFIS' },
+    {
+      title: 'Optimizing Text Summarization: Benchmarking LLMs vs Domain Specialized Architectures',
+      meta: 'Co-author · IJFIS',
+      url: 'https://doi.org/10.5391/IJFIS.2025.25.3.364',
+    },
   ],
   recognition: [
-    { title: 'Excellence Award for AI Innovation', meta: 'Bharat Forge', icon: 'bharatforge' },
+    {
+      title: 'Excellence Award for AI Innovation',
+      meta: 'Bharat Forge',
+      icon: 'bharatforge',
+      url: 'https://www.linkedin.com/posts/boscochanam_ai-innovation-award-for-leading-the-development-activity-7446798246603218944-1PPc',
+    },
     { title: 'Chosen to present our work to Union Home Minister Amit Shah', meta: 'Bharat Forge', icon: 'bharatforge' },
-    { title: 'Invited judge on a student project panel with members from Microsoft and Citi', meta: 'Symbiosis', icon: 'symbiosis' },
-    { title: 'Talk: “Role of AI in Shaping the Future of Youth”', meta: 'All India Radio', icon: 'air' },
-    { title: 'Top 0.5% nationwide', meta: 'Flipkart Grid 5.0', icon: 'flipkart' },
+    {
+      title: 'Invited judge on a student project panel with members from Microsoft and Citi',
+      meta: 'Symbiosis',
+      icon: 'symbiosis',
+      url: 'https://www.linkedin.com/posts/boscochanam_aiml-techleadership-sitpune-activity-7449714460757479425-9R34',
+    },
+    {
+      title: 'Talk: “Role of AI in Shaping the Future of Youth”',
+      meta: 'All India Radio',
+      icon: 'air',
+      url: 'https://youtu.be/VyjwdPrdTDg',
+    },
+    {
+      title: 'Top 0.5% nationwide',
+      meta: 'Flipkart Grid 5.0',
+      icon: 'flipkart',
+      url: 'https://www.linkedin.com/posts/boscochanam_flipkart-flipkartgrid-activity-7094267094971641857-JjBd',
+    },
   ],
 };
 

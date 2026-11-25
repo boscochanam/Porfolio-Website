@@ -35,6 +35,7 @@ bench/                    performance benchmark
 | --- | --- |
 | Intro, timeline, education, papers, awards, tools, links | `src/data/site.ts` |
 | Inline logos in copy | write `[[brand|Label]]` or `[[brand|Label|url]]`; keys live in `src/lib/brands.ts` |
+| Paper and recognition links | add `url` to an item in `src/data/site.ts`; rows without one stay plain |
 | Home project rows | `src/content/projects/*.md` (`name`, `short`, `icon`, `home: false` to hide) |
 | Project cards on `/projects/` | same files (`title`, `kind`, `summary`, `outcome`, `stack`, `art`) |
 | Row icon tiles (brand, calendar, paper, cube) | `src/components/Tile.astro` |

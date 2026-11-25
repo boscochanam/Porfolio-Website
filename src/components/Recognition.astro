@@ -1,15 +1,15 @@
 ---
 import { background as bg } from '../data/site';
-import Tile from './Tile.astro';
+import LinkRow from './LinkRow.astro';
 ---
 <section class="blk" id="background">
   <h2 class="blk-h label" data-ruler="Research" data-nav="background">Research &amp; recognition</h2>
   <p class="tg-h">Papers</p>
   <ul class="ln-list">
-    {bg.papers.map((p) => <li><Tile icon="paper" /><span class="ln-main"><span class="ln-name">{p.title}</span><span class="ln-short">{p.meta}</span></span></li>)}
+    {bg.papers.map((p) => <LinkRow icon="paper" title={p.title} meta={p.meta} url={p.url} />)}
   </ul>
   <p class="tg-h">Recognition</p>
   <ul class="ln-list">
-    {bg.recognition.map((r) => <li><Tile icon={r.icon} /><span class="ln-main"><span class="ln-name">{r.title}</span><span class="ln-short">{r.meta}</span></span></li>)}
+    {bg.recognition.map((r) => <LinkRow icon={r.icon} title={r.title} meta={r.meta} url={r.url} />)}
   </ul>
 </section>

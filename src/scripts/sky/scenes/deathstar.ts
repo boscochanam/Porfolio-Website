@@ -1,7 +1,7 @@
 // Death Star II over Endor: a half-built battle station turning slowly. Hull panels with a trench at the
 // equator, the superlaser dish in the northern hemisphere, and an unfinished southern flank where the hull
 // gives way to girders over a dark interior. Endor, a forest moon, circles it. Greys keep it quiet behind text.
-import { hash } from '../../ascii';
+import { hash } from '../glyph';
 import { clamp, fbm, norm, smooth, wrap } from '../math';
 import type { Kit, Scene } from '../kit';
 

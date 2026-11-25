@@ -1,0 +1,235 @@
+{
+ "label": "final",
+ "date": "2026-11-25 10:46",
+ "runs": 5,
+ "load": {
+  "phone/site": {
+   "median": {
+    "ttfb": 2.399999976158142,
+    "dcl": 773.8999999761581,
+    "load": 983,
+    "fcp": 264,
+    "lcp": 264,
+    "cls": 0.00928865376444363,
+    "dom": 413,
+    "tbt": 160,
+    "maxLT": 84,
+    "nLT": 12,
+    "skyDrawn": 583.8000000715256,
+    "skyFramesAtLoad": 65,
+    "skyFrameMs": 6.799999952316284,
+    "kb": 122.1474609375,
+    "fontKB": 80.9375,
+    "jsKB": 18.09375,
+    "fonts": 945.6470001023263,
+    "requests": 10,
+    "origins": 1,
+    "scriptMsLoad": 569.794,
+    "taskMsLoad": 3571.788
+   },
+   "fcpRange": [
+    248,
+    284
+   ],
+   "lcpEl": "p.lede",
+   "blocking": []
+  },
+  "phone/ref-plain": {
+   "median": {
+    "ttfb": 1.9000000953674316,
+    "dcl": 243.89999997615814,
+    "load": 408.7999999523163,
+    "fcp": 248,
+    "lcp": 248,
+    "cls": 0,
+    "dom": 404,
+    "tbt": 19,
+    "maxLT": 69,
+    "nLT": 1,
+    "skyDrawn": null,
+    "skyFramesAtLoad": 0,
+    "skyFrameMs": null,
+    "kb": 22.3125,
+    "fontKB": 0.0,
+    "jsKB": 0.0,
+    "fonts": null,
+    "requests": 2,
+    "origins": 1,
+    "scriptMsLoad": 6.588,
+    "taskMsLoad": 199.874
+   },
+   "fcpRange": [
+    248,
+    272
+   ],
+   "lcpEl": "p.lede",
+   "blocking": []
+  },
+  "desktop/site": {
+   "median": {
+    "ttfb": 2,
+    "dcl": 298.60000002384186,
+    "load": 303.10000002384186,
+    "fcp": 132,
+    "lcp": 132,
+    "cls": 0.055081573109567905,
+    "dom": 425,
+    "tbt": 20,
+    "maxLT": 70,
+    "nLT": 2,
+    "skyDrawn": 163.79999995231628,
+    "skyFramesAtLoad": 64,
+    "skyFrameMs": 4.600000023841858,
+    "kb": 122.1474609375,
+    "fontKB": 80.9375,
+    "jsKB": 18.09375,
+    "fonts": 294.03999994974583,
+    "requests": 10,
+    "origins": 1,
+    "scriptMsLoad": 494.061,
+    "taskMsLoad": 1889.022
+   },
+   "fcpRange": [
+    88,
+    140
+   ],
+   "lcpEl": "p.lede",
+   "blocking": []
+  },
+  "desktop/ref-plain": {
+   "median": {
+    "ttfb": 2.100000023841858,
+    "dcl": 91,
+    "load": 120.19999992847443,
+    "fcp": 96,
+    "lcp": 96,
+    "cls": 0.0014247097439236108,
+    "dom": 404,
+    "tbt": 0,
+    "maxLT": 0,
+    "nLT": 0,
+    "skyDrawn": null,
+    "skyFramesAtLoad": 0,
+    "skyFrameMs": null,
+    "kb": 22.3125,
+    "fontKB": 0.0,
+    "jsKB": 0.0,
+    "fonts": null,
+    "requests": 2,
+    "origins": 1,
+    "scriptMsLoad": 7.607,
+    "taskMsLoad": 117.826
+   },
+   "fcpRange": [
+    92,
+    112
+   ],
+   "lcpEl": "p.lede",
+   "blocking": []
+  }
+ },
+ "runtime": {
+  "phone": {
+   "idleTop": {
+    "busyPct": 91.5198766577779,
+    "scriptPct": 12.655513422468289,
+    "rafWorkMs": 6.300000011920929,
+    "rafWorkN": 100,
+    "skyFrames": 98,
+    "skyFrameMs": 6.299999952316284,
+    "longTasks": 0,
+    "maxLT": 0,
+    "framesOver25msPct": 65.2439024390244,
+    "worstFrameMs": 50.100000000000364
+   },
+   "idleDiagram": {
+    "busyPct": 99.67986176669025,
+    "scriptPct": 21.124539027648,
+    "rafWorkMs": 6.600000023841858,
+    "rafWorkN": 160,
+    "skyFrames": 89,
+    "skyFrameMs": 7.700000047683716,
+    "longTasks": 72,
+    "maxLT": 90,
+    "framesOver25msPct": 100.0,
+    "worstFrameMs": 100.10000000000036
+   },
+   "clicksDiagram": {
+    "busyPct": 99.58622352071049,
+    "scriptPct": 22.722700179809,
+    "rafWorkMs": 7.599999904632568,
+    "rafWorkN": 77,
+    "skyFrames": 44,
+    "skyFrameMs": 8.200000047683716,
+    "longTasks": 43,
+    "maxLT": 61,
+    "framesOver25msPct": 100.0,
+    "worstFrameMs": 66.79999999999927,
+    "worstEventMs": 120
+   },
+   "scroll": {
+    "busyPct": 98.39643140187869,
+    "scriptPct": 15.86150970257687,
+    "rafWorkMs": 6.299999952316284,
+    "rafWorkN": 319,
+    "skyFrames": 182,
+    "skyFrameMs": 6.699999928474426,
+    "longTasks": 123,
+    "maxLT": 66,
+    "framesOver25msPct": 97.34042553191489,
+    "worstFrameMs": 83.40000000000146
+   }
+  },
+  "desktop": {
+   "idleTop": {
+    "busyPct": 51.91476982175753,
+    "scriptPct": 13.405757778554385,
+    "rafWorkMs": 4,
+    "rafWorkN": 175,
+    "skyFrames": 100,
+    "skyFrameMs": 4.399999976158142,
+    "longTasks": 0,
+    "maxLT": 0,
+    "framesOver25msPct": 0.0,
+    "worstFrameMs": 16.800000000000182
+   },
+   "idleDiagram": {
+    "busyPct": 52.9368895308198,
+    "scriptPct": 13.332955924100991,
+    "rafWorkMs": 4.0,
+    "rafWorkN": 176,
+    "skyFrames": 101,
+    "skyFrameMs": 4.300000071525574,
+    "longTasks": 0,
+    "maxLT": 0,
+    "framesOver25msPct": 0.3333333333333333,
+    "worstFrameMs": 33.399999999999636
+   },
+   "clicksDiagram": {
+    "busyPct": 53.400674153238214,
+    "scriptPct": 13.43445267930895,
+    "rafWorkMs": 4.0,
+    "rafWorkN": 88,
+    "skyFrames": 51,
+    "skyFrameMs": 4.299999952316284,
+    "longTasks": 0,
+    "maxLT": 0,
+    "framesOver25msPct": 0.0,
+    "worstFrameMs": 16.80000000000109,
+    "worstEventMs": 40
+   },
+   "scroll": {
+    "busyPct": 57.960218997258245,
+    "scriptPct": 12.099046692419398,
+    "rafWorkMs": 3.9000000953674316,
+    "rafWorkN": 68,
+    "skyFrames": 44,
+    "skyFrameMs": 4.300000011920929,
+    "longTasks": 0,
+    "maxLT": 0,
+    "framesOver25msPct": 1.550387596899225,
+    "worstFrameMs": 33.400000000001455
+   }
+  }
+ }
+}

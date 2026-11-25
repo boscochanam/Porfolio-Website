@@ -10,8 +10,9 @@ const bits = Uint8Array.from(atob(LAND), (c) => c.charCodeAt(0));
 
 /** Is there land at this longitude/latitude (radians)? */
 export function isLand(lon: number, lat: number) {
-  const u = Math.floor((wrap(lon) / TAU) * LAND_W) % LAND_W;
+  // LAND_W is a power of two, so & wraps negative and over-range longitudes without two modulo ops.
+  const u = Math.floor(lon * (LAND_W / TAU)) & (LAND_W - 1);
   const v = clamp(Math.floor((0.5 - lat / Math.PI) * LAND_H), 0, LAND_H - 1);
-  const i = v * LAND_W + u;
+  const i = (v << 8) + u;
   return (bits[i >> 3] >> (7 - (i & 7))) & 1;
 }

@@ -1,6 +1,6 @@
 # Bosco Chanam — portfolio
 
-Static Astro site (Astro 7.3.5, pinned). Home page plus project pages; no UI framework, a few KB of JS.
+Static Astro site (Astro 7.3.5, pinned). Home page plus project pages; no UI framework, about 18 KB of JS.
 
 ```sh
 npm install
@@ -32,6 +32,8 @@ npm run preview   # serve dist/
 | Sky engine, drawing kit, text calm zones | `src/scripts/sky/index.ts`, `src/scripts/sky/kit.ts`, `src/components/Sky.astro` |
 | 404 page | `src/pages/404.astro` |
 | Styles | `src/styles/global.css` (night theme tokens, page, projects grid, sky picker, 404), `src/styles/ruler.css` (gutter ruler + slider), `src/styles/cubing.css` (project pages) |
+| Web fonts | `src/styles/fonts.css` + `public/fonts/` (subset Inter + Source Serif 4; regenerate if copy adds scripts or weights) |
+| Performance benchmark | `bench/bench.py` (see `bench/README.md`) |
 | Gutter ruler / slider / nav behaviour | `src/scripts/ruler.ts`, `slider.ts`, `nav.ts` |
 | Cubing copy, checklist and contents rail | `src/scripts/cubing.ts` |
 | Share card | `design/og-card.html` → render to `public/og.png` (1200×630) |
@@ -60,6 +62,28 @@ Every page sits on a fixed canvas (`Sky.astro`) that draws one scene in lit tile
 ### Ruler labels
 
 The gutter ruler reads section heads marked with `data-ruler="Label"` and `data-nav="hash"` (comma-separated for a shared label such as About/Contact). Add a new home section with those attributes and it appears in the ruler without touching the script.
+
+## Performance
+
+The home page is built to feel like a plain HTML page: inline CSS, self-hosted subset fonts, a sky
+bundle that does not block text, and per-cell geometry/value caching so the sky only does work that
+changes. `bench/bench.py` measures it against a copy of the same page with scripts, canvas and web
+fonts removed (5 cold loads, Lighthouse mobile/desktop network and CPU presets; see
+`bench/README.md`).
+
+| Median cold load | Phone | Desktop |
+| --- | --- | --- |
+| First text / largest paint | 264 ms (plain: 248 ms) | 132 ms (plain: 96 ms) |
+| Sky on screen | 584 ms | 164 ms |
+| Last web font | 946 ms | 294 ms |
+| Transferred | 122 KB (81 KB fonts, 18 KB JS) | 122 KB |
+| Blocking time after first paint | 160 ms | 20 ms |
+| Sky frame | 6.8 ms | 4.6 ms |
+
+Before this work (`baseline-304f1a4.json`) the same phone profile reported first text at 1092 ms,
+fonts at 2031 ms, 229 KB transferred and 492 ms of blocking time; desktop was 672 ms / 1024 ms /
+279 KB. Runtime frames at 1920×1080 now draw the sky in under 5 ms with no long tasks; the phone's
+headless "busy" figure is dominated by software canvas compositing, not script (13–20%).
 
 ## Still to fill in (search for `TODO` / `DRAFT`)
 

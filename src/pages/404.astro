@@ -39,6 +39,8 @@ import { site } from '../data/site';
     ascii(cv, src, { cell: 7, shimmer: Math.floor(t * 6) });
   };
   document.fonts.ready.then(() => draw(0));
+  // The font sheet is held back briefly on first load (Base.astro); redraw once it is available.
+  document.fonts.addEventListener?.('loadingdone', () => draw(0));
   addEventListener('resize', () => draw(0));
   if (!REDUCE) {
     let last = 0;

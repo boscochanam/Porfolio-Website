@@ -115,5 +115,14 @@ export function paintRuler(i: number) {
 
 build();
 addEventListener('resize', build);
-document.fonts?.ready.then(build);
-addEventListener('load', build);
+// `ready` can resolve before the gated font sheet is switched on, so also rebuild on loadingdone; the
+// signature keeps the two paths from doing the same rebuild twice.
+let fontSig = '';
+const buildFonts = () => {
+  const sig = [...(document.fonts ?? [])].map((f) => `${f.family}/${f.weight}/${f.style}/${f.status}`).join('|');
+  if (sig === fontSig) return;
+  fontSig = sig;
+  build();
+};
+document.fonts?.ready.then(buildFonts);
+document.fonts?.addEventListener?.('loadingdone', buildFonts);

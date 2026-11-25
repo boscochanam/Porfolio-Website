@@ -1,5 +1,5 @@
 // Noise, easing and lighting helpers shared by the scenes.
-import { hash } from '../ascii';
+import { hash } from './glyph';
 
 export const TAU = Math.PI * 2;
 export const norm = (v: number[]) => { const l = Math.hypot(...v); return v.map((x) => x / l); };

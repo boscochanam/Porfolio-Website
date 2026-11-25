@@ -1,7 +1,7 @@
 // Drawing kit shared by the scenes: frame state (size, time, palette, scroll lift) and the cell-level
 // primitives (glyphs, lit tiles, spheres, orbits) plus the shared backdrop (stars, graticule, constellations, comet).
 // Coordinates are CSS pixels in scene space; `oy` can shift scene space vertically (the engine keeps it at 0).
-import { MONO, RAMP, hash } from '../ascii';
+import { MONO, RAMP, hash } from './glyph';
 import { at, SKY, STAR, WARM, COOL, LINE, GRAT, GRAT_LAB, ON_LIGHT, ON_DARK } from './color';
 import { TAU, slope } from './math';
 
@@ -17,6 +17,9 @@ export interface Scene {
   draw(k: Kit): void;
 }
 
+/** One cell of a sphere's fixed grid, in screen coordinates. */
+type SphereCell = { x: number; y: number; gx: number; gy: number; dx: number; dy: number; nz: number };
+
 const CONSTELLATIONS = [
   { at: [0.5, 0.14], pts: [[0, 0], [4, 3], [7, 0], [11, 3], [14, -1]], ln: [[0, 1], [1, 2], [2, 3], [3, 4]] }, // Cassiopeia
   { at: [0.06, 0.66], pts: [[0, 0], [8, 1], [3, 6], [4.5, 6.6], [6, 7.2], [1, 13], [9, 12]], ln: [[0, 2], [1, 4], [2, 3], [3, 4], [2, 5], [4, 6]] }, // Orion
@@ -25,7 +28,14 @@ const CONSTELLATIONS = [
 const STAR_DENSITY = 5200; // px² of sky per star
 
 export function createKit(ctx: CanvasRenderingContext2D) {
-  let stars: { a: number; d: number; b: number; tw: number; ph: number; tint: number }[] = [];
+  let stars: { ca: number; sa: number; d: number; b: number; tw: number; ph: number; col: string }[] = [];
+  // Calm lookups are memoised per half-pixel and cleared when the text boxes move. The globe asks for the
+  // same few thousand points every frame, so this turns an O(cells × boxes) hypot sweep into a map hit.
+  let calmMemo = new Map<number, number>();
+  // A large sphere's cell geometry (screen position, normal, grid slot) only changes on layout, so build it
+  // once per centre/radius and reuse it. Small or moving spheres skip the cache.
+  const sphereCache = new Map<string, SphereCell[]>();
+  let bgGrad: CanvasGradient | null = null, bgW = 0, bgH = 0;
 
   const k = {
     ctx,
@@ -50,7 +60,7 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     pivot: { x: 0, y: 0 },
     /** Text boxes (viewport coords) the sky dims behind. */
     rects: [] as DOMRect[],
-    snap, tileFont, glyphFont, calmAt, tile, glyph, sphere, orbiter,
+    snap, tileFont, glyphFont, calmAt, calmReset, tile, glyph, sphere, orbiter,
     makeStars, backdrop, drawStars, graticule, constellations, comet,
   };
 
@@ -58,17 +68,25 @@ export function createKit(ctx: CanvasRenderingContext2D) {
   function tileFont() { ctx.font = `600 ${Math.round(k.C * 0.56)}px ${MONO}`; }
   function glyphFont(s = 0.8) { ctx.font = `600 ${Math.round(k.C * s)}px ${MONO}`; }
 
-  /** 1 in open sky, down to 0.18 right behind a text box. */
-  function calmAt(X: number, y: number) {
-    let f = 1;
+  /** 1 in open sky, down to 0.18 right behind a text box. `rects` lets a large body pass only nearby boxes. */
+  function calmAt(X: number, y: number, rects = k.rects) {
     const Y = y + k.oy;
-    for (const r of k.rects) {
+    const key = Math.round(X * 2) * 100000 + Math.round(Y * 2);
+    const hit = calmMemo.get(key);
+    if (hit !== undefined) return hit;
+    let f = 1;
+    for (const r of rects) {
       const dx = Math.max(r.left - 16 - X, 0, X - r.right - 16), dy = Math.max(r.top - 16 - Y, 0, Y - r.bottom - 16);
+      if (dx > 58 || dy > 58) continue; // 0.18 + hypot/70 cannot fall below 1 this far out
       const c = 0.18 + Math.hypot(dx, dy) / 70;
       if (c < f) f = c;
     }
+    calmMemo.set(key, f);
     return f;
   }
+
+  /** Drop memoised calm values after the text boxes move (scroll, resize, font swap). */
+  function calmReset() { calmMemo = new Map(); }
 
   /** A lit square cell; cells 10px and up carry a brightness glyph. */
   function tile(X: number, Y: number, col: string, v: number, a: number, s = k.C) {
@@ -87,17 +105,40 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     ctx.globalAlpha = a; ctx.fillStyle = col; ctx.fillText(g, X + C / 2, Y + C / 2 + 1);
   }
 
-  /** Sphere drawn cell by cell at cell size `s`. `fn` shades each cell; `skip` hides occluded cells. */
-  function sphere(cx: number, cy: number, R: number, ramp: string[], light: number[], fn?: ShadeFn, skip?: Occluder, s = k.C) {
-    tileFont();
-    const sn = (v: number) => Math.floor(v / s);
+  /** Build the fixed cell grid for a sphere: screen position, normal and grid slot for each visible cell. */
+  function buildCells(cx: number, cy: number, R: number, s: number, skip?: Occluder) {
+    const sn = (v: number) => Math.floor(v / s), cells: SphereCell[] = [];
     for (let gy = sn(cy - R); gy <= sn(cy + R); gy++) for (let gx = sn(cx - R); gx <= sn(cx + R); gx++) {
       const x = (gx + 0.5) * s, y = (gy + 0.5) * s, dx = (x - cx) / R, dy = (y - cy) / R, d2 = dx * dx + dy * dy;
       if (d2 > 1 || (skip && skip(x, y))) continue;
-      const nz = Math.sqrt(1 - d2);
+      cells.push({ x, y, gx, gy, dx, dy, nz: Math.sqrt(1 - d2) });
+    }
+    return cells;
+  }
+
+  /** Sphere drawn cell by cell at cell size `s`. `fn` shades each cell; `skip` hides occluded cells. */
+  function sphere(cx: number, cy: number, R: number, ramp: string[], light: number[], fn?: ShadeFn, skip?: Occluder, s = k.C) {
+    tileFont();
+    let cells: SphereCell[];
+    if (!skip && R >= 60 && s < 10) {
+      const key = `${cx}|${cy}|${R}|${s}`;
+      const cached = sphereCache.get(key);
+      if (cached) cells = cached;
+      else {
+        cells = buildCells(cx, cy, R, s);
+        if (sphereCache.size >= 8) sphereCache.clear();
+        sphereCache.set(key, cells);
+      }
+    } else cells = buildCells(cx, cy, R, s, skip);
+    // Only boxes that can dim this body matter. Usually none do for the big globe, so its cells skip the
+    // calm sweep entirely; on phones the copy overlaps it, so narrow the list to the overlapping boxes.
+    const reach = 58, near = k.rects.filter((r) =>
+      r.right + reach > cx - R && r.left - reach < cx + R && r.bottom + reach > cy - R && r.top - reach < cy + R);
+    for (const c of cells) {
+      const { x, y, gx, gy, dx, dy, nz } = c;
       let v = 0.06 + 0.94 * Math.max(0, dx * light[0] + dy * light[1] + nz * light[2]), r = ramp;
       if (fn) { const o = fn(dx, dy, nz, v); v = o.v; if (o.ramp) r = o.ramp; }
-      tile(gx * s, gy * s, at(r, v), v, calmAt(x, y), s);
+      tile(gx * s, gy * s, at(r, v), v, near.length ? calmAt(x, y, near) : 1, s);
     }
   }
 
@@ -114,16 +155,24 @@ export function createKit(ctx: CanvasRenderingContext2D) {
   function makeStars() {
     stars = [];
     const span = Math.hypot(k.W, k.H) * 1.6, n = Math.round((Math.PI * span * span) / (k.phone ? STAR_DENSITY * 1.35 : STAR_DENSITY));
-    for (let i = 0; i < n; i++) stars.push({ a: hash(i, 1, 3) * TAU, d: Math.sqrt(hash(i, 2, 5)) * span, b: Math.pow(hash(i, 3, 7), 2.2), tw: 0.6 + hash(i, 4, 9) * 2.2, ph: hash(i, 5, 1) * 6, tint: hash(i, 6, 2) });
+    for (let i = 0; i < n; i++) {
+      const a = hash(i, 1, 3) * TAU, tint = hash(i, 6, 2);
+      // Store the unit direction so the frame loop only needs one shared rotation, not a sin/cos per star.
+      stars.push({ ca: Math.cos(a), sa: Math.sin(a), d: Math.sqrt(hash(i, 2, 5)) * span, b: Math.pow(hash(i, 3, 7), 2.2),
+        tw: 0.6 + hash(i, 4, 9) * 2.2, ph: hash(i, 5, 1) * 6, col: tint > 0.9 ? WARM : tint > 0.8 ? COOL : STAR });
+    }
   }
 
   /** Night gradient plus slow-drifting coloured haze (rgba strings). */
   function backdrop(haze: string[] = []) {
     const { W, H, T } = k;
     ctx.globalAlpha = 1;
-    const g = ctx.createLinearGradient(0, 0, 0, H);
-    g.addColorStop(0, SKY[0]); g.addColorStop(0.6, SKY[1]); g.addColorStop(1, SKY[2]);
-    ctx.fillStyle = g; ctx.fillRect(0, -k.oy, W, H);
+    if (!bgGrad || bgW !== W || bgH !== H) {
+      bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+      bgGrad.addColorStop(0, SKY[0]); bgGrad.addColorStop(0.6, SKY[1]); bgGrad.addColorStop(1, SKY[2]);
+      bgW = W; bgH = H;
+    }
+    ctx.fillStyle = bgGrad; ctx.fillRect(0, -k.oy, W, H);
     haze.forEach((c, i) => {
       const x = W * (0.62 + 0.25 * Math.sin(T * 0.02 + i * 2.2)), y = H * (0.4 + 0.3 * Math.cos(T * 0.017 + i * 1.4)), r = Math.max(W, H) * (0.42 - 0.06 * i);
       const rg = ctx.createRadialGradient(x, y, 0, x, y, r);
@@ -133,20 +182,20 @@ export function createKit(ctx: CanvasRenderingContext2D) {
   }
 
   const rot = () => k.T * 0.006;
-  const skyXY = (a: number, d: number) => [k.pivot.x + Math.cos(a + rot()) * d, k.pivot.y + Math.sin(a + rot()) * d];
 
   /** Twinkling star glyphs turning around k.pivot. `veil` (0..1) fades stars behind bright bodies. */
   function drawStars(veil?: (x: number, y: number) => number) {
-    const { C, W, H, T, oy, mouse } = k;
+    const { C, W, H, T, oy, mouse, pivot } = k;
     glyphFont(0.78);
+    const r = rot(), cr = Math.cos(r), sr = Math.sin(r);
     for (const s of stars) {
-      const [x, y] = skyXY(s.a, s.d);
+      const x = pivot.x + (s.ca * cr - s.sa * sr) * s.d, y = pivot.y + (s.ca * sr + s.sa * cr) * s.d;
       if (x < -C || y + oy < -C || x > W || y + oy > H) continue;
       let b = s.b * (0.65 + 0.35 * Math.sin(T * s.tw + s.ph));
       if (mouse) { const d = Math.hypot(x - mouse[0], y + oy - mouse[1]); if (d < 140) b = Math.min(1, b + 0.5 * (1 - d / 140)); }
       if (veil) b *= veil(x, y);
       if (b < 0.04) continue;
-      glyph(snap(x) * C, snap(y) * C, b > 0.75 ? '✦' : b > 0.45 ? '*' : b > 0.22 ? '+' : '·', s.tint > 0.9 ? WARM : s.tint > 0.8 ? COOL : STAR, Math.min(1, 0.25 + b) * calmAt(x, y));
+      glyph(snap(x) * C, snap(y) * C, b > 0.75 ? '✦' : b > 0.45 ? '*' : b > 0.22 ? '+' : '·', s.col, Math.min(1, 0.25 + b) * calmAt(x, y));
     }
   }
 

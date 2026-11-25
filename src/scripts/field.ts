@@ -11,24 +11,34 @@ if (ink && cv) {
     v: { w: 340, nodes: [[90, 24], [88, 147], [252, 147], [88, 268], [252, 268]], routes: [[0, 1, 2, 3], [0, 1, 2, 4]] },
   };
   const src = scene(10, 10);
-  let mouse: [number, number] | null = null, inView = true;
+  const sx = src.getContext('2d')!;
+  let mouse: [number, number] | null = null, inView = false, drawn = false;
+  // Geometry is stable between resizes; reading it every frame forces layout and costs more than the draw.
+  let lay: { W: number; H: number; V: (typeof VARIANTS)['h']; k: number; ox: number; oy: number } | null = null;
   ink.addEventListener('pointermove', (e) => { const r = ink.getBoundingClientRect(); mouse = [e.clientX - r.left, e.clientY - r.top]; });
   ink.addEventListener('pointerleave', () => { mouse = null; });
 
-  const draw = (t: number) => {
+  const measure = () => {
     const W = ink.clientWidth, H = ink.clientHeight;
-    if (!W) return;
+    if (!W) return null;
     const svg = [...ink.querySelectorAll<SVGSVGElement>('svg.dg')].find((s) => s.getBoundingClientRect().width > 0);
-    if (!svg) return;
-    const V = svg.classList.contains('dg-v') ? VARIANTS.v : VARIANTS.h;
+    if (!svg) return null;
+    const ir = ink.getBoundingClientRect(), sr = svg.getBoundingClientRect(), V = svg.classList.contains('dg-v') ? VARIANTS.v : VARIANTS.h;
+    return { W, H, V, k: sr.width / V.w, ox: sr.left - ir.left, oy: sr.top - ir.top };
+  };
+
+  const draw = (t: number) => {
+    if (!(lay ??= measure())) return;
+    const { W, H, V, k, ox, oy } = lay;
     const sc = 0.5;
-    src.width = Math.round(W * sc); src.height = Math.round(H * sc);
-    const x = src.getContext('2d')!;
+    // Assigning width/height reallocates the bitmap, so only do it when the box actually changed.
+    const sw = Math.round(W * sc), sh = Math.round(H * sc);
+    if (src.width !== sw || src.height !== sh) { src.width = sw; src.height = sh; }
+    const x = sx;
     x.fillStyle = '#000'; x.fillRect(0, 0, src.width, src.height);
     x.save(); x.scale(sc, sc);
     for (let i = 0; i < 5; i++) glow(x, W * (0.5 + 0.45 * Math.sin(t * 0.13 + i * 1.7)), H * (0.5 + 0.45 * Math.cos(t * 0.11 + i * 2.3)), W * 0.34, 0.28);
-    const ir = ink.getBoundingClientRect(), sr = svg.getBoundingClientRect(), k = sr.width / V.w;
-    x.translate(sr.left - ir.left, sr.top - ir.top); x.scale(k, k);
+    x.translate(ox, oy); x.scale(k, k);
     V.nodes.forEach(([a, b], i) => glow(x, a, b, 120, 0.45 + 0.12 * Math.sin(t * 1.3 + i)));
     x.fillStyle = '#d01b0b';
     V.routes.forEach((route, ri) => {
@@ -44,10 +54,17 @@ if (ink && cv) {
   };
 
   const t0 = performance.now();
-  document.fonts.ready.then(() => draw(2));
-  addEventListener('resize', () => draw((performance.now() - t0) / 1000 + 2));
+  // Paint only once the diagram is on screen. Below the fold it costs nothing during page load; when it
+  // scrolls in, the observer draws it before the next paint. Fonts move the SVG bounds, so redraw then.
+  const fonted = () => { lay = measure(); if (inView) { drawn = true; draw(2); } };
+  document.fonts.ready.then(fonted);
+  document.fonts.addEventListener?.('loadingdone', fonted);
+  new IntersectionObserver((es) => {
+    inView = es[0].isIntersecting;
+    if (inView && !drawn) { lay = measure(); drawn = true; draw(2); }
+  }).observe(ink);
+  addEventListener('resize', () => { lay = measure(); if (inView) draw((performance.now() - t0) / 1000 + 2); });
   if (!REDUCE) {
-    new IntersectionObserver((es) => { inView = es[0].isIntersecting; }).observe(ink);
     let last = 0;
     const loop = (now: number) => {
       if (inView && now - last >= 66) { last = now; draw((now - t0) / 1000 + 2); }

@@ -1,6 +1,6 @@
 // Styles for the small distant Sun in the Earth scene. Each draws around (x, y) with core radius r.
 // The centre is snapped to a cell centre first so every style stays symmetric on the grid.
-import { MONO, hash } from '../ascii';
+import { MONO, hash } from './glyph';
 import { at, lut } from './color';
 import { TAU, clamp, fbm } from './math';
 import type { Kit } from './kit';

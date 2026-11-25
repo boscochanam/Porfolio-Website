@@ -1,7 +1,7 @@
 // Full-page night sky drawn as glyphs and lit tiles on a fixed canvas behind the page (Sky.astro).
 // One composed scene at a time (scenes/), coloured by a named look (palettes.ts). The scene holds still at one
 // strength on every page; text boxes matched by `calmSel` dim the sky behind them. Cells snap to a grid, so motion steps like a terminal.
-import { REDUCE } from '../ascii';
+import { REDUCE } from './glyph';
 import { lut, SKY } from './color';
 import { clamp } from './math';
 import { PALETTES } from './palettes';
@@ -15,11 +15,19 @@ const SCENES: Record<string, Scene> = { saturn, sun, earth, deathstar };
 const FRAME_MS = 40; // 25 fps
 
 export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, firstPalette?: string) {
-  const ctx = cv.getContext('2d')!;
+  const ctx = cv.getContext('2d', { alpha: false })!; // every frame paints the whole canvas, so skip blending it with the page
   const k = createKit(ctx);
   const home = !!document.querySelector('.hero');
   const calmEls = [...document.querySelectorAll(calmSel)];
-  let cur = SCENES[first] ? first : 'earth', palName = '';
+  let cur = SCENES[first] ? first : 'earth', palName = '', boxesDirty = true;
+
+  /** Re-read the calm boxes only when the page moves or the layout changes, not on every animation frame. */
+  function measure() {
+    k.rects = [];
+    for (const e of calmEls) { const r = e.getBoundingClientRect(); if (r.width && r.bottom > -40 && r.top < k.H + 40) k.rects.push(r); }
+    k.calmReset();
+    boxesDirty = false;
+  }
 
   /** Activate a look by name (falls back to the scene's first); ramps become lookup tables. */
   function usePalette(name?: string) {
@@ -45,8 +53,7 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
   }
 
   function frame() {
-    k.rects = [];
-    for (const e of calmEls) { const r = e.getBoundingClientRect(); if (r.width && r.bottom > -40 && r.top < k.H + 40) k.rects.push(r); }
+    if (boxesDirty) measure();
     recede();
     const dpr = cv.width / k.W;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -75,18 +82,32 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
     document.addEventListener('pointerleave', () => { k.mouse = null; });
   } else {
     // With motion reduced the sky is a still frame; re-measure once webfonts land so the calm boxes are current.
-    document.fonts?.ready.then(() => frame());
-    addEventListener('load', frame, { once: true });
+    addEventListener('load', () => { boxesDirty = true; frame(); }, { once: true });
   }
-  // With motion reduced, redraw once scrolling settles so the calm zones follow the copy.
+  // Web fonts can move the copy; animated frames pick the new boxes up on their next tick. `loadingdone`
+  // covers fonts that start after `ready` resolved while the font sheet was held back (Base.astro).
+  const remeasure = () => { boxesDirty = true; if (REDUCE) frame(); };
+  document.fonts?.ready.then(remeasure);
+  document.fonts?.addEventListener?.('loadingdone', remeasure);
+  // Animated frames measure the boxes themselves; a still sky redraws once scrolling settles.
   let settle = 0;
   addEventListener('scroll', () => {
+    boxesDirty = true;
     recede();
     if (!REDUCE) return;
     clearTimeout(settle);
     settle = window.setTimeout(frame, 120);
   }, { passive: true });
-  addEventListener('resize', () => { layout(); frame(); });
+  // Phones fire resize continuously while the address bar slides; settle first, then rebuild the star field.
+  let rz = 0;
+  addEventListener('resize', () => {
+    clearTimeout(rz);
+    rz = window.setTimeout(() => {
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      if (innerWidth === k.W && innerHeight === k.H && dpr === cv.width / k.W) return;
+      layout(); boxesDirty = true; frame();
+    }, 120);
+  });
 
   return {
     setPalette(name: string) { usePalette(name); frame(); },

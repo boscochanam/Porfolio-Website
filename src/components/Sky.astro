@@ -18,6 +18,9 @@ import { sky } from '../data/site';
   const scene = q.get('scene') || cv.dataset.scene || 'earth';
   const palette = q.get('palette') || store(`sky-pal-${scene}`) || cv.dataset.palette || undefined;
   const sky = startSky(cv, scene, CALM, palette);
+  // The first frame is on the canvas now; let the web fonts start loading.
+  const fontCss = document.getElementById('font-css');
+  if (fontCss) fontCss.media = 'all';
 
   if (store('sky-pick')) {
     const box = document.createElement('div');

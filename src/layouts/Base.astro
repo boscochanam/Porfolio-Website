@@ -1,5 +1,6 @@
 ---
 import { site, links } from '../data/site';
+import fontCss from '../styles/fonts.css?raw';
 import '../styles/global.css';
 import '../styles/ruler.css';
 import Sky from '../components/Sky.astro';
@@ -22,6 +23,14 @@ const ogDescription = description ?? site.ogDescription;
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0d0e12">
+<style is:inline id="font-css" set:html={fontCss}></style>
+<script is:inline>
+  // Hold the web fonts back briefly so the sky's small JS bundle wins the first round trip; Sky.astro
+  // releases them as soon as its first frame is drawn, and this timer is the fallback if it cannot.
+  // Text paints in the fallback either way. With JS off the style stays active, so the real fonts load.
+  document.getElementById('font-css').media = 'print';
+  setTimeout(() => { const s = document.getElementById('font-css'); if (s) s.media = 'all'; }, 150);
+</script>
 <title>{title}</title>
 <meta name="description" content={metaDescription}>
 <link rel="canonical" href={url}>
@@ -40,9 +49,6 @@ const ogDescription = description ?? site.ogDescription;
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
 </head>
 <body>
 <Sky />

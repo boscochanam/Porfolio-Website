@@ -37,19 +37,28 @@ export function glow(x: CanvasRenderingContext2D, cx: number, cy: number, r: num
 }
 
 const t1 = document.createElement('canvas'), t2 = document.createElement('canvas');
+const ctx2 = new WeakMap<HTMLCanvasElement, CanvasRenderingContext2D>();
+const ctx = (c: HTMLCanvasElement) => {
+  let x = ctx2.get(c);
+  if (!x) { x = c.getContext('2d', { willReadFrequently: true })!; ctx2.set(c, x); }
+  return x;
+};
+/** Resize only when the box changed: assigning width/height reallocates the bitmap even at the same size. */
+const size = (c: HTMLCanvasElement, w: number, h: number) => { if (c.width !== w || c.height !== h) { c.width = w; c.height = h; } };
+
 function sample(src: HTMLCanvasElement, cols: number, rows: number) {
   // Halve in steps so thin lines average instead of aliasing away.
   let w = src.width, h = src.height, cur: HTMLCanvasElement = src, flip = false;
   while (w / 2 > cols * 2) {
     const nx = flip ? t1 : t2;
     w = Math.ceil(w / 2); h = Math.ceil(h / 2);
-    nx.width = w; nx.height = h;
-    nx.getContext('2d', { willReadFrequently: true })!.drawImage(cur, 0, 0, w, h);
+    size(nx, w, h);
+    ctx(nx).drawImage(cur, 0, 0, w, h);
     cur = nx; flip = !flip;
   }
   const out = flip ? t1 : t2;
-  out.width = cols; out.height = rows;
-  const c = out.getContext('2d', { willReadFrequently: true })!;
+  size(out, cols, rows);
+  const c = ctx(out);
   c.imageSmoothingQuality = 'high';
   c.drawImage(cur, 0, 0, cols, rows);
   return c.getImageData(0, 0, cols, rows).data;

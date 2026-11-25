@@ -1,7 +1,7 @@
 // Earth: real coastlines (land.ts) on a tilted, turning globe, with clouds, ice, coastal shallows, a sun glint,
 // city lights on the night side, a lit atmosphere rim, and polar-orbit satellites. On desktop a distant Sun sits
 // in the open space left of the hero text, and the light comes from where it is.
-import { hash } from '../../ascii';
+import { hash } from '../glyph';
 import { drawSun } from '../suns';
 import { drawSats } from '../sats';
 import { TAU, clamp, fbm, norm, smooth, wrap } from '../math';

@@ -26,7 +26,7 @@ main{position:relative;z-index:1}
    target, can be dragged to scroll, and turns pearl over the black footer. */
 .rh{display:none;position:fixed;top:0;left:0;width:0;height:0;pointer-events:none;z-index:3;will-change:transform}
 @media (min-width:1440px){.rh{display:block}}
-.rh .th{position:absolute;left:-6px;top:-20px;width:13px;height:40px;background:var(--pearl);border-radius:2px;
+.rh .th{position:absolute;left:-6px;top:-20px;width:13px;height:40px;background:var(--pearl);border-radius:2px;font-style:normal;
   pointer-events:auto;cursor:grab;touch-action:none;transition:background-color .2s,transform .15s}
 .rh .th::before{content:"";position:absolute;left:4px;right:4px;top:50%;height:1px;margin-top:-4px;background:var(--night);
   box-shadow:0 4px 0 var(--night),0 8px 0 var(--night);opacity:.75;transition:background-color .2s,box-shadow .2s}

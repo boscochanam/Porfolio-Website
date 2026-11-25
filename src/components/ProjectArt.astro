@@ -2,14 +2,9 @@
 // Line drawings shown in a project card until it has a demo clip.
 // Same language as ArchDiagram: 1.5px ink strokes, muted secondary marks, small mono labels,
 // at most one ink-filled element. viewBox is 16:9; labels hide when the card is narrow.
-interface Props { art: 'spice' | 'hermes' | 'karaoke' | 'dashboard'; label: string }
+interface Props { art: 'spice' | 'hermes' | 'video' | 'dashboard'; label: string }
 const { art, label } = Astro.props;
 
-// karaoke: a deterministic waveform (no randomness, so builds are stable)
-const bars = Array.from({ length: 46 }, (_, i) => {
-  const h = 10 + Math.round(Math.abs(Math.sin(i * 0.9) * 22 + Math.sin(i * 0.37) * 14));
-  return { x: 22 + i * 6, h };
-});
 ---
 <svg class={`art art-${art}`} viewBox="0 0 320 180" role="img" aria-label={label}>
   {art === 'spice' && (
@@ -53,23 +48,30 @@ const bars = Array.from({ length: 46 }, (_, i) => {
         <text x="262" y="56" text-anchor="middle">lights</text>
         <text x="262" y="94" text-anchor="middle">ac</text>
         <text x="262" y="132" text-anchor="middle">calendar</text>
-        <text x="47" y="148" text-anchor="middle">wake word</text>
+        <text x="47" y="148" text-anchor="middle">voice or chat</text>
       </g>
     </>
   )}
-  {art === 'karaoke' && (
+  {art === 'video' && (
     <>
-      <path class="ln mut faint" d={bars.map((b) => `M${b.x} ${90 - b.h / 2}V${90 + b.h / 2}`).join('')} />
-      <!-- the original singer's melody (stepped) and the voice being pulled onto it -->
-      <path class="ln ink2" d="M20 112H78V96H136V70H190V84H248V62H300" />
-      <path class="ln dash" d="M20 120Q50 110 78 104T112 97Q130 96 136 82T176 72Q186 72 190 80T230 85Q244 84 248 72T300 63" />
-      <circle class="fill" cx="248" cy="62" r="3.4" />
-      <path class="ln ink2 lg" d="M20 148H36" />
-      <path class="ln dash lg" d="M110 148H126" />
+      <g class="ln">
+        <!-- the cheap model's short command list -->
+        <rect x="24" y="44" width="76" height="92" />
+        <!-- Resolve timeline: one video track, two audio tracks -->
+        <path d="M136 52H300M136 128H300" />
+        <rect x="136" y="62" width="58" height="18" /><rect x="198" y="62" width="40" height="18" /><rect x="242" y="62" width="54" height="18" />
+        <rect x="136" y="86" width="98" height="14" /><rect x="238" y="86" width="58" height="14" />
+        <rect x="136" y="106" width="160" height="14" />
+      </g>
+      <path class="ln mut" d="M34 60H86M34 74H78M34 88H90M34 102H70M34 116H82" />
+      <path class="ln" d="M106 90H128M122 84l6 6-6 6" />
+      <!-- read-back: the script checks the real timeline after each round -->
+      <path class="ln dash" d="M216 138Q216 156 160 156Q62 156 62 140" />
+      <rect class="fill" x="214" y="50" width="4" height="80" />
       <g class="tx">
-        <text x="42" y="152">melody</text>
-        <text x="132" y="152">you</text>
-        <text x="300" y="152" text-anchor="end">&lt;10 ms</text>
+        <text x="62" y="36" text-anchor="middle">commands</text>
+        <text x="218" y="40" text-anchor="middle">timeline</text>
+        <text x="160" y="172" text-anchor="middle">read back</text>
       </g>
     </>
   )}

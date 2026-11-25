@@ -1,0 +1,40 @@
+---
+import { site, links } from '../data/site';
+import { rich, mark } from '../lib/rich';
+import Icon from './Icon.astro';
+---
+<section class="intro" id="top">
+  <div class="intro-meta label">
+    <span><time class="clock" data-tz={site.timeZone}>&nbsp;</time></span>
+    <span>{site.zoneLabel}</span>
+  </div>
+  <div class="intro-id">
+    <img class="avatar" src={site.headshot} alt={site.name} width="56" height="56" loading="eager" decoding="async">
+    <div class="intro-name">
+      <h1>{site.name}</h1>
+      <p>{site.role}</p>
+    </div>
+    <nav class="intro-links" aria-label="Elsewhere">
+      <a href={links.github} aria-label="GitHub"><Icon name="github" /></a>
+      <a href={links.linkedin} aria-label="LinkedIn"><Icon name="linkedin" /></a>
+      <a href={links.x} aria-label="X"><Icon name="x" /></a>
+      <a href={links.youtube} aria-label="YouTube"><Icon name="youtube" /></a>
+      <a href={links.letterboxd} aria-label="Letterboxd" set:html={mark('letterboxd')} />
+      <a href={`mailto:${links.email}`} aria-label="Email"><Icon name="mail" /></a>
+    </nav>
+  </div>
+  <div class="intro-text">
+    {site.intro.map((p) => <p set:html={rich(p)} />)}
+  </div>
+</section>
+
+<script>
+  // Local time in Pune, like a desk clock. Updates on the minute.
+  const el = document.querySelector<HTMLTimeElement>('.clock');
+  if (el) {
+    const fmt = new Intl.DateTimeFormat('en-GB', { weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: el.dataset.tz });
+    const tick = () => { el.textContent = fmt.format(new Date()).replace(',', ''); };
+    tick();
+    setTimeout(() => { tick(); setInterval(tick, 60000); }, 60000 - (Date.now() % 60000));
+  }
+</script>

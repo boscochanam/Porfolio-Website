@@ -1,0 +1,7 @@
+---
+// One brand mark (src/lib/brands.ts), for chips and timeline rows.
+import { mark } from '../lib/rich';
+interface Props { name?: string }
+const { name } = Astro.props;
+---
+{name && <Fragment set:html={mark(name)} />}

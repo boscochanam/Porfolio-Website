@@ -1,0 +1,27 @@
+---
+import { experience } from '../data/site';
+import Brand from './Brand.astro';
+---
+<section class="blk" id="experience">
+  <h2 class="blk-h label" data-ruler="Experience" data-nav="experience">Experience</h2>
+  <ol class="tl">
+    {experience.map((o) => (
+      <li class="tl-org">
+        <div class="tl-head"><span class="tl-name"><Brand name={o.brand} />{o.org}</span><span class="tl-span">{o.span}</span></div>
+        <ol class="tl-roles">
+          {o.roles.map((r, i) => (
+            <li class:list={['tl-role', { current: r.dates[1] === 'Present' }]}>
+              <span class="tl-dates">{r.dates[0] && <span>{r.dates[0]}</span>}<span>{r.dates[1]}</span></span>
+              <span class="tl-dot" aria-hidden="true"></span>
+              <div class="tl-body">
+                <p class="tl-title">{r.title}</p>
+                <p class="tl-meta">{r.meta}</p>
+                {'note' in r && r.note && <p class="tl-note">{r.note}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </li>
+    ))}
+  </ol>
+</section>

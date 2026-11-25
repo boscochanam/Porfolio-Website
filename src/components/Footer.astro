@@ -1,28 +1,23 @@
 ---
 import { about, links } from '../data/site';
+import { mark } from '../lib/rich';
 import MailCopy from './MailCopy.astro';
-import Ruler from './Ruler.astro';
 import Icon from './Icon.astro';
 ---
-<footer class="foot-block">
-  <Ruler variant="footer" />
-  <div class="wrap foot-grid">
-    <section id="about" aria-labelledby="about-h" data-ruler="About · Contact" data-nav="about,contact">
-      <h2 id="about-h">About</h2>
-      {about.paragraphs.map((p) => <p>{p}</p>)}
-    </section>
-    <section id="contact" aria-labelledby="contact-h">
-      <h2 id="contact-h">Contact</h2>
-      <p class="open">{about.open}</p>
-      <MailCopy />
-      <ul class="clist">
-        <li><span><Icon name="x" />X</span><a class="ik" href={links.x}><span>{links.xHandle}</span><Icon name="arrow" class="ext" /></a></li>
-        <li><span><Icon name="youtube" />YouTube</span><a class="ik" href={links.youtube}><span>{links.youtubeLabel}</span><Icon name="arrow" class="ext" /></a></li>
-        <li><span><Icon name="linkedin" />LinkedIn</span><a class="ik" href={links.linkedin}><span>{links.linkedinLabel}</span><Icon name="arrow" class="ext" /></a></li>
-        <li><span><Icon name="github" />GitHub</span><a class="ik" href={links.github}><span>GitHub profile</span><Icon name="arrow" class="ext" /></a></li>
-        <li><span><Icon name="file" />CV</span><a href={links.cv}>Download PDF</a></li>
-      </ul>
-      <p class="copyr">{about.copyright}</p>
-    </section>
+<footer class="foot" id="contact">
+  <div class="col">
+    <p class="foot-open" data-ruler="Contact" data-nav="contact">{about.open}</p>
+    <MailCopy />
+    <div class="foot-bar">
+      <span>{about.copyright}</span>
+      <span class="intro-links">
+        <a href={links.github} aria-label="GitHub"><Icon name="github" /></a>
+        <a href={links.linkedin} aria-label="LinkedIn"><Icon name="linkedin" /></a>
+        <a href={links.x} aria-label="X"><Icon name="x" /></a>
+        <a href={links.youtube} aria-label="YouTube"><Icon name="youtube" /></a>
+        <a href={links.letterboxd} aria-label="Letterboxd" set:html={mark('letterboxd')} />
+        <a href="#top" aria-label="Back to top" class="up"><Icon name="arrow" /></a>
+      </span>
+    </div>
   </div>
 </footer>

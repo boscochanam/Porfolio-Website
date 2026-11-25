@@ -5,33 +5,24 @@ export const site = {
   name: 'Bosco Chanam',
   role: 'AI/ML Engineer',
   location: 'Pune, India',
+  timeZone: 'Asia/Kolkata',
+  zoneLabel: 'Pune, GMT+5:30',
   // Used for <title>, og:title.
-  title: 'Bosco Chanam — Edge & applied ML engineer',
+  title: 'Bosco Chanam · AI/ML engineer, edge vision, robotics and agents',
   description:
-    'AI/ML engineer in Pune. I ship computer vision to factory hardware: 11 stations across 2 plants, under 5 ms on Jetson, patent in preparation.',
+    'AI/ML engineer at Bharat Forge in Pune. Computer vision on NVIDIA Jetson, rolling out to 10+ edge stations; robotics software on ROS 2; AI agents I use every day.',
   ogDescription:
-    'I ship computer vision to factory hardware: 11 stations across 2 plants, under 5 ms on Jetson, patent in preparation.',
+    'Computer vision on NVIDIA Jetson, rolling out to 10+ edge stations. Primary inventor on its patent. Robotics on ROS 2, and AI agents at home.',
   ogImage: '/og.png',
   headshot: '/assets/headshot.jpg',
 
-  // DRAFT: positioning line
-  lede: 'I take computer-vision models off the notebook and onto hardware that runs all day, and build the infrastructure and operator screens around them.',
-
-  proof: [
-    'Shipped computer vision to **11 factory stations**',
-    '**<5 ms** on Jetson',
-    '**Patent** in prep',
-    '**1st-author** IEEE paper',
+  // Inline brand marks: [[brand|Label]] or [[brand|Label|url]] (src/lib/rich.ts).
+  intro: [
+    "I’m an AI/ML engineer at [[bharatforge|Bharat Forge]], one of the world’s largest forging companies. I build computer vision that checks factory work as it happens. It’s rolling out to **10+ edge stations** on [[nvidia|Jetson]], and I’m the primary inventor on its patent.",
+    'I also own the software platform for a robotic bin-picking cell built on [[ros|ROS 2]], and I’m learning robot simulation in [[nvidia|Isaac Sim]].',
+    'At home I run Clawsco, my fork of [[nous|Hermes Agent|https://github.com/NousResearch/hermes-agent]], and I build with [[claude|Claude Code]], [[openai|Codex]], [[cursor|Cursor]] and [[opencode|opencode]].',
+    'Away from the screen, I love movies and making videos. I log what I watch on [[letterboxd|Letterboxd|https://letterboxd.com/boscochanam]] and post on [[youtube|YouTube|https://www.youtube.com/@boscochanam]].',
   ],
-
-  now: {
-    label: 'Now · Oct 2026',
-    items: [
-      'Building a low-latency karaoke rig on a Jetson',
-      'Writing on X about deploying edge AI',
-      'Open to conversations about edge and applied ML',
-    ],
-  },
 };
 
 // Night-sky scene behind every page (src/scripts/sky/): 'saturn' | 'sun' | 'earth'.
@@ -50,22 +41,62 @@ export const links = {
   xHandle: '@boscochanam', // also used for twitter:creator
   youtube: 'https://www.youtube.com/@boscochanam',
   youtubeLabel: '@boscochanam',
+  letterboxd: 'https://letterboxd.com/boscochanam',
   cv: '#', // TODO: CV PDF URL
 };
 
+// Timeline, newest first. Each org has a span and one or more roles (dates: [from, to]).
+export const experience = [
+  {
+    org: 'Bharat Forge',
+    brand: 'bharatforge',
+    span: 'Aug 2024 – Present',
+    roles: [
+      { dates: ['Aug 2025', 'Present'], title: 'AI/ML Engineer', meta: 'Full-time · Pune', note: 'Edge computer vision, robotics software and the team’s GPU platform.' },
+      { dates: ['Aug 2024', 'Jul 2025'], title: 'AI/ML Engineer Intern', meta: 'Full-year placement · Pune' },
+    ],
+  },
+  {
+    org: 'Symbiosis Centre for Applied AI',
+    brand: 'symbiosis',
+    span: 'Jul 2023 – Dec 2025',
+    roles: [{ dates: ['Jul 2023', 'Dec 2025'], title: 'Researcher', meta: 'Pune' }],
+  },
+  {
+    org: 'Symbiosis Institute of Technology',
+    brand: 'symbiosis',
+    span: '2025',
+    roles: [{ dates: ['', '2025'], title: 'B.Tech, Computer Science & Engineering', meta: 'Pune' }],
+  },
+];
+
+export const tools = [
+  {
+    group: 'Edge & ML',
+    items: [
+      ['NVIDIA Jetson', 'nvidia'], ['TensorRT', 'nvidia'], ['Isaac Sim', 'nvidia'], ['PyTorch', 'pytorch'],
+      ['OpenCV', 'opencv'], ['ROS 2', 'ros'], ['Docker', 'docker'], ['Kubernetes', 'kubernetes'],
+    ],
+  },
+  {
+    group: 'AI',
+    items: [
+      ['Claude Code', 'claude'], ['Codex', 'openai'], ['Cursor', 'cursor'], ['opencode', 'opencode'],
+      ['Hermes Agent', 'nous'], ['Gemini', 'gemini'],
+    ],
+  },
+  {
+    group: 'Other',
+    items: [
+      ['Python', 'python'], ['FastAPI', 'fastapi'], ['PostgreSQL', 'postgresql'], ['React', 'react'],
+      ['DaVinci Resolve', 'resolve'], ['Home Assistant', 'homeassistant'], ['Obsidian', 'obsidian'],
+    ],
+  },
+] as const;
+
 export const background = {
-  work: {
-    role: 'AI/ML Engineer',
-    org: 'Bharat Forge, AI & Robotics Centre · Pune · Aug 2024 – now (joined as an intern)',
-    scope:
-      'Technical anchor for 5+ industrial AI and automation projects: edge CV, k3s deployments, PLC backends and operator UIs.',
-  },
-  education: {
-    degree: 'B.Tech, Computer Science & Engineering',
-    school: 'Symbiosis Institute of Technology, Pune · 2025',
-  },
   papers: [
-    { title: 'From Hand-Drawn Schematics to SPICE Netlists', role: 'First author', meta: 'IEEE Access · under revision' },
+    { title: 'From Hand-Drawn Schematics to Structural Circuit Netlists', role: 'First author', meta: 'Manuscript · 2026' },
     {
       title: 'Optimizing Text Summarization: Benchmarking LLMs vs Domain Specialized Architectures',
       role: 'Co-author',
@@ -73,19 +104,15 @@ export const background = {
     },
   ],
   recognition: [
-    'Radio talk, AIR Imphal: “Role of AI in Shaping the Future of Youth”',
-    'Invited judge, college project panel, alongside Citi and Microsoft',
-    'Excellence award for AI innovation',
-    'Flipkart Grid 5.0, top 0.5%',
+    'Excellence Award for AI Innovation, Bharat Forge (2026)',
+    'One of two engineers chosen to present our work to Union Home Minister Amit Shah',
+    'Invited back to judge student projects, alongside panel members from Microsoft and Citi',
+    'Talk on All India Radio, Imphal: “Role of AI in Shaping the Future of Youth”',
+    'Flipkart Grid 5.0, top 0.5% nationwide',
   ],
 };
 
 export const about = {
-  // DRAFT: About
-  paragraphs: [
-    'I grew up in Manipur and live in Pune. I like AI that people can rely on every day: in homes, in factories, and someday in space.',
-    "Outside work I sing, which is why there's a karaoke rig on my bench. I automate my home a little more every month, and anything I want to remember goes into Anki.",
-  ],
-  open: 'Open to conversations about edge and applied ML.',
+  open: 'Happy to talk about computer vision, edge AI, robotics and agents.',
   copyright: '© 2026 Bosco Chanam',
 };

@@ -6,10 +6,10 @@ const path = Astro.url.pathname;
 const onProjects = path === '/projects' || path.startsWith('/projects/');
 type NavItem = { href: string; label: string; current?: boolean; section?: boolean };
 const nav: NavItem[] = [
-  { href: '/#work', label: 'Work', section: true },
-  { href: '/projects/', label: 'Projects', current: onProjects },
-  { href: '/#background', label: 'Background', section: true },
-  { href: '/#about', label: 'About', section: true },
+  { href: '/#experience', label: 'Experience', section: true },
+  { href: '/#work', label: 'Projects', section: true, current: onProjects },
+  { href: '/#background', label: 'Research', section: true },
+  { href: '/#tools', label: 'Tools', section: true },
   { href: '/#contact', label: 'Contact', section: true },
 ];
 ---

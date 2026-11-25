@@ -1,0 +1,12 @@
+---
+import { background as bg } from '../data/site';
+---
+<section class="blk" id="background">
+  <h2 class="blk-h label" data-ruler="Research" data-nav="background">Research &amp; recognition</h2>
+  <ul class="rows">
+    {bg.papers.map((p) => <li><span>{p.title}</span><span class="rows-m">{p.role} · {p.meta}</span></li>)}
+  </ul>
+  <ul class="rows plain">
+    {bg.recognition.map((r) => <li><span>{r}</span></li>)}
+  </ul>
+</section>

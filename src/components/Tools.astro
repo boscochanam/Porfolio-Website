@@ -1,0 +1,13 @@
+---
+import { tools } from '../data/site';
+import Brand from './Brand.astro';
+---
+<section class="blk" id="tools">
+  <h2 class="blk-h label" data-ruler="Tools" data-nav="tools">Tools</h2>
+  {tools.map((g) => (
+    <div class="tg">
+      <p class="tg-h">{g.group}</p>
+      <ul class="chips">{g.items.map(([name, icon]) => <li><Brand name={icon} />{name}</li>)}</ul>
+    </div>
+  ))}
+</section>

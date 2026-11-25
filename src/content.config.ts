@@ -13,13 +13,15 @@ const projects = defineCollection({
     order: z.number(),
     summary: z.string(), // one line: what it is / does
     outcome: z.string(), // one line: result or status (**bold** allowed)
+    status: z.string().optional(), // short tag on the home list, e.g. "Daily use"
+    icon: z.string().optional(), // brand mark key from src/lib/brands.ts
     stack: z.array(z.string()).default([]),
     codeUrl: z.string().optional(), // TODO per project
     demoUrl: z.string().optional(), // TODO per project
     demoVideo: z.string().optional(), // short muted MP4 under /public, e.g. /media/hermes.mp4
     demoPoster: z.string().optional(),
     // Line drawing shown on the card until a demo clip exists
-    art: z.enum(['spice', 'hermes', 'karaoke', 'dashboard']).optional(),
+    art: z.enum(['spice', 'hermes', 'video', 'dashboard']).optional(),
     // Featured card only
     problem: z.string().optional(),
     owned: z.string().optional(),

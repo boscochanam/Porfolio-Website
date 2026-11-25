@@ -17,7 +17,7 @@ const FRAME_MS = 40; // 25 fps
 export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, firstPalette?: string) {
   const ctx = cv.getContext('2d', { alpha: false })!; // every frame paints the whole canvas, so skip blending it with the page
   const k = createKit(ctx);
-  const home = !!document.querySelector('.hero');
+  const home = !!document.querySelector('.hero,.intro');
   const calmEls = [...document.querySelectorAll(calmSel)];
   let cur = SCENES[first] ? first : 'earth', palName = '', boxesDirty = true;
 

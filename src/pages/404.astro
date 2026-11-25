@@ -23,7 +23,6 @@ import { site } from '../data/site';
 </Base>
 
 <script>
-  // "404" and a scrambled cube drawn on a hidden canvas, redrawn as shimmering glyphs.
   import { ascii, isoCube, glow, scene, REDUCE } from '../scripts/ascii';
 
   const cv = document.getElementById('nf-cv') as HTMLCanvasElement;
@@ -39,7 +38,6 @@ import { site } from '../data/site';
     ascii(cv, src, { cell: 7, shimmer: Math.floor(t * 6) });
   };
   document.fonts.ready.then(() => draw(0));
-  // The font sheet is held back briefly on first load (Base.astro); redraw once it is available.
   document.fonts.addEventListener?.('loadingdone', () => draw(0));
   addEventListener('resize', () => draw(0));
   if (!REDUCE) {

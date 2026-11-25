@@ -1,8 +1,3 @@
-// Gutter ruler: background decoration printed on the page (≥1440px), in document flow so it
-// scrolls 1:1 with the content. Ticks are real page px from the top of <main>. The footer carries
-// a dark copy (.rl.dk) so the seam falls on the footer's diagonal. Section labels come from
-// [data-ruler] elements (data-nav lists the nav hashes they belong to), and the current one is
-// bolded via paintRuler(), called by the nav script.
 
 const q = <T extends Element = HTMLElement>(s: string) => document.querySelector<T>(s);
 const qa = <T extends Element = HTMLElement>(s: string) => [...document.querySelectorAll<T>(s)];
@@ -77,7 +72,6 @@ function build() {
     });
   });
 
-  // one orientation for every label: horizontal only if all fit left of the ticks
   const vert = labs.some(([, lb]) => lb.offsetWidth > lx - 14 - 16);
   labs.forEach(([r, lb]) => {
     const ly = lb._y!;
@@ -102,7 +96,6 @@ function build() {
   paintRuler(last);
 }
 
-/** Bold the ruler label(s) that belong to nav section i (-1 = none). */
 export function paintRuler(i: number) {
   last = i;
   R.forEach((r) =>
@@ -115,8 +108,6 @@ export function paintRuler(i: number) {
 
 build();
 addEventListener('resize', build);
-// `ready` can resolve before the gated font sheet is switched on, so also rebuild on loadingdone; the
-// signature keeps the two paths from doing the same rebuild twice.
 let fontSig = '';
 const buildFonts = () => {
   const sig = [...(document.fonts ?? [])].map((f) => `${f.family}/${f.weight}/${f.style}/${f.status}`).join('|');

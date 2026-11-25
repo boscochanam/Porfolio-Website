@@ -1,11 +1,8 @@
 ---
-// The /projects/ index: every project page plus every selected-work project, all visible at once.
-// Linked entries come first; projects without a public link stay at the end.
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { projectPages, type ProjectPage } from '../data/project-pages';
 import CubingPlate from './CubingPlate.astro';
 import ProjectArt from './ProjectArt.astro';
-import ArchDiagram from './ArchDiagram.astro';
 import { rich } from '../lib/rich';
 import Icon from './Icon.astro';
 
@@ -36,7 +33,6 @@ const entries: Entry[] = [
   ...linked,
   ...unlinked,
 ];
-// Keep the grid even when there is an odd number of tiles.
 const showMore = entries.length % 2 === 1;
 ---
 <div class="prj">
@@ -67,8 +63,6 @@ const showMore = entries.length % 2 === 1;
         <video class="prj-media" data-autoplay src={entry.project.data.demoVideo} poster={entry.project.data.demoPoster} muted loop playsinline preload="none" aria-label={`${entry.project.data.title} demo`}></video>
       ) : entry.project.data.art ? (
         <div class="prj-media media-art"><ProjectArt art={entry.project.data.art} label={`Illustration: ${entry.project.data.title}`} /></div>
-      ) : entry.project.data.featured ? (
-        <div class="prj-media prj-media-dark"><ArchDiagram /></div>
       ) : (
         <div class="prj-media prj-media-empty"><span class="label">Visual coming</span></div>
       )}
@@ -101,7 +95,6 @@ const showMore = entries.length % 2 === 1;
 </div>
 
 <script>
-  // Demo clips: play only while on screen (and never with reduced motion).
   const vids = [...document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]')];
   if (vids.length && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
     const io = new IntersectionObserver((es) => es.forEach((e) => {

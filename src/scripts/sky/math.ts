@@ -1,4 +1,3 @@
-// Noise, easing and lighting helpers shared by the scenes.
 import { hash } from './glyph';
 
 export const TAU = Math.PI * 2;
@@ -13,16 +12,12 @@ function vn(x: number, y: number) {
   const a = hash(xi, yi, 17), b = hash(xi + 1, yi, 17), c = hash(xi, yi + 1, 17), d = hash(xi + 1, yi + 1, 17);
   return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
 }
-/** Four-octave value noise, roughly 0..1. */
 export function fbm(x: number, y: number) { let s = 0, a = 0.5, f = 1; for (let i = 0; i < 4; i++) { s += a * vn(x * f, y * f); f *= 2.03; a *= 0.5; } return s / 0.9375; }
 
-/** Line glyph for a direction. */
 export const slope = (dx: number, dy: number) => Math.abs(dx) > 2 * Math.abs(dy) ? '-' : Math.abs(dy) > 2 * Math.abs(dx) ? '|' : dx * dy > 0 ? '\\' : '/';
 
-/** Default sunlight: upper left, toward the viewer. View space is x right, y down, z toward the viewer. */
 export const LIGHT = norm([-0.6, -0.45, 0.66]);
 
-/** Moon surface lit from `light`: grey regolith, darker maria, a soft terminator. */
 export const lunar = (light: number[]) => (dx: number, dy: number, nz: number) => {
   const lit = dx * light[0] + dy * light[1] + nz * light[2];
   if (lit < 0) return { v: 0.03 };

@@ -1,7 +1,4 @@
-// Slider: a black thumb riding the ruler spine (x). Its target screen y maps scroll progress
-// between just under the header and the window bottom; it eases toward the target each frame
-// (instant with reduced motion), can be dragged to scroll, and turns pearl over the black footer.
-import './ruler'; // ruler must have positioned the spine (.rl style.left) first
+import './ruler';
 
 const H = document.querySelector<HTMLElement>('.rh')!;
 const T = H.querySelector<HTMLElement>('.th')!;

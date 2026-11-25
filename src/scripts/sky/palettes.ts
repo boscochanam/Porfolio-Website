@@ -1,5 +1,3 @@
-// Looks for each scene. Ramps are colour stops from shadow to highlight; strings are single colours;
-// `glow`/`halo` are "r,g,b" for soft gradients, `bg` a full rgba() haze. A scene's first look is its default.
 import { RED } from './color';
 
 export type Stops = [number, string][];
@@ -54,7 +52,6 @@ export const PALETTES: Record<string, Record<string, PalDef>> = {
     Amber: { sun: [[0, '#2a1404'], [0.3, '#7a3a08'], [0.55, '#c06a10'], [0.8, '#f0a030'], [1, '#ffe0a0']], prom: [[0, '#4a1a04'], [0.5, '#e06010'], [1, '#ffc070']], corona: '#f0a040', glow: '240,150,40' },
     Gold: { sun: [[0, '#3a2408'], [0.3, '#8a5a18'], [0.6, '#d09a3a'], [0.85, '#f6d68a'], [1, '#fff4d0']], prom: [[0, '#5a3a10'], [0.5, '#d09a3a'], [1, '#fff0b0']], corona: '#e6bf73', glow: '230,191,115' },
   },
-  // Earth looks share the site's colours: ink shadows, pearl clouds and ice, gold sand, a red dusk line.
   earth: {
     'Blue marble': {
       ocean: [[0, '#050913'], [0.3, '#0b1830'], [0.55, '#132a52'], [0.75, '#1c3c70'], [0.9, '#264f8a'], [1, '#4a72aa']],

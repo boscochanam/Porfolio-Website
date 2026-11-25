@@ -1,7 +1,4 @@
-// Cubing sheet additions: copy an algorithm, remember the full-PLL checklist, and mark the
-// current section in the contents rail. All optional; the sheet reads fine without JS.
 
-// ── copy buttons ─────────────────────────────────────────────
 const copyButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-copy-alg]')];
 const clipboard = navigator.clipboard;
 copyButtons.forEach((btn) => {
@@ -24,12 +21,10 @@ copyButtons.forEach((btn) => {
         btn.title = 'Copy sequence';
       }, 1600);
     } catch {
-      /* clipboard blocked: leave the button as it was */
     }
   });
 });
 
-// ── full-PLL checklist ───────────────────────────────────────
 const check = document.querySelector<HTMLElement>('[data-checklist]');
 if (check) {
   const boxes = [...check.querySelectorAll<HTMLInputElement>('input[type="checkbox"]')];
@@ -50,7 +45,6 @@ if (check) {
     try {
       localStorage.setItem(KEY, JSON.stringify(boxes.filter((b) => b.checked).map((b) => b.value)));
     } catch {
-      /* storage can be unavailable; the boxes still work for this visit */
     }
   };
   const paint = () => {
@@ -78,7 +72,6 @@ if (check) {
   paint();
 }
 
-// ── contents rail scroll spy ─────────────────────────────────
 const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.sheet-toc a, .sheet-toc-m a')];
 const sections = new Map<string, Element>();
 tocLinks.forEach((a) => {

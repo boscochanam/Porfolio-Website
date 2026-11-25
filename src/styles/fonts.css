@@ -1,9 +1,3 @@
-/* Self-hosted, subset variable fonts. Same files Google Fonts served, trimmed to the weights, optical
-   sizes and characters this site uses. Keeping them on the origin removes two extra connections and the
-   render-blocking fonts.googleapis.com stylesheet. Base.astro keeps this sheet inactive for the first
-   ~150 ms so the sky's small bundle wins the first round trip, then enables it; fallback text paints
-   immediately either way. Regenerate with fonttools (pyftsubset) if the copy ever grows beyond Latin-1 +
-   the punctuation and symbols listed in unicode-range. */
 @font-face {
   font-family: "Inter";
   font-style: normal;

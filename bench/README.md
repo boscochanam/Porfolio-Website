@@ -7,7 +7,7 @@ headless Chromium under two profiles, cache off:
 - **desktop**: 1920×1080 at DPR 1, Lighthouse's desktop preset (40 ms RTT, 10 Mbps, no CPU slowdown).
 
 Load metrics are medians over `--runs` cold loads. Runtime metrics come from separate sessions on the
-real page: idle at the top, idle with the featured diagram in view, clicks on the diagram, and a scroll
+real page: idle at the top, idle with the experience timeline in view, clicks on the timeline, and a scroll
 pass. Headless Chromium has no GPU, so its "main thread busy" and frame-gap numbers overstate painting
 cost; the script share is the reliable runtime figure.
 

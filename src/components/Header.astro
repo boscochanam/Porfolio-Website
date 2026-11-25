@@ -1,7 +1,5 @@
 ---
 import { site } from '../data/site';
-// The same tabs on every page. Work/Background/About/Contact point at home sections; Projects
-// has its own page and stays current while browsing a project page.
 const path = Astro.url.pathname;
 const onProjects = path === '/projects' || path.startsWith('/projects/');
 type NavItem = { href: string; label: string; current?: boolean; section?: boolean };

@@ -1,6 +1,3 @@
-// Tiny inline formatter for content strings: escapes HTML, then turns **text** into <b>text</b>
-// and [[brand|Label]] or [[brand|Label|url]] into an inline brand mark (src/lib/brands.ts).
-// Use with set:html. Keeps content files free of markup.
 import { brands } from './brands';
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

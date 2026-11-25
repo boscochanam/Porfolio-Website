@@ -1,5 +1,3 @@
-// Ringed planet: banded globe with a turning storm, C/B/A rings with the Cassini Division and Encke Gap,
-// true shadows (rings on the globe, globe on the rings), a red moon on the ring plane and a phasing moon.
 import { at } from '../color';
 import { LIGHT, clamp, fbm, lunar, norm, smooth, wrap, TAU } from '../math';
 import type { Kit, Scene, ShadeFn } from '../kit';
@@ -17,10 +15,8 @@ export const saturn: Scene = {
     k.backdrop(['rgba(52,70,112,.20)', 'rgba(96,62,104,.14)', 'rgba(150,110,60,.08)']);
     k.graticule(); k.drawStars(); k.constellations(); k.comet();
     const { x: px, y: py, r: R } = L.p, fine = phone ? 5 : 6, sn = (v: number) => Math.floor(v / fine);
-    // Ring plane: tilted on screen, foreshortened to fk; n is its normal in view space.
     const tilt = -0.24, fk = 0.3, ct = Math.cos(tilt), st = Math.sin(tilt), q = Math.sqrt(1 - fk * fk), n = norm([st * q, -ct * q, fk]);
     const dotL = (a: number[]) => a[0] * LIGHT[0] + a[1] * LIGHT[1] + a[2] * LIGHT[2];
-    // Radial profile in planet radii: C ring, B ring, Cassini Division, A ring with the Encke Gap.
     const ringI = (r: number) =>
       r < 1.24 || r > 2.27 ? 0
       : r < 1.53 ? 0.26 + 0.06 * Math.sin(r * 90)
@@ -34,7 +30,6 @@ export const saturn: Scene = {
       for (let gy = sn(py - e * 0.75); gy <= sn(py + e * 0.75); gy++) for (let gx = sn(px - e); gx <= sn(px + e); gx++) {
         const x = (gx + 0.5) * fine, y = (gy + 0.5) * fine, Q = ring3(x, y), r = Math.hypot(Q[0], Q[1], Q[2]), I = ringI(r);
         if (I <= 0 || Q[2] > 0 !== front || (!front && Q[0] * Q[0] + Q[1] * Q[1] < 1)) continue;
-        // the globe's shadow on the rings: does the ray toward the Sun hit the globe?
         const b = dotL(Q), shadow = b * b - (r * r - 1) > 0 && b < 0 ? 0.2 : 1;
         const v = clamp((0.35 + 0.65 * I) * shadow * (0.86 + 0.14 * Math.sin(r * 31)));
         tile(gx * fine, gy * fine, at(P.ring, v), v, (0.3 + 0.65 * I) * calmAt(x, y), fine);
@@ -48,10 +43,8 @@ export const saturn: Scene = {
     sphere(px, py, R, P.zone, LIGHT, (dx, dy, nz) => {
       const day = smooth(-0.05, 0.35, dotL([dx, dy, nz]));
       let shade = 0.06 + 0.94 * day * (0.5 + 0.5 * nz);
-      // the rings' shadow on the globe: follow the ray toward the Sun to the ring plane
       const s0 = -(dx * n[0] + dy * n[1] + nz * n[2]) / dotL(n);
       if (s0 > 0) { const I = ringI(Math.hypot(dx + s0 * LIGHT[0], dy + s0 * LIGHT[1], nz + s0 * LIGHT[2])); if (I > 0) shade *= 1 - 0.72 * I; }
-      // bands run parallel to the rings
       const yb = -dx * st + dy * ct, lat = Math.asin(clamp(-yb, -1, 1)), lon = Math.atan2(dx * ct + dy * st, nz) - T * 0.08;
       if (Math.abs(lat) > 1.12) return { v: shade, ramp: P.pole };
       const dl = wrap(lon + Math.PI) - Math.PI, sd = Math.hypot(dl * 1.6, (lat - 0.42) * 5);
@@ -60,7 +53,6 @@ export const saturn: Scene = {
       const band = Math.sin(lat * 13 + turb * 3) + 0.4 * Math.sin(lat * 37 + turb);
       return { v: clamp(shade * (0.9 + 0.1 * Math.sin(lat * 61))), ramp: band > 0.2 ? P.zone : P.belt };
     }, undefined, fine);
-    // haze along the lit limb
     for (let a = 0; a < TAU; a += fine / (R * 1.02)) {
       const lit = clamp(Math.cos(a) * LIGHT[0] + Math.sin(a) * LIGHT[1] + 0.45);
       if (lit < 0.05) continue;

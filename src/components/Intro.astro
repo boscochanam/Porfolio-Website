@@ -29,7 +29,6 @@ import Icon from './Icon.astro';
 </section>
 
 <script>
-  // Local time in Pune, like a desk clock. Updates on the minute.
   const el = document.querySelector<HTMLTimeElement>('.clock');
   if (el) {
     const fmt = new Intl.DateTimeFormat('en-GB', { weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: el.dataset.tz });

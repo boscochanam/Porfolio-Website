@@ -1,12 +1,15 @@
 ---
 import { background as bg } from '../data/site';
+import Tile from './Tile.astro';
 ---
 <section class="blk" id="background">
   <h2 class="blk-h label" data-ruler="Research" data-nav="background">Research &amp; recognition</h2>
-  <ul class="rows">
-    {bg.papers.map((p) => <li><span>{p.title}</span><span class="rows-m">{p.role} · {p.meta}</span></li>)}
+  <p class="tg-h">Papers</p>
+  <ul class="ln-list">
+    {bg.papers.map((p) => <li><Tile icon="paper" /><span class="ln-main"><span class="ln-name">{p.title}</span><span class="ln-short">{p.meta}</span></span></li>)}
   </ul>
-  <ul class="rows plain">
-    {bg.recognition.map((r) => <li><span>{r}</span></li>)}
+  <p class="tg-h">Recognition</p>
+  <ul class="ln-list">
+    {bg.recognition.map((r) => <li><Tile icon={r.icon} /><span class="ln-main"><span class="ln-name">{r.title}</span><span class="ln-short">{r.meta}</span></span></li>)}
   </ul>
 </section>

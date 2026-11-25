@@ -1,26 +1,19 @@
 ---
-// Home page project rows: the content collection plus the standalone project pages.
 import { getCollection } from 'astro:content';
 import { projectPages } from '../data/project-pages';
-import Brand from './Brand.astro';
-const work = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+import Tile from './Tile.astro';
+const work = (await getCollection('projects')).filter((p) => p.data.home).sort((a, b) => a.data.order - b.data.order);
 const rows = [
-  ...work.map((p) => ({ title: p.data.title, line: p.data.summary, status: p.data.status ?? p.data.kind, icon: p.data.icon, href: p.data.codeUrl && p.data.codeUrl !== '#' ? p.data.codeUrl : undefined })),
-  ...projectPages.map((p) => ({ title: p.title, line: p.summary, status: 'Live', icon: undefined, href: p.href })),
+  ...work.map((p) => ({ name: p.data.name ?? p.data.title, short: p.data.short ?? p.data.summary, icon: p.data.icon, href: '/projects/' })),
+  ...projectPages.map((p) => ({ name: p.title, short: p.short, icon: 'cube', href: p.href })),
 ];
 ---
 <section class="blk" id="work">
   <h2 class="blk-h label" data-ruler="Projects" data-nav="work">Projects</h2>
-  <ul class="pl">
+  <ul class="ln-list">
     {rows.map((r) => (
-      <li>
-        <div class="pl-top">
-          <span class="pl-title"><Brand name={r.icon} />{r.href ? <a href={r.href}>{r.title}</a> : r.title}</span>
-          <span class:list={['pl-status', { live: r.status === 'Live' }]}>{r.status}</span>
-        </div>
-        <p class="pl-line">{r.line}</p>
-      </li>
+      <li><Tile icon={r.icon} /><a class="ln-main" href={r.href}><span class="ln-name">{r.name}</span><span class="ln-short">{r.short}</span></a></li>
     ))}
   </ul>
-  <a class="blk-more" href="/projects/">All projects, with drawings and stacks</a>
+  <a class="blk-more" href="/projects/">All projects</a>
 </section>

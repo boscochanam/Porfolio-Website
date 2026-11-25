@@ -1,10 +1,8 @@
-// The Sun at the edge of the frame: limb darkening, granulation, turning sunspots, glyph corona rays,
-// prominences on the limb and a transit of Mercury.
 import { at } from '../color';
 import { TAU, clamp, fbm, slope, wrap } from '../math';
 import type { Kit, Scene } from '../kit';
 
-const SPOTS = [[0.4, 0.22, 0.09], [1.3, -0.18, 0.07], [2.6, 0.3, 0.11], [4.1, -0.25, 0.08], [5.2, 0.12, 0.06]]; // lon, lat, size
+const SPOTS = [[0.4, 0.22, 0.09], [1.3, -0.18, 0.07], [2.6, 0.3, 0.11], [4.1, -0.25, 0.08], [5.2, 0.12, 0.06]];
 
 export const sun: Scene = {
   label: 'The Sun',
@@ -22,7 +20,6 @@ export const sun: Scene = {
     const g = ctx.createRadialGradient(cx, cy, R * 0.9, cx, cy, R * 2.4);
     g.addColorStop(0, `rgba(${P.glow},.24)`); g.addColorStop(1, `rgba(${P.glow},0)`);
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-    // corona: radial glyph rays of varying length
     k.glyphFont(0.75);
     for (let i = 0; i < 90; i++) {
       const a = (i / 90) * TAU, n = fbm(i * 0.37, T * 0.08), len = R * (1.12 + 0.7 * n * n), ca = Math.cos(a), sa = Math.sin(a), gch = slope(ca, sa);
@@ -31,7 +28,6 @@ export const sun: Scene = {
         glyph(snap(x) * C, snap(y) * C, f > 0.55 ? gch : '·', P.corona, 0.55 * f * calmAt(x, y));
       }
     }
-    // prominences: arcs of tiles standing on the limb
     k.tileFont();
     [[Math.PI * 0.84, 0.16], [Math.PI * 1.1, 0.11], [Math.PI * 1.36, 0.14]].forEach(([a0, span], i) => {
       const h = R * (0.1 + 0.03 * Math.sin(T * 0.4 + i * 2)), steps = Math.ceil((span * R) / C) * 2;
@@ -44,7 +40,6 @@ export const sun: Scene = {
         }
       }
     });
-    // disc: limb darkening, granulation, sunspots that turn with the Sun
     sphere(cx, cy, R, P.sun, [0, 0, 1], (dx, dy, nz) => {
       let b = (0.28 + 0.72 * Math.pow(nz, 0.42)) * (0.86 + 0.16 * fbm(dx * 9 + T * 0.03, dy * 9));
       const lon = Math.atan2(dx, nz) + T * 0.02, lat = Math.asin(clamp(-dy, -1, 1));
@@ -54,7 +49,6 @@ export const sun: Scene = {
       }
       return { v: clamp(b) };
     });
-    // transit of Mercury every 46 s
     const p = (T % 46) / 46;
     if (p < 0.6) {
       const cw = Math.sqrt(1 - 0.09) * R, mx = cx - cw + 2 * cw * (p / 0.6), my = cy - R * 0.3;

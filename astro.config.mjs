@@ -1,15 +1,8 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join, posix } from 'node:path';
 
-/**
- * Astro ships each page script as its own module, so a chunk two scripts share (ascii.js, ruler.js) is only
- * found after the script importing it arrives: a second round trip. After the build, add a modulepreload
- * for every module a page's scripts import, so the browser fetches them all straight from the HTML.
- * @returns {import('astro').AstroIntegration}
- */
 function preloadSharedChunks() {
   return {
     name: 'preload-shared-chunks',
@@ -40,9 +33,7 @@ function preloadSharedChunks() {
 }
 
 export default defineConfig({
-  // TODO: replace with the real domain once deployed (used for canonical OG/Twitter image URLs).
   site: 'https://example.com',
-  // Inline the small stylesheet so the first paint never waits on a CSS round trip.
   build: { inlineStylesheets: 'always' },
   integrations: [preloadSharedChunks()],
 });

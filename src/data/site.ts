@@ -1,13 +1,9 @@
-// Single source for everything on the page except projects (those live in src/content/projects/).
-// Strings may use **bold**; see src/lib/rich.ts.
 
 export const site = {
   name: 'Bosco Chanam',
   role: 'AI/ML Engineer',
-  location: 'Pune, India',
   timeZone: 'Asia/Kolkata',
   zoneLabel: 'Pune, GMT+5:30',
-  // Used for <title>, og:title.
   title: 'Bosco Chanam · AI/ML engineer, edge vision, robotics and agents',
   description:
     'AI/ML engineer at Bharat Forge in Pune. Computer vision on NVIDIA Jetson, rolling out to 10+ edge stations; robotics software on ROS 2; AI agents I use every day.',
@@ -16,7 +12,6 @@ export const site = {
   ogImage: '/og.png',
   headshot: '/assets/headshot.jpg',
 
-  // Inline brand marks: [[brand|Label]] or [[brand|Label|url]] (src/lib/rich.ts).
   intro: [
     "I’m an AI/ML engineer at [[bharatforge|Bharat Forge]], one of the world’s largest forging companies. I build computer vision that checks factory work as it happens. It’s rolling out to **10+ edge stations** on [[nvidia|Jetson]], and I’m the primary inventor on its patent.",
     'I also own the software platform for a robotic bin-picking cell built on [[ros|ROS 2]], and I’m learning robot simulation in [[nvidia|Isaac Sim]].',
@@ -25,8 +20,6 @@ export const site = {
   ],
 };
 
-// Night-sky scene behind every page (src/scripts/sky/): 'saturn' | 'sun' | 'earth'.
-// palette: a look from PALETTES[scene] in src/scripts/sky/palettes.ts; empty means that scene's first look.
 export const sky = {
   scene: 'earth',
   palette: '',
@@ -36,16 +29,12 @@ export const links = {
   email: 'boscochanam@gmail.com',
   github: 'https://github.com/boscochanam',
   linkedin: 'https://www.linkedin.com/in/boscochanam',
-  linkedinLabel: '/in/boscochanam',
   x: 'https://x.com/boscochanam',
-  xHandle: '@boscochanam', // also used for twitter:creator
+  xHandle: '@boscochanam',
   youtube: 'https://www.youtube.com/@boscochanam',
-  youtubeLabel: '@boscochanam',
   letterboxd: 'https://letterboxd.com/boscochanam',
-  cv: '#', // TODO: CV PDF URL
 };
 
-// Timeline, newest first. Each org has a span and one or more roles (dates: [from, to]).
 export const experience = [
   {
     org: 'Bharat Forge',
@@ -62,13 +51,9 @@ export const experience = [
     span: 'Jul 2023 – Dec 2025',
     roles: [{ dates: ['Jul 2023', 'Dec 2025'], title: 'Researcher', meta: 'Pune' }],
   },
-  {
-    org: 'Symbiosis Institute of Technology',
-    brand: 'symbiosis',
-    span: '2025',
-    roles: [{ dates: ['', '2025'], title: 'B.Tech, Computer Science & Engineering', meta: 'Pune' }],
-  },
 ];
+
+export const education = { brand: 'symbiosis', degree: 'B.Tech, Computer Science & Engineering', school: 'Symbiosis Institute of Technology' };
 
 export const tools = [
   {
@@ -96,19 +81,15 @@ export const tools = [
 
 export const background = {
   papers: [
-    { title: 'From Hand-Drawn Schematics to Structural Circuit Netlists', role: 'First author', meta: 'Manuscript · 2026' },
-    {
-      title: 'Optimizing Text Summarization: Benchmarking LLMs vs Domain Specialized Architectures',
-      role: 'Co-author',
-      meta: 'IJFIS · published',
-    },
+    { title: 'From Hand-Drawn Schematics to Structural Circuit Netlists', meta: 'First author · manuscript' },
+    { title: 'Optimizing Text Summarization: Benchmarking LLMs vs Domain Specialized Architectures', meta: 'Co-author · IJFIS' },
   ],
   recognition: [
-    'Excellence Award for AI Innovation, Bharat Forge (2026)',
-    'One of two engineers chosen to present our work to Union Home Minister Amit Shah',
-    'Invited back to judge student projects, alongside panel members from Microsoft and Citi',
-    'Talk on All India Radio, Imphal: “Role of AI in Shaping the Future of Youth”',
-    'Flipkart Grid 5.0, top 0.5% nationwide',
+    { title: 'Excellence Award for AI Innovation', meta: 'Bharat Forge', icon: 'bharatforge' },
+    { title: 'Chosen to present our work to Union Home Minister Amit Shah', meta: 'Bharat Forge', icon: 'bharatforge' },
+    { title: 'Invited judge on a student project panel with members from Microsoft and Citi', meta: 'Symbiosis', icon: 'symbiosis' },
+    { title: 'Talk: “Role of AI in Shaping the Future of Youth”', meta: 'All India Radio', icon: 'air' },
+    { title: 'Top 0.5% nationwide', meta: 'Flipkart Grid 5.0', icon: 'flipkart' },
   ],
 };
 

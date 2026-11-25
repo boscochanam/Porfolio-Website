@@ -1,5 +1,3 @@
-// Styles for the small distant Sun in the Earth scene. Each draws around (x, y) with core radius r.
-// The centre is snapped to a cell centre first so every style stays symmetric on the grid.
 import { MONO, hash } from './glyph';
 import { at, lut } from './color';
 import { TAU, clamp, fbm } from './math';
@@ -7,7 +5,7 @@ import type { Kit } from './kit';
 
 type Sun = { x: number; y: number; r: number };
 const FINE = 3;
-let FADE = 1; // set per draw so a style can be faded as a whole
+let FADE = 1;
 const HOT = lut([[0, '#3a0904'], [0.25, '#8a1a08'], [0.45, '#d0400e'], [0.65, '#f08a24'], [0.82, '#ffc85a'], [0.93, '#ffeab0'], [1, '#fffaf0']]);
 const GOLD = lut([[0, '#4a2a12'], [0.4, '#b8742c'], [0.7, '#eeb460'], [0.9, '#fbe2a8'], [1, '#fff6e2']]);
 
@@ -21,7 +19,6 @@ function bloom(k: Kit, s: Sun, layers: [number, number][], rgb = '255,200,140') 
   }
 }
 
-/** Shade every fine cell within `reach` of the centre; fn returns [colour, alpha] or null to skip. */
 function cells(k: Kit, s: Sun, reach: number, fn: (dx: number, dy: number, d: number, a: number) => [string, number] | null) {
   const n = Math.ceil(reach / FINE);
   for (let j = -n; j <= n; j++) for (let i = -n; i <= n; i++) {
@@ -32,11 +29,9 @@ function cells(k: Kit, s: Sun, reach: number, fn: (dx: number, dy: number, d: nu
   }
 }
 
-/** Angle-seamless noise: sample fbm on a circle so the flame edge has no seam at ±π. */
 const ring = (a: number, f: number, t: number, seed = 0) => fbm(Math.cos(a) * f + t + seed, Math.sin(a) * f - t * 0.7 + seed);
 
 export const SUNS: Record<string, (k: Kit, s: Sun) => void> = {
-  /** White-hot core shading through gold and orange to a red rim, with flickering flame tongues. */
   fireball(k, s) {
     const R = s.r * 1.2, T = k.T;
     bloom(k, s, [[R * 7, 0.08], [R * 2.6, 0.16]], '255,150,70');
@@ -49,7 +44,6 @@ export const SUNS: Record<string, (k: Kit, s: Sun) => void> = {
     });
   },
 
-  /** A smooth gold disc with a fine starburst corona whose rays drift in length. */
   ember(k, s) {
     const R = s.r, T = k.T;
     bloom(k, s, [[R * 8, 0.07], [R * 3, 0.14]]);
@@ -64,7 +58,6 @@ export const SUNS: Record<string, (k: Kit, s: Sun) => void> = {
     });
   },
 
-  /** Total eclipse: a black disc, a bright thin ring, soft streamers and one diamond-ring bead. */
   eclipse(k, s) {
     const R = s.r * 1.1, T = k.T;
     bloom(k, s, [[R * 7, 0.06], [R * 2.4, 0.12]], '220,225,240');
@@ -79,7 +72,6 @@ export const SUNS: Record<string, (k: Kit, s: Sun) => void> = {
     bloom(k, { x: s.x + Math.cos(ba) * R, y: s.y + Math.sin(ba) * R, r: 0 }, [[R * 0.9, 0.35], [R * 0.35, 0.9]], '255,250,235');
   },
 
-  /** A point of light: wide bloom, four thin spikes and a small crisp core. */
   point(k, s) {
     const R = s.r * 0.5, T = k.T, br = 1 + 0.06 * Math.sin(T * 0.5);
     bloom(k, s, [[R * 9 * br, 0.07], [R * 3.5 * br, 0.12]], '255,214,160');
@@ -91,7 +83,6 @@ export const SUNS: Record<string, (k: Kit, s: Sun) => void> = {
     });
   },
 
-  /** The Sun in glyphs: concentric rings from dense to light characters, flickering at the rim. */
   ascii(k, s) {
     const { ctx, T } = k, R = s.r * 1.7, G = 7;
     bloom(k, s, [[R * 3.5, 0.08], [R * 1.6, 0.1]]);
@@ -111,7 +102,6 @@ export const SUNS: Record<string, (k: Kit, s: Sun) => void> = {
   },
 };
 
-/** Draw the chosen style with its centre snapped to a cell centre, at opacity `fade`. */
 export function drawSun(k: Kit, s: Sun, style: string, fade = 1) {
   if (fade < 0.02) return;
   FADE = fade;

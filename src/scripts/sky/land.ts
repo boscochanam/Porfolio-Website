@@ -1,5 +1,3 @@
-// Land mask for the Earth scene: 256x128 equirectangular bitmap (1 bit per cell, row-major, MSB first),
-// rasterised from Natural Earth 110m land (public domain).
 import { TAU, clamp, wrap } from './math';
 
 const LAND_W = 256;
@@ -8,9 +6,7 @@ const LAND = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 const bits = Uint8Array.from(atob(LAND), (c) => c.charCodeAt(0));
 
-/** Is there land at this longitude/latitude (radians)? */
 export function isLand(lon: number, lat: number) {
-  // LAND_W is a power of two, so & wraps negative and over-range longitudes without two modulo ops.
   const u = Math.floor(lon * (LAND_W / TAU)) & (LAND_W - 1);
   const v = clamp(Math.floor((0.5 - lat / Math.PI) * LAND_H), 0, LAND_H - 1);
   const i = (v << 8) + u;

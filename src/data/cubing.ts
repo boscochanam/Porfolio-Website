@@ -1,5 +1,3 @@
-// Content for the cubing reference sheet. The prose lives here so the page stays a template;
-// the case data (algorithms, setups, recognition notes and diagrams) lives in cubing-cases.json.
 import raw from './cubing-cases.json';
 
 export interface CubingCase {

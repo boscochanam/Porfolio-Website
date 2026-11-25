@@ -25,9 +25,6 @@ const ogDescription = description ?? site.ogDescription;
 <meta name="theme-color" content="#0d0e12">
 <style is:inline id="font-css" set:html={fontCss}></style>
 <script is:inline>
-  // Hold the web fonts back briefly so the sky's small JS bundle wins the first round trip; Sky.astro
-  // releases them as soon as its first frame is drawn, and this timer is the fallback if it cannot.
-  // Text paints in the fallback either way. With JS off the style stays active, so the real fonts load.
   document.getElementById('font-css').media = 'print';
   setTimeout(() => { const s = document.getElementById('font-css'); if (s) s.media = 'all'; }, 150);
 </script>

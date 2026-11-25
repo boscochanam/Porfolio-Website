@@ -28,9 +28,7 @@ from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
 PROFILES = {
-    # Lighthouse's mobile preset: slow 4G (150 ms RTT, 1.6 Mbps) and a 4x slower CPU, i.e. a mid-range phone.
     'phone': dict(vp=(390, 844), dpr=3, mobile=True, cpu=4, rtt=150, mbps=1.6),
-    # Lighthouse's desktop preset: 40 ms RTT, 10 Mbps, no CPU slowdown.
     'desktop': dict(vp=(1920, 1080), dpr=1, mobile=False, cpu=1, rtt=40, mbps=10),
 }
 COMPRESS = {'.html', '.css', '.js', '.svg', '.json', '.txt', '.xml'}
@@ -57,9 +55,8 @@ PROBE = r"""(() => {
 })();"""
 
 
-# ---------- server ----------
 class Handler(SimpleHTTPRequestHandler):
-    protocol_version = 'HTTP/1.1'  # keep-alive, like a real host (which would also speak HTTP/2)
+    protocol_version = 'HTTP/1.1'
     cache: dict = {}
 
     def log_message(self, *a):
@@ -99,8 +96,8 @@ def make_site(dist: Path) -> Path:
     h = re.sub(r'<script\b[^>]*>.*?</script>', '', h, flags=re.S)
     h = re.sub(r'<canvas\b[^>]*></canvas>', '', h)
     h = re.sub(r'<link[^>]*fonts\.(googleapis|gstatic)\.com[^>]*>', '', h)
-    h = re.sub(r'<link[^>]*as="font"[^>]*>', '', h)  # self-hosted preloads
-    h = re.sub(r'@font-face\s*\{[^}]*\}', '', h)     # inlined @font-face rules
+    h = re.sub(r'<link[^>]*as="font"[^>]*>', '', h)
+    h = re.sub(r'@font-face\s*\{[^}]*\}', '', h)
     (site / 'ref-plain.html').write_text(h)
     return site
 
@@ -111,7 +108,6 @@ def serve(site: Path):
     return srv, f'http://127.0.0.1:{srv.server_address[1]}'
 
 
-# ---------- browser ----------
 async def open_page(p, prof, net=True):
     b = await p.chromium.launch()
     ctx = await b.new_context(viewport=dict(width=prof['vp'][0], height=prof['vp'][1]), device_scale_factor=prof['dpr'],
@@ -139,7 +135,7 @@ async def load_once(p, prof, url):
     cdp.on('Network.requestWillBeSent', lambda e: reqs.setdefault(e['requestId'], {'url': e['request']['url'], 't0': e['timestamp']}))
     cdp.on('Network.loadingFinished', lambda e: reqs.get(e['requestId'], {}).update(bytes=e['encodedDataLength'], t1=e['timestamp']))
     await pg.goto(url, wait_until='load')
-    await pg.wait_for_timeout(3000)  # let fonts, late redraws and long tasks land
+    await pg.wait_for_timeout(3000)
     m = await pg.evaluate("""() => { const B = __b, n = performance.getEntriesByType('navigation')[0];
       const res = performance.getEntriesByType('resource');
       return { ttfb: n.responseStart, dcl: n.domContentLoadedEventEnd, load: n.loadEventEnd, fcp: B['first-contentful-paint'],
@@ -152,7 +148,7 @@ async def load_once(p, prof, url):
     m['tbt'] = sum(max(0, d - 50) for s, d in m['lt'] if s + d > fcp)
     m['maxLT'] = max((d for _, d in m['lt']), default=0)
     m['nLT'] = len(m['lt'])
-    m['skyDrawn'] = max(fcp, m['sky'][0][0] + m['sky'][0][1]) if m['sky'] else None  # a frame drawn before first paint shows at FCP
+    m['skyDrawn'] = max(fcp, m['sky'][0][0] + m['sky'][0][1]) if m['sky'] else None
     m['skyFramesAtLoad'] = len(m['sky'])
     m['skyFrameMs'] = statistics.median(d for _, d in m['sky']) if m['sky'] else None
     done = [r for r in reqs.values() if 'bytes' in r and not r['url'].startswith('data:')]
@@ -160,7 +156,7 @@ async def load_once(p, prof, url):
     m['fontKB'] = sum(r['bytes'] for r in done if re.search(r'\.(woff2?|ttf|otf)(\?|$)', r['url'])) / 1024
     m['jsKB'] = sum(r['bytes'] for r in done if re.search(r'\.m?js(\?|$)', r['url'])) / 1024
     fonts = [r for r in done if re.search(r'\.(woff2?|ttf|otf)(\?|$)', r['url'])]
-    nav0 = min(r['t0'] for r in reqs.values())  # the document request; CDP timestamps are in seconds
+    nav0 = min(r['t0'] for r in reqs.values())
     m['fonts'] = (max(r['t1'] for r in fonts) - nav0) * 1000 if fonts else None
     m['requests'] = len(done)
     m['origins'] = len({re.match(r'https?://[^/]+', r['url']).group(0) for r in done if r['url'].startswith('http')})
@@ -171,7 +167,7 @@ async def load_once(p, prof, url):
 
 
 async def runtime(p, prof, url):
-    """One session on the real page: idle at the top, idle with the diagram in view, a scroll pass, clicks."""
+    """One session on the real page: idle at the top, idle with the timeline in view, a scroll pass, clicks."""
     b, pg, cdp = await open_page(p, prof, net=False)
     await pg.goto(url, wait_until='load')
     await pg.wait_for_timeout(2500)
@@ -202,19 +198,19 @@ async def runtime(p, prof, url):
         out[label] = r
 
     await window('idleTop', 5000)
-    await pg.evaluate("document.querySelector('.feat') && document.querySelector('.feat').scrollIntoView({block: 'center'})")
+    await pg.evaluate("document.querySelector('#experience') && document.querySelector('#experience').scrollIntoView({block: 'center'})")
     await pg.wait_for_timeout(800)
-    await window('idleDiagram', 5000)
+    await window('idleTimeline', 5000)
 
     async def clicks():
-        box = await pg.evaluate("(() => { const r = document.querySelector('.feat-txt dl').getBoundingClientRect(); return [r.left + 20, r.top + 10]; })()")
+        box = await pg.evaluate("(() => { const r = document.querySelector('.tl-role').getBoundingClientRect(); return [r.left + 20, r.top + 10]; })()")
         for _ in range(8):
             await pg.mouse.click(*box)
             await pg.wait_for_timeout(250)
     await pg.evaluate('__b.ev = []')
-    await window('clicksDiagram', 2500, clicks)
+    await window('clicksTimeline', 2500, clicks)
     ev = await pg.evaluate('__b.ev')
-    out['clicksDiagram']['worstEventMs'] = max((d for _, d, _ in ev), default=0)  # 0 = every event under 16 ms
+    out['clicksTimeline']['worstEventMs'] = max((d for _, d, _ in ev), default=0)
 
     await pg.evaluate('scrollTo(0, 0)')
     await pg.wait_for_timeout(600)
@@ -222,7 +218,7 @@ async def runtime(p, prof, url):
 
     async def scroll():
         y = 0
-        while y < H:  # wheel bursts with pauses, so the sky's settle redraw fires between them
+        while y < H:
             for _ in range(6):
                 await pg.mouse.wheel(0, 80)
                 await pg.wait_for_timeout(16)

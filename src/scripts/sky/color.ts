@@ -1,9 +1,7 @@
-// Colour helpers and the fixed colours every scene shares (sky, stars, glyph tints).
 
 export type RGB = [number, number, number];
 export const rgb = (h: string): RGB => { const n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
 
-/** Colour ramp from stops, sampled into a lookup table. */
 export function lut(stops: [number, string][], n = 40): string[] {
   const s = stops.map(([p, h]) => [p, rgb(h)] as [number, RGB]), out: string[] = [];
   for (let i = 0; i < n; i++) {
@@ -15,7 +13,6 @@ export function lut(stops: [number, string][], n = 40): string[] {
   }
   return out;
 }
-/** Pick from a lookup table by brightness 0..1. */
 export const at = (l: string[], v: number) => l[Math.max(0, Math.min(l.length - 1, Math.round(v * (l.length - 1))))];
 
 export const SKY = ['#0d0e12', '#121115', '#111110'];

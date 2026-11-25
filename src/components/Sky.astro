@@ -1,6 +1,4 @@
 ---
-// Fixed night-sky canvas behind every page. Scene and look come from site.ts; `?scene=` and `?palette=`
-// override them, and `?scenes` shows a picker of the scene's looks (kept for the browser session).
 import { sky } from '../data/site';
 ---
 <canvas class="sky" id="sky" aria-hidden="true" data-scene={sky.scene} data-palette={sky.palette}></canvas>
@@ -8,17 +6,14 @@ import { sky } from '../data/site';
 <script>
   import { startSky } from '../scripts/sky/index';
 
-  // Text that sits straight on the sky; the sky dims behind each of these boxes. Keep them tight (text lines,
-  // not whole sections) so the scene stays visible around them. The Now aside is a glass panel instead.
-  const CALM = '.intro-meta,.intro-id,.intro-text>p,.blk-h,.tl-head,.tl-role,.pl li,.rows li,.tg,.blk-more,.foot-open,.foot-bar,.hero-text>*,.now,.sec-head>*,.bg>div,.sheet-head>*,.sheet-sec-head>*,.note2,.sheet-toc,.sheet-toc-m,[data-sky-calm]';
+  const CALM = '.intro-meta,.intro-id,.intro-text>p,.blk-h,.tl-head,.tl-role,.ln-list li,.tg,.tg-h,.blk-more,.foot-open,.foot-bar,.sec-head>*,.sheet-head>*,.sheet-sec-head>*,.note2,.sheet-toc,.sheet-toc-m,[data-sky-calm]';
   const cv = document.getElementById('sky') as HTMLCanvasElement;
   const q = new URLSearchParams(location.search);
-  const store = (k: string, v?: string) => { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch { /* storage blocked */ } return null; };
+  const store = (k: string, v?: string) => { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch { } return null; };
   if (q.has('scenes')) store('sky-pick', '1');
   const scene = q.get('scene') || cv.dataset.scene || 'earth';
   const palette = q.get('palette') || store(`sky-pal-${scene}`) || cv.dataset.palette || undefined;
   const sky = startSky(cv, scene, CALM, palette);
-  // The first frame is on the canvas now; let the web fonts start loading.
   const fontCss = document.getElementById('font-css');
   if (fontCss) fontCss.media = 'all';
 

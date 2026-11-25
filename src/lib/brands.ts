@@ -1,6 +1,3 @@
-// Brand marks for inline text, tool chips and the timeline. Rendered by src/lib/rich.ts and Brand.astro.
-// SVG paths: Simple Icons, CC0 1.0 (https://simpleicons.org); openai from simple-icons@10.4.0, before it was removed.
-// Image marks (public/brands/): each organisation's own site icon.
 export interface BrandMark { path?: string; img?: string; color?: string }
 
 export const brands: Record<string, BrandMark> = {
@@ -28,4 +25,6 @@ export const brands: Record<string, BrandMark> = {
   nous: { img: '/brands/nous.png' },
   bharatforge: { img: '/brands/bharatforge.png' },
   symbiosis: { img: '/brands/symbiosis.png' },
+  flipkart: { img: '/brands/flipkart.png' },
+  air: { img: '/brands/air.png' },
 };

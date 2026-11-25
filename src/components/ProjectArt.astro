@@ -1,20 +1,14 @@
 ---
-// Line drawings shown in a project card until it has a demo clip.
-// Same language as ArchDiagram: 1.5px ink strokes, muted secondary marks, small mono labels,
-// at most one ink-filled element. viewBox is 16:9; labels hide when the card is narrow.
 interface Props { art: 'spice' | 'hermes' | 'video' | 'dashboard'; label: string }
 const { art, label } = Astro.props;
-
 ---
 <svg class={`art art-${art}`} viewBox="0 0 320 180" role="img" aria-label={label}>
   {art === 'spice' && (
     <>
       <g class="ln">
-        <!-- hand-drawn RC loop -->
         <path d="M30 62Q44 57 55 61l5-9 6 17 7-17 6 17 7-16 5 8Q104 63 122 59Q125 74 121 86" />
         <path d="M108 87.5L134 85M109 95.5L135 93.5" />
         <path d="M122 95Q119 110 123 124Q78 128 31 123Q26 94 30 62" />
-        <!-- clean schematic -->
         <path d="M198 60H220l4-8 8 16 8-16 8 16 8-16 4 8H292V84M280 84H304M280 92H304M292 92V124H198V60" />
       </g>
       <path class="ln" d="M146 92H176M170 86l6 6-6 6" />
@@ -31,12 +25,9 @@ const { art, label } = Astro.props;
   {art === 'hermes' && (
     <>
       <g class="ln">
-        <!-- mic -->
         <rect x="36" y="56" width="22" height="38" rx="11" />
         <path d="M28 82a19 19 0 0 0 38 0M47 101V116M37 116H57" />
-        <!-- voice to agent -->
         <path class="mut" d="M78 84V96M84 79V101M90 74V106M96 81V99M102 86V94" />
-        <!-- agent to devices -->
         <path d="M178 90Q204 90 212 52H222M178 90H222M178 90Q204 90 212 128H222" />
         <rect x="222" y="40" width="80" height="24" />
         <rect x="222" y="78" width="80" height="24" />
@@ -55,9 +46,7 @@ const { art, label } = Astro.props;
   {art === 'video' && (
     <>
       <g class="ln">
-        <!-- the cheap model's short command list -->
         <rect x="24" y="44" width="76" height="92" />
-        <!-- Resolve timeline: one video track, two audio tracks -->
         <path d="M136 52H300M136 128H300" />
         <rect x="136" y="62" width="58" height="18" /><rect x="198" y="62" width="40" height="18" /><rect x="242" y="62" width="54" height="18" />
         <rect x="136" y="86" width="98" height="14" /><rect x="238" y="86" width="58" height="14" />
@@ -65,7 +54,6 @@ const { art, label } = Astro.props;
       </g>
       <path class="ln mut" d="M34 60H86M34 74H78M34 88H90M34 102H70M34 116H82" />
       <path class="ln" d="M106 90H128M122 84l6 6-6 6" />
-      <!-- read-back: the script checks the real timeline after each round -->
       <path class="ln dash" d="M216 138Q216 156 160 156Q62 156 62 140" />
       <rect class="fill" x="214" y="50" width="4" height="80" />
       <g class="tx">

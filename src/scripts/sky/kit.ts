@@ -1,64 +1,44 @@
-// Drawing kit shared by the scenes: frame state (size, time, palette, scroll lift) and the cell-level
-// primitives (glyphs, lit tiles, spheres, orbits) plus the shared backdrop (stars, graticule, constellations, comet).
-// Coordinates are CSS pixels in scene space; `oy` can shift scene space vertically (the engine keeps it at 0).
 import { MONO, RAMP, hash } from './glyph';
 import { at, SKY, STAR, WARM, COOL, LINE, GRAT, GRAT_LAB, ON_LIGHT, ON_DARK } from './color';
 import { TAU, slope } from './math';
 
-/** Adjust a sphere cell: gets the surface normal (dx, dy, nz) and Lambert brightness v; may swap the ramp. */
 export type ShadeFn = (dx: number, dy: number, nz: number, v: number) => { v: number; ramp?: string[] };
-/** True where a point is hidden behind something nearer. */
 export type Occluder = (x: number, y: number) => boolean;
 
 export interface Scene {
   label: string;
-  /** Place the scene's bodies for the current viewport (store them in k.L) and set k.pivot for the stars. */
   layout(k: Kit): void;
   draw(k: Kit): void;
 }
 
-/** One cell of a sphere's fixed grid, in screen coordinates. */
 type SphereCell = { x: number; y: number; gx: number; gy: number; dx: number; dy: number; nz: number };
 
 const CONSTELLATIONS = [
-  { at: [0.5, 0.14], pts: [[0, 0], [4, 3], [7, 0], [11, 3], [14, -1]], ln: [[0, 1], [1, 2], [2, 3], [3, 4]] }, // Cassiopeia
-  { at: [0.06, 0.66], pts: [[0, 0], [8, 1], [3, 6], [4.5, 6.6], [6, 7.2], [1, 13], [9, 12]], ln: [[0, 2], [1, 4], [2, 3], [3, 4], [2, 5], [4, 6]] }, // Orion
-  { at: [0.38, 0.84], pts: [[0, 0], [4, 1], [7, 2], [10, 4], [11, 8], [16, 8], [17, 4]], ln: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3]] }, // Ursa Major
+  { at: [0.5, 0.14], pts: [[0, 0], [4, 3], [7, 0], [11, 3], [14, -1]], ln: [[0, 1], [1, 2], [2, 3], [3, 4]] },
+  { at: [0.06, 0.66], pts: [[0, 0], [8, 1], [3, 6], [4.5, 6.6], [6, 7.2], [1, 13], [9, 12]], ln: [[0, 2], [1, 4], [2, 3], [3, 4], [2, 5], [4, 6]] },
+  { at: [0.38, 0.84], pts: [[0, 0], [4, 1], [7, 2], [10, 4], [11, 8], [16, 8], [17, 4]], ln: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3]] },
 ];
-const STAR_DENSITY = 5200; // px² of sky per star
+const STAR_DENSITY = 5200;
 
 export function createKit(ctx: CanvasRenderingContext2D) {
   let stars: { ca: number; sa: number; d: number; b: number; tw: number; ph: number; col: string }[] = [];
-  // Calm lookups are memoised per half-pixel and cleared when the text boxes move. The globe asks for the
-  // same few thousand points every frame, so this turns an O(cells × boxes) hypot sweep into a map hit.
   let calmMemo = new Map<number, number>();
-  // A large sphere's cell geometry (screen position, normal, grid slot) only changes on layout, so build it
-  // once per centre/radius and reuse it. Small or moving spheres skip the cache.
   const sphereCache = new Map<string, SphereCell[]>();
   let bgGrad: CanvasGradient | null = null, bgW = 0, bgH = 0;
 
   const k = {
     ctx,
     W: 0, H: 0,
-    /** Grid cell size in px. */
     C: 12,
-    /** Gap between small tiles in px; scenes may narrow it in layout(). */
     gap: 1,
     phone: false,
-    /** Seconds since start (offset so the first frame is mid-motion). */
     T: 0,
-    /** Vertical lift of scene space, set by the engine as the page scrolls. */
     oy: 0,
-    /** How far the page has moved past the hero: 0 at the top of home, 1 further down and on inner pages. */
     p: 0,
     mouse: null as [number, number] | null,
-    /** Active look: ramps as lookup tables, single colours as strings. */
     P: {} as Record<string, any>,
-    /** Scene layout, filled by Scene.layout. */
     L: {} as Record<string, any>,
-    /** Centre the star field turns around. */
     pivot: { x: 0, y: 0 },
-    /** Text boxes (viewport coords) the sky dims behind. */
     rects: [] as DOMRect[],
     snap, tileFont, glyphFont, calmAt, calmReset, tile, glyph, sphere, orbiter,
     makeStars, backdrop, drawStars, graticule, constellations, comet,
@@ -68,7 +48,6 @@ export function createKit(ctx: CanvasRenderingContext2D) {
   function tileFont() { ctx.font = `600 ${Math.round(k.C * 0.56)}px ${MONO}`; }
   function glyphFont(s = 0.8) { ctx.font = `600 ${Math.round(k.C * s)}px ${MONO}`; }
 
-  /** 1 in open sky, down to 0.18 right behind a text box. `rects` lets a large body pass only nearby boxes. */
   function calmAt(X: number, y: number, rects = k.rects) {
     const Y = y + k.oy;
     const key = Math.round(X * 2) * 100000 + Math.round(Y * 2);
@@ -77,7 +56,7 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     let f = 1;
     for (const r of rects) {
       const dx = Math.max(r.left - 16 - X, 0, X - r.right - 16), dy = Math.max(r.top - 16 - Y, 0, Y - r.bottom - 16);
-      if (dx > 58 || dy > 58) continue; // 0.18 + hypot/70 cannot fall below 1 this far out
+      if (dx > 58 || dy > 58) continue;
       const c = 0.18 + Math.hypot(dx, dy) / 70;
       if (c < f) f = c;
     }
@@ -85,15 +64,13 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     return f;
   }
 
-  /** Drop memoised calm values after the text boxes move (scroll, resize, font swap). */
   function calmReset() { calmMemo = new Map(); }
 
-  /** A lit square cell; cells 10px and up carry a brightness glyph. */
   function tile(X: number, Y: number, col: string, v: number, a: number, s = k.C) {
     if (X < -s || Y + k.oy < -s || X > k.W || Y + k.oy > k.H) return;
     ctx.globalAlpha = a;
     ctx.fillStyle = col;
-    if (s < 10) { ctx.fillRect(X + k.gap / 2, Y + k.gap / 2, s - k.gap, s - k.gap); return; } // too small for a glyph
+    if (s < 10) { ctx.fillRect(X + k.gap / 2, Y + k.gap / 2, s - k.gap, s - k.gap); return; }
     ctx.beginPath(); ctx.roundRect(X + 0.75, Y + 0.75, s - 1.5, s - 1.5, 2); ctx.fill();
     ctx.fillStyle = v > 0.55 ? ON_LIGHT : ON_DARK;
     ctx.fillText(RAMP[Math.max(1, Math.min(9, Math.round(v * 9)))], X + s / 2, Y + s / 2 + 1);
@@ -105,7 +82,6 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     ctx.globalAlpha = a; ctx.fillStyle = col; ctx.fillText(g, X + C / 2, Y + C / 2 + 1);
   }
 
-  /** Build the fixed cell grid for a sphere: screen position, normal and grid slot for each visible cell. */
   function buildCells(cx: number, cy: number, R: number, s: number, skip?: Occluder) {
     const sn = (v: number) => Math.floor(v / s), cells: SphereCell[] = [];
     for (let gy = sn(cy - R); gy <= sn(cy + R); gy++) for (let gx = sn(cx - R); gx <= sn(cx + R); gx++) {
@@ -116,7 +92,6 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     return cells;
   }
 
-  /** Sphere drawn cell by cell at cell size `s`. `fn` shades each cell; `skip` hides occluded cells. */
   function sphere(cx: number, cy: number, R: number, ramp: string[], light: number[], fn?: ShadeFn, skip?: Occluder, s = k.C) {
     tileFont();
     let cells: SphereCell[];
@@ -130,8 +105,6 @@ export function createKit(ctx: CanvasRenderingContext2D) {
         sphereCache.set(key, cells);
       }
     } else cells = buildCells(cx, cy, R, s, skip);
-    // Only boxes that can dim this body matter. Usually none do for the big globe, so its cells skip the
-    // calm sweep entirely; on phones the copy overlaps it, so narrow the list to the overlapping boxes.
     const reach = 58, near = k.rects.filter((r) =>
       r.right + reach > cx - R && r.left - reach < cx + R && r.bottom + reach > cy - R && r.top - reach < cy + R);
     for (const c of cells) {
@@ -142,8 +115,6 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     }
   }
 
-  /** A moon on a tilted orbit (foreshortened to `fk`). Call once with back=true before the primary and once
-   *  with back=false after it; each call draws the moon only when it is on that side. */
   function orbiter(cx: number, cy: number, radius: number, speed: number, tilt: number, fk: number, size: number,
     ramp: string[], light: number[], back: boolean, occl: Occluder, fn?: ShadeFn, s = k.C) {
     const oa = k.T * speed, ou = Math.cos(oa) * radius, ow = Math.sin(oa) * radius * fk;
@@ -157,13 +128,11 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     const span = Math.hypot(k.W, k.H) * 1.6, n = Math.round((Math.PI * span * span) / (k.phone ? STAR_DENSITY * 1.35 : STAR_DENSITY));
     for (let i = 0; i < n; i++) {
       const a = hash(i, 1, 3) * TAU, tint = hash(i, 6, 2);
-      // Store the unit direction so the frame loop only needs one shared rotation, not a sin/cos per star.
       stars.push({ ca: Math.cos(a), sa: Math.sin(a), d: Math.sqrt(hash(i, 2, 5)) * span, b: Math.pow(hash(i, 3, 7), 2.2),
         tw: 0.6 + hash(i, 4, 9) * 2.2, ph: hash(i, 5, 1) * 6, col: tint > 0.9 ? WARM : tint > 0.8 ? COOL : STAR });
     }
   }
 
-  /** Night gradient plus slow-drifting coloured haze (rgba strings). */
   function backdrop(haze: string[] = []) {
     const { W, H, T } = k;
     ctx.globalAlpha = 1;
@@ -183,7 +152,6 @@ export function createKit(ctx: CanvasRenderingContext2D) {
 
   const rot = () => k.T * 0.006;
 
-  /** Twinkling star glyphs turning around k.pivot. `veil` (0..1) fades stars behind bright bodies. */
   function drawStars(veil?: (x: number, y: number) => number) {
     const { C, W, H, T, oy, mouse, pivot } = k;
     glyphFont(0.78);
@@ -199,7 +167,6 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     }
   }
 
-  /** Faint star-chart circles and hour spokes around the pole. */
   function graticule() {
     const { C, W, H, pivot } = k;
     ctx.globalAlpha = 1; ctx.strokeStyle = GRAT; ctx.lineWidth = 1;
@@ -213,7 +180,6 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     }
   }
 
-  /** Star glyphs joined by line glyphs; they brighten as the cursor nears. */
   function constellations() {
     const { C, W, H, pivot, mouse } = k, r0 = rot(), cs = Math.cos(r0), sn = Math.sin(r0);
     for (const c of CONSTELLATIONS) {
@@ -232,7 +198,6 @@ export function createKit(ctx: CanvasRenderingContext2D) {
     }
   }
 
-  /** A comet crossing once every `period` seconds. */
   function comet(period = 18) {
     const { C, W, H, T } = k, cp = (T % period) / 6;
     if (cp >= 1) return;

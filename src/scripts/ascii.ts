@@ -1,5 +1,3 @@
-// Shared glyph renderer: draw any canvas scene, read it back on a coarse grid, redraw it as glyphs.
-// Used by the featured diagram field and the 404 page. The sky (sky.ts) draws cells directly.
 
 export const MONO = 'ui-monospace,"SF Mono",Menlo,Consolas,"DejaVu Sans Mono",monospace';
 export const RAMP = ' .:-=+*#%@';
@@ -18,7 +16,6 @@ export function scene(w: number, h: number) {
   return c;
 }
 
-/** Size a canvas to its CSS box at the device pixel ratio (max 2) and return [ctx, cssW, cssH]. */
 export function fit(cv: HTMLCanvasElement): [CanvasRenderingContext2D, number, number] {
   const dpr = Math.min(devicePixelRatio || 1, 2), w = cv.clientWidth, h = cv.clientHeight;
   const W = Math.round(w * dpr), H = Math.round(h * dpr);
@@ -43,11 +40,9 @@ const ctx = (c: HTMLCanvasElement) => {
   if (!x) { x = c.getContext('2d', { willReadFrequently: true })!; ctx2.set(c, x); }
   return x;
 };
-/** Resize only when the box changed: assigning width/height reallocates the bitmap even at the same size. */
 const size = (c: HTMLCanvasElement, w: number, h: number) => { if (c.width !== w || c.height !== h) { c.width = w; c.height = h; } };
 
 function sample(src: HTMLCanvasElement, cols: number, rows: number) {
-  // Halve in steps so thin lines average instead of aliasing away.
   let w = src.width, h = src.height, cur: HTMLCanvasElement = src, flip = false;
   while (w / 2 > cols * 2) {
     const nx = flip ? t1 : t2;
@@ -66,7 +61,6 @@ function sample(src: HTMLCanvasElement, cols: number, rows: number) {
 
 export interface AsciiOpts { cell?: number; fg?: string; amax?: number; gamma?: number; shimmer?: number }
 
-/** Redraw `src` into `cv` as glyphs. Saturated source colours are kept as accents. */
 export function ascii(cv: HTMLCanvasElement, src: HTMLCanvasElement, o: AsciiOpts = {}) {
   const [c, w, h] = fit(cv);
   c.clearRect(0, 0, w, h);
@@ -99,7 +93,6 @@ const CUBE_SHADE = (hex: string, f: number) => {
   return `rgb(${((n >> 16) & 255) * f | 0},${((n >> 8) & 255) * f | 0},${(n & 255) * f | 0})`;
 };
 
-/** Isometric 3x3 cube; each face is 9 hex colours, row by row. */
 export function isoCube(x: CanvasRenderingContext2D, cx: number, cy: number, s: number, top: string[], left: string[], right: string[]) {
   const k = 0.866, T = [0, -s], R = [k * s, -s / 2], Lf = [-k * s, -s / 2], C0 = [0, 0];
   const face = (O: number[], A: number[], B: number[], cols: string[], f: number) => {

@@ -14,6 +14,12 @@ import Icon from './Icon.astro';
         <a href={links.x} aria-label="X"><Icon name="x" /></a>
         <a href={links.youtube} aria-label="YouTube"><Icon name="youtube" /></a>
         <a href={links.letterboxd} aria-label="Letterboxd" set:html={mark('letterboxd')} />
+        <a href={links.valorant} aria-label="Valorant — Immortal rank on Tracker.gg" title="Valorant — Immortal rank on Tracker.gg">
+          <span class="icon-rank">
+            <span set:html={mark('valorant')} />
+            <span class="rank-badge" set:html={mark('immortal')} />
+          </span>
+        </a>
         <a href="#top" aria-label="Back to top" class="up"><Icon name="arrow" /></a>
       </span>
     </div>

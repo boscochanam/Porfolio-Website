@@ -207,6 +207,9 @@ a.ik:hover .ext{opacity:1;transform:translate(1.5px,-1.5px)}
 .intro-links a{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;color:var(--pearl-dim);text-decoration:none}
 .intro-links a:hover{color:var(--ink)}
 .intro-links .ic,.intro-links .bm{width:18px;height:18px}
+.intro-links .icon-rank{position:relative;display:inline-flex;width:18px;height:18px}
+.intro-links .rank-badge{position:absolute;right:-2px;bottom:-2px;display:block;width:10px;height:10px;border-radius:50%;background:var(--paper);box-shadow:0 0 0 1.5px var(--paper);line-height:0}
+.intro-links .rank-badge .bm{display:block;width:10px;height:10px;margin:0;border-radius:50%;vertical-align:0;object-fit:cover}
 .intro-text p{font-size:19px;line-height:1.65;margin:0 0 14px;color:var(--pearl-dim)}
 .intro-text b{color:var(--ink);font-family:var(--sans);font-weight:700}
 .br{white-space:nowrap;color:var(--ink);font-weight:500}

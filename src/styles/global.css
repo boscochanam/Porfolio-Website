@@ -31,7 +31,7 @@ h1,h2,h3{font-family:var(--sans);margin:0;letter-spacing:-.015em}
 /* ── top bar ─────────────────────────── */
 .bar{position:sticky;top:0;z-index:10;background:rgba(13,14,18,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .bar .wrap{display:flex;align-items:center;gap:32px;height:var(--bar)}
-.brand{font:700 18px/1 var(--sans);text-decoration:none;white-space:nowrap}
+.brand{font:700 18px/1 var(--sans);text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;min-height:24px} /* 24px: minimum tap target */
 .brand:hover{color:var(--ink)}
 .tabs{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
@@ -247,8 +247,8 @@ video.prj-media{object-fit:cover}
 @media (max-width:760px){
   :root{--gut:16px;--bar:96px}
   body{font-size:17px}
-  .bar .wrap{flex-direction:column;align-items:stretch;gap:0;height:auto;padding-top:12px}
-  .brand{font-size:17px;padding:0 0 2px}
+  .bar .wrap{flex-direction:column;align-items:stretch;gap:0;height:auto;padding-top:7px}
+  .brand{font-size:17px;padding:0 0 2px;align-items:flex-end} /* the 5px taller tap target comes out of the bar padding, so the name stays put */
   .tabs{margin:0 -16px;padding:0 8px;gap:0;mask-image:linear-gradient(90deg,#000 88%,transparent)}
   .tabs a{padding:13px 10px 12px}
   .hero{padding-top:20px}

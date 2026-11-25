@@ -32,13 +32,24 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
     for (const [key, v] of Object.entries(set[palName])) k.P[key] = typeof v === 'string' ? v : lut(v);
   }
 
+  /** The canvas box is the only reliable surface size while mobile toolbars hide and show: using `innerHeight`
+   *  leaves the bitmap at a different aspect ratio, which visibly squashes the globe until the next resize. */
   function layout() {
     const dpr = Math.min(devicePixelRatio || 1, 2);
-    k.W = innerWidth; k.H = innerHeight; k.phone = k.W <= 760; k.C = k.phone ? 10 : 12;
+    k.W = Math.max(1, cv.clientWidth); k.H = Math.max(1, cv.clientHeight);
+    k.phone = k.W <= 760; k.C = k.phone ? 10 : 12;
     cv.width = Math.round(k.W * dpr); cv.height = Math.round(k.H * dpr);
     k.gap = 1;
     SCENES[cur].layout(k);
     k.makeStars();
+  }
+
+  function fit() {
+    const dpr = Math.min(devicePixelRatio || 1, 2), w = cv.clientWidth, h = cv.clientHeight;
+    if (!w || !h) return false;
+    if (w === k.W && h === k.H && cv.width === Math.round(w * dpr) && cv.height === Math.round(h * dpr)) return false;
+    layout();
+    return true;
   }
 
   function recede() {
@@ -46,6 +57,7 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
   }
 
   function frame() {
+    if (fit()) boxesDirty = true;
     if (boxesDirty) measure();
     recede();
     const dpr = cv.width / k.W;
@@ -90,12 +102,10 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
   let rz = 0;
   addEventListener('resize', () => {
     clearTimeout(rz);
-    rz = window.setTimeout(() => {
-      const dpr = Math.min(devicePixelRatio || 1, 2);
-      if (innerWidth === k.W && innerHeight === k.H && dpr === cv.width / k.W) return;
-      layout(); boxesDirty = true; frame();
-    }, 120);
+    rz = window.setTimeout(frame, 120);
   });
+  // iOS can resize the fixed canvas without firing window.resize (or moving innerHeight); keep it fitted.
+  visualViewport?.addEventListener('resize', () => { if (REDUCE) frame(); });
 
   return {
     setPalette(name: string) { usePalette(name); frame(); },

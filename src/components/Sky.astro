@@ -10,14 +10,13 @@ import { sky } from '../data/site';
 
   // Text that sits straight on the sky; the sky dims behind each of these boxes. Keep them tight (text lines,
   // not whole sections) so the scene stays visible around them. The Now aside is a glass panel instead.
-  const CALM = '.hero-text>*,.sec-head>*,.bg>div,.sheet-head>*,.sheet-sec-head>*,.note2,.sheet-toc,.sheet-toc-m,[data-sky-calm]';
+  const CALM = '.hero-text>*,.now,.sec-head>*,.bg>div,.sheet-head>*,.sheet-sec-head>*,.note2,.sheet-toc,.sheet-toc-m,[data-sky-calm]';
   const cv = document.getElementById('sky') as HTMLCanvasElement;
   const q = new URLSearchParams(location.search);
   const store = (k: string, v?: string) => { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch { /* storage blocked */ } return null; };
   if (q.has('scenes')) store('sky-pick', '1');
   const scene = q.get('scene') || cv.dataset.scene || 'earth';
   const palette = q.get('palette') || store(`sky-pal-${scene}`) || cv.dataset.palette || undefined;
-  document.documentElement.dataset.skyScene = scene; // the sky-window band only belongs to the Earth scene
   const sky = startSky(cv, scene, CALM, palette);
 
   if (store('sky-pick')) {

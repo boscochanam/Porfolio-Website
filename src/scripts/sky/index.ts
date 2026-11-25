@@ -19,7 +19,6 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
   const k = createKit(ctx);
   const home = !!document.querySelector('.hero');
   const calmEls = [...document.querySelectorAll(calmSel)];
-  const bandEl = document.querySelector<HTMLElement>('.sky-window');
   let cur = SCENES[first] ? first : 'earth', palName = '';
 
   /** Activate a look by name (falls back to the scene's first); ramps become lookup tables. */
@@ -35,7 +34,6 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
     k.W = innerWidth; k.H = innerHeight; k.phone = k.W <= 760; k.C = k.phone ? 10 : 12;
     cv.width = Math.round(k.W * dpr); cv.height = Math.round(k.H * dpr);
     k.gap = 1;
-    k.bandRect = bandEl ? bandEl.getBoundingClientRect() : null;
     SCENES[cur].layout(k);
     k.makeStars();
   }
@@ -49,7 +47,6 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
   function frame() {
     k.rects = [];
     for (const e of calmEls) { const r = e.getBoundingClientRect(); if (r.width && r.bottom > -40 && r.top < k.H + 40) k.rects.push(r); }
-    k.bandRect = bandEl ? bandEl.getBoundingClientRect() : null; // it scrolls with the page, so refresh it every frame
     recede();
     const dpr = cv.width / k.W;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -66,20 +63,31 @@ export function startSky(cv: HTMLCanvasElement, first: string, calmSel: string, 
   const T0 = performance.now();
   k.T = 40;
   frame();
-  let last = 0, queued = false;
-  if (!REDUCE) {
+
+  const still = REDUCE || !!SCENES[cur].static;
+  if (!still) {
+    let last = 0;
     const loop = (now: number) => {
       if (now - last >= FRAME_MS) { last = now; k.T = (now - T0) / 1000 + 40; frame(); }
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
+    addEventListener('pointermove', (e) => { k.mouse = [e.clientX, e.clientY]; }, { passive: true });
+    document.addEventListener('pointerleave', () => { k.mouse = null; });
+  } else {
+    // Re-measure the calm boxes once webfonts land; a still scene would otherwise keep the fallback-font positions.
+    document.fonts?.ready.then(() => frame());
+    addEventListener('load', frame, { once: true });
   }
-  // With motion reduced the sky is a still frame; redraw only when the page moves under it.
-  const redraw = () => { if (REDUCE && !queued) { queued = true; requestAnimationFrame(() => { queued = false; frame(); }); } };
-  addEventListener('scroll', () => { recede(); redraw(); }, { passive: true });
+  // A still scene costs nothing while the page scrolls; redraw once it settles so the calm zones follow the copy.
+  let settle = 0;
+  addEventListener('scroll', () => {
+    recede();
+    if (!still) return;
+    clearTimeout(settle);
+    settle = window.setTimeout(frame, 120);
+  }, { passive: true });
   addEventListener('resize', () => { layout(); frame(); });
-  addEventListener('pointermove', (e) => { k.mouse = [e.clientX, e.clientY]; redraw(); }, { passive: true });
-  document.addEventListener('pointerleave', () => { k.mouse = null; });
 
   return {
     setPalette(name: string) { usePalette(name); frame(); },

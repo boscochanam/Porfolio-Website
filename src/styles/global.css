@@ -107,7 +107,7 @@ h1,h2,h3{font-family:var(--sans);margin:0;letter-spacing:-.015em}
 /* ── projects: full-page grid of project tiles ───── */
 .prj-page{padding-bottom:56px}
 .prj-head h1{font-size:clamp(34px,3.4vw,44px);line-height:1.02;font-weight:800;letter-spacing:-.03em}
-.prj{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:stretch}
+.prj{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:stretch;background:var(--paper)}
 .prj-tile{background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
 .prj-plate{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:18px;min-height:292px;padding:22px 24px 18px;background:var(--plate);color:var(--pearl);text-decoration:none;overflow:hidden}
 .prj-plate:hover{color:var(--pearl)}
@@ -232,18 +232,6 @@ video.prj-media{object-fit:cover}
   .feat-vis svg.dg-h{max-width:640px}
   .feat-txt{padding:18px 24px 20px}
 }
-/* Keep a real column for Earth beside the copy on small laptops; below this it gets its own sky window. */
-@media (min-width:1000px) and (max-width:1180px){
-  .hero-grid{grid-template-columns:116px minmax(0,560px) minmax(0,1fr)}
-}
-.sky-window{display:none;height:clamp(260px,38vh,360px);height:clamp(260px,38svh,360px)}
-@media (max-width:999px){
-  .sky-window{display:block}
-}
-@media (max-width:1359px){
-  .sky-window--projects{display:block}
-}
-html[data-sky-scene]:not([data-sky-scene="earth"]) .sky-window{display:none}
 @media (max-width:1100px){
   .prj{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -362,7 +350,7 @@ a.ik:hover .ext{opacity:1;transform:translate(1.5px,-1.5px)}
 .sky-pick.min .sky-pick-min{margin:0}
 .sky-pick button{border:1px solid var(--line);background:transparent;color:var(--ink);padding:7px 9px;cursor:pointer;font:inherit}
 .sky-pick button[aria-pressed="true"]{background:var(--ink);color:var(--night);border-color:var(--ink);box-shadow:inset 0 -3px 0 var(--red)}
-@media print{.sky,.sky-pick,.sky-window{display:none}}
+@media print{.sky,.sky-pick{display:none}}
 
 /* ── 404 ── */
 .nf{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);margin:48px 0 0;background:var(--plate);border:1px solid var(--line);border-right:2px solid var(--red)}

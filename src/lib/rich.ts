@@ -13,7 +13,11 @@ export const mark = (key: string) => {
 export const rich = (s: string) =>
   esc(s)
     .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
-    .replace(/\[\[([a-z0-9]+)\|([^|\]]+)(?:\|([^\]]+))?\]\]/g, (_, key: string, label: string, url?: string) => {
+    .replace(/\[\[([a-z0-9]+)\|([^|\]]*)(?:\|([^\]]+))?\]\]/g, (_, key: string, label: string, url?: string) => {
       const inner = `${mark(key)}${label}`;
-      return url ? `<a class="br" href="${url}">${inner}</a>` : `<span class="br">${inner}</span>`;
+      if (label) return url ? `<a class="br" href="${url}">${inner}</a>` : `<span class="br">${inner}</span>`;
+      const name = brands[key]?.name ?? key;
+      return url
+        ? `<a class="br br-icon" href="${url}" aria-label="${name}">${inner}</a>`
+        : `<span class="br br-icon" role="img" aria-label="${name}">${inner}</span>`;
     });

@@ -19,7 +19,7 @@ export const site = {
     'I also own the software platform for a robotic bin-picking cell built on [[ros|ROS 2]], and I’m learning robot simulation in [[nvidia|Isaac Sim]].',
     'At home I run Clawsco, my fork of [[nous|Hermes Agent|https://github.com/NousResearch/hermes-agent]], and I build with [[claude|Claude Code]], [[openai|Codex]], [[cursor|Cursor]] and [[opencode|opencode]].',
     `Away from the screen, I love movies and making videos. I log what I watch on [[letterboxd|Letterboxd|https://letterboxd.com/boscochanam]] and post on [[youtube|YouTube|https://www.youtube.com/@boscochanam]]. I also play [[valorant|Valorant|${valorantProfile}]] and [[deadlock|Deadlock]].`,
-    '**Fun fact:** Cameo at: [[wikipedia||https://en.wikipedia.org/wiki/North_American_Manipur_Association]]',
+    '**Fun fact:** Cameo at: [[wikipedia||https://en.wikipedia.org/wiki/North_American_Manipur_Association#24th_Annual_Convention_(2015):~:text=Bosco%20Chanam]]',
   ],
 };
 

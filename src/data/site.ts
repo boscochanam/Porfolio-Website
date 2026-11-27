@@ -106,7 +106,12 @@ export const background: { papers: BackgroundItem[]; recognition: BackgroundItem
       icon: 'bharatforge',
       url: 'https://www.linkedin.com/posts/boscochanam_ai-innovation-award-for-leading-the-development-activity-7446798246603218944-1PPc',
     },
-    { title: 'Chosen to present our work to Union Home Minister Amit Shah', meta: 'Bharat Forge', icon: 'bharatforge' },
+    {
+      title: 'Chosen to present our work to Union Home Minister Amit Shah',
+      meta: 'Bharat Forge',
+      icon: 'bharatforge',
+      url: 'https://www.linkedin.com/posts/boscochanam_bharatforge-aiinmanufacturing-computervision-ugcPost-7531980455961747456-3TuK',
+    },
     {
       title: 'Invited judge on a student project panel with members from Microsoft and Citi',
       meta: 'Symbiosis',
